@@ -139,7 +139,7 @@ function GravityPoint(x, y, radius, targets) {
     this._speed = new Vector();
 }
 
-GravityPoint.RADIUS_LIMIT = 65;
+GravityPoint.RADIUS_LIMIT = 40;
 GravityPoint.interferenceToPoint = true;
 
 GravityPoint.prototype = (function(o) {
@@ -300,6 +300,7 @@ function Particle(x, y, radius) {
     this._speed  = new Vector();
 }
 
+Particle.PARTICLE_SPEED_LIMIT = 5;
 Particle.prototype = (function(o) {
     var s = new Vector(0, 0), p;
     for (p in o) s[p] = o[p];
@@ -310,7 +311,7 @@ Particle.prototype = (function(o) {
     },
 
     update: function() {
-        if (this._speed.length() > 12) this._speed.normalize().scale(12);
+        if (this._speed.length() > Particle.PARTICLE_SPEED_LIMIT) this._speed.normalize().scale(Particle.PARTICLE_SPEED_LIMIT);
 
         this._latest.set(this);
         this.add(this._speed);
@@ -347,8 +348,7 @@ Particle.prototype = (function(o) {
 
     var BACKGROUND_COLOR      = 'rgba(11, 51, 56, 1)',
         PARTICLE_RADIUS       = 1,
-        G_POINT_RADIUS        = 10,
-        G_POINT_RADIUS_LIMITS = 65;
+        G_POINT_RADIUS        = 10;
 
 
     // Vars
