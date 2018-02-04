@@ -17,10 +17,33 @@ limitations under the License.
 <html>
 <head>
   <meta charset=utf-8 />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>justyuenme</title>
 
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+  <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+  <meta name="msapplication-TileColor" content="#3372DF">
+
+  <link rel="shortcut icon" href="images/favicon.png">
+
+  <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+  <!--
+  <link rel="canonical" href="http://www.example.com/">
+-->
+
   <!-- Material Design Theming -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
   <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
@@ -37,49 +60,59 @@ limitations under the License.
   <script src="scripts/login.js"></script>
 </head>
 <body>
+  <!-- START: firefly field -->
   <canvas id="c"></canvas>
-  <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <!-- END: firefly field -->
 
-    <!-- Header section containing title -->
-    <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
-      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-        <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--8-col-desktop">
-          <a href="/"><h3>Firebase Authentication</h3></a>
-        </div>
-      </div>
-    </header>
-
-    <main class="mdl-layout__content mdl-color--grey-100">
-      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-
-        <!-- Container for the demo -->
-        <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+  <!-- START: login/welcome -->
+  <div class="entrance-card mdl-layout mdl-js-layout has-drawer is-upgraded">
+    <main class="mdl-layout__content">
+      <div class="entrance-card__content mdl-grid">
+        <div id="login" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
           <div class="mdl-card__title mdl-color--light-blue-600 mdl-color-text--white">
             <h2 class="mdl-card__title-text">Firebase Email &amp; Password Authentication</h2>
           </div>
-          <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-            <input class="mdl-textfield__input" style="display:inline;width:auto;" type="text" id="email" name="email" placeholder="Email"/>
-            &nbsp;&nbsp;&nbsp;
-            <input class="mdl-textfield__input" style="display:inline;width:auto;" type="password" id="password" name="password" placeholder="Password"/>
-            <br/><br/>
-            <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in" name="signin">Sign In</button>
-            &nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-button--raised" disabled id="quickstart-verify-email" name="verify-email">Send Email Verification</button>
-            &nbsp;&nbsp;&nbsp;
-            <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Send Password Reset Email</button>
 
+          <!-- START: Email -->
+          <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" name="email" id="email">
+              <label class="mdl-textfield__label" for="email">Email</label>
+            </div>
+          </div>
+          <!-- END: Email -->
+
+          <!-- START: Password -->
+          <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="password" name="password" id="password">
+              <label class="mdl-textfield__label" for="password">Password</label>
+            </div>
+          </div>
+          <!-- END: Password -->
+
+          <!-- START: Buttons -->
+          <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+            <button disabled class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-sign-in" name="signin">Sign In</button>
+            <button class="mdl-button mdl-js-button mdl-button--raised" disabled id="quickstart-verify-email" name="verify-email">Send Email Verification</button>
+            <button class="mdl-button mdl-js-button mdl-button--raised" id="quickstart-password-reset" name="verify-email">Send Password Reset Email</button>
+          </div>
+          <!-- END: Buttons -->
+
+          <!-- START: Message -->
+          <div class="mdl-card__supporting-text mdl-color-text--grey-600">
             <!-- Container where we'll display the user details -->
             <div class="quickstart-user-details-container">
               Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
-              <div>Firebase auth <code>currentUser</code> object value:</div>
-              <pre><code id="quickstart-account-details">null</code></pre>
             </div>
           </div>
         </div>
-
       </div>
     </main>
+    <div class="mdl-layout__obfuscator"></div>
   </div>
+  <!-- END: login/welcome -->
+
   <script src="scripts/gravity.js"></script>
 </body>
 </html>

@@ -133,7 +133,8 @@ function initApp() {
       // [START_EXCLUDE]
       document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
       document.getElementById('quickstart-sign-in').textContent = 'Sign out';
-      document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
+      console.log(JSON.stringify(user, null, '  '));
+      // document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
       if (!emailVerified) {
         document.getElementById('quickstart-verify-email').disabled = false;
       }
@@ -143,7 +144,7 @@ function initApp() {
       // [START_EXCLUDE]
       document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
       document.getElementById('quickstart-sign-in').textContent = 'Sign in';
-      document.getElementById('quickstart-account-details').textContent = 'null';
+      // document.getElementById('quickstart-account-details').textContent = 'null';
       // [END_EXCLUDE]
     }
     // [START_EXCLUDE silent]
