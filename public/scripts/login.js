@@ -119,7 +119,7 @@ function initApp() {
   // [START authstatelistener]
   firebase.auth().onAuthStateChanged(function(user) {
     // [START_EXCLUDE silent]
-    document.getElementById('verify-email').disabled = true;
+    // document.getElementById('verify-email').disabled = true;
     // [END_EXCLUDE]
     if (user) {
       // User is signed in.
@@ -156,7 +156,7 @@ function initApp() {
 
   document.getElementById('sign-in').addEventListener('click', toggleSignIn, false);
   // document.getElementById('sign-up').addEventListener('click', handleSignUp, false);
-  document.getElementById('verify-email').addEventListener('click', sendEmailVerification, false);
+  // document.getElementById('verify-email').addEventListener('click', sendEmailVerification, false);
   document.getElementById('password-reset').addEventListener('click', sendPasswordReset, false);
 }
 
