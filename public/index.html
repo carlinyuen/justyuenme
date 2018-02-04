@@ -57,6 +57,7 @@ limitations under the License.
   <script src="/__/firebase/4.0.0/firebase-app.js"></script>
   <script src="/__/firebase/4.0.0/firebase-auth.js"></script>
   <script src="/__/firebase/init.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="scripts/login.js"></script>
 </head>
 <body>
@@ -70,7 +71,7 @@ limitations under the License.
       <div class="login-page__content mdl-grid">
         <div id="login" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop mdl-typography--text-center" aria-label="login to enter">
           <!-- START: Email -->
-          <div class="mdl-color-text--teal-100">
+          <div class="loginField mdl-color-text--teal-100">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="text" name="email" id="email">
               <label class="mdl-textfield__label mdl-color-text--teal-400" for="email">Email</label>
@@ -79,7 +80,7 @@ limitations under the License.
           <!-- END: Email -->
 
           <!-- START: Password -->
-          <div class="mdl-color-text--teal-100">
+          <div class="loginField mdl-color-text--teal-100">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="password" name="password" id="password">
               <label class="mdl-textfield__label mdl-color-text--teal-400" for="password">Password</label>
@@ -88,15 +89,17 @@ limitations under the License.
           <!-- END: Password -->
 
           <!-- START: Buttons -->
-          <div class="mdl-card__actions mdl-color-text--teal-100">
-            <button disabled class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="sign-in" name="signin">Sign In</button>
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="password-reset" name="password-reset">Change/Reset Password</button>
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="enter-site" name="enter-site">Enter Site</button>
+          <div class="loginField mdl-card__actions">
+            <button disabled class="loginField mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="sign-in" name="signin">Sign In</button>
           </div>
           <!-- END: Buttons -->
 
           <!-- START: Sign-out -->
-          <button class="mdl-button mdl-js-button mdl-button--primary" id="sign-out" name="sign-out">Sign Out</button>
+          <div class="welcomeActions mdl-card__actions">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="password-reset" name="password-reset">Change/Reset Password</button>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="enter-site" name="enter-site">Enter Site</button>
+            <button class="mdl-button mdl-js-button mdl-button--primary" id="sign-out" name="sign-out">Sign Out</button>
+          </div>
           <!-- END: Sign-out -->
 
         </div>

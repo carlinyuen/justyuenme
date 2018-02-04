@@ -1,21 +1,29 @@
 
 /**
+* Handles the sign out button press.
+*/
+function signOut() {
+  // Disable buttons for now to prevent multiple calls
+  document.getElementById('sign-in').disabled = true;
+  document.getElementById('sign-out').disabled = true;
+  firebase.auth().signOut();
+}
+
+/**
 * Handles the sign in button press.
 */
-function toggleSignIn() {
+function signIn() {
   if (firebase.auth().currentUser) {
-    // [START signout]
-    firebase.auth().signOut();
-    // [END signout]
+    alert('Already signed in!');
   } else {
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
     if (email.length < 4) {
-      alert('Please enter an email address.');
+      alert('Please enter a valid email address.');
       return;
     }
     if (password.length < 4) {
-      alert('Please enter a password.');
+      alert('Password should be longer than 4 characters.');
       return;
     }
     // Sign in with email and pass.
@@ -36,7 +44,17 @@ function toggleSignIn() {
     });
     // [END authwithemail]
   }
+
+  // Disable buttons for now to prevent multiple calls
   document.getElementById('sign-in').disabled = true;
+  document.getElementById('sign-out').disabled = true;
+}
+
+/**
+* Serves site content if the user is auth'd
+*/
+function enterSite() {
+
 }
 
 /**
@@ -134,10 +152,10 @@ function initApp() {
       // document.getElementById('sign-in-status').textContent = 'Signed in';
       console.log('Signed in');
       // document.getElementById('sign-in').textContent = 'Sign out';
-      document.getElementById('sign-in').disabled = true;
-      document.getElementById('sign-in').style.display = 'none';
-      document.getElementById('enter-site').disabled = false;
-      document.getElementById('enter-site').style.display = 'initial';
+      $('#login').addClass('logged-in');
+      $('#login .loginField').find('button').prop('disabled', true);
+      $('#login .welcomeActions').find('button').prop('disabled', false);
+      document.getElementById('password').value = '';   // Clear password
       console.log(JSON.stringify(user, null, '  '));
       // document.getElementById('account-details').textContent = JSON.stringify(user, null, '  ');
       // if (!emailVerified) {
@@ -149,10 +167,9 @@ function initApp() {
       // [START_EXCLUDE]
       // document.getElementById('sign-in-status').textContent = 'Signed out';
       // document.getElementById('sign-in').textContent = 'Sign in';
-      document.getElementById('sign-in').disabled = false;
-      document.getElementById('sign-in').style.display = 'initial';
-      document.getElementById('enter-site').disabled = true;
-      document.getElementById('enter-site').style.display = 'none';
+      $('#login').removeClass('logged-in');
+      $('#login .loginField').find('button').prop('disabled', false);
+      $('#login .welcomeActions').find('button').prop('disabled', true);
       // document.getElementById('account-details').textContent = 'null';
       // [END_EXCLUDE]
     }
@@ -162,7 +179,8 @@ function initApp() {
   });
   // [END authstatelistener]
 
-  document.getElementById('sign-in').addEventListener('click', toggleSignIn, false);
+  document.getElementById('sign-in').addEventListener('click', signIn, false);
+  document.getElementById('sign-out').addEventListener('click', signOut, false);
   document.getElementById('enter-site').addEventListener('click', enterSite, false);
   // document.getElementById('sign-up').addEventListener('click', handleSignUp, false);
   // document.getElementById('verify-email').addEventListener('click', sendEmailVerification, false);
