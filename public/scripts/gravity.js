@@ -247,8 +247,8 @@ GravityPoint.prototype = (function(o) {
         ctx.save();
 
         grd = ctx.createRadialGradient(this.x, this.y, this.radius, this.x, this.y, this.radius * 5);
-        grd.addColorStop(0, 'rgba(0, 0, 0, 0.1)');
-        grd.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        grd.addColorStop(0, 'rgba(255, 249, 197, 0.1)');
+        grd.addColorStop(1, 'rgba(255, 249, 197, 0)');
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius * 5, 0, Math.PI * 2, false);
         ctx.fillStyle = grd;
@@ -256,7 +256,7 @@ GravityPoint.prototype = (function(o) {
 
         r = Math.random() * this.currentRadius * 0.7 + this.currentRadius * 0.3;
         grd = ctx.createRadialGradient(this.x, this.y, r, this.x, this.y, this.currentRadius);
-        grd.addColorStop(0, 'rgba(0, 0, 0, 1)');
+        grd.addColorStop(0, 'rgba(255, 241, 198, 1)');
         grd.addColorStop(1, Math.random() < 0.2 ? 'rgba(255, 196, 0, 0.15)' : 'rgba(103, 181, 191, 0.75)');
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2, false);
@@ -496,13 +496,12 @@ Particle.prototype = (function(o) {
         bufferCtx.fillRect(0, 0, screenWidth, screenHeight);
         bufferCtx.restore();
 
-        // パーティクルをバッファに描画
         // for (i = 0, len = particles.length; i < len; i++) {
         //     particles[i].render(bufferCtx);
         // }
         len = particles.length;
         bufferCtx.save();
-        bufferCtx.fillStyle = bufferCtx.strokeStyle = '#fff';
+        bufferCtx.fillStyle = bufferCtx.strokeStyle = '#faf3ba';
         bufferCtx.lineCap = bufferCtx.lineJoin = 'round';
         bufferCtx.lineWidth = PARTICLE_RADIUS * 2;
         bufferCtx.beginPath();
@@ -522,7 +521,6 @@ Particle.prototype = (function(o) {
         bufferCtx.fill();
         bufferCtx.restore();
 
-        // バッファをキャンバスに描画
         context.drawImage(bufferCvs, 0, 0);
 
         requestAnimationFrame(loop);
