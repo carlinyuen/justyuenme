@@ -16,9 +16,22 @@ body .login-page {
 }
 
 .login-page.mdl-layout .mdl-layout__content {
-  padding-top: 230px;
   position: relative;
   -webkit-overflow-scrolling: touch;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.logged-in {
+  padding-top: 230px;
 }
 .login-page .mdl-card {
   display: -webkit-flex;
