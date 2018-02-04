@@ -72,18 +72,20 @@ limitations under the License.
         <div id="login" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop mdl-typography--text-center" aria-label="login to enter">
           <!-- START: Email -->
           <div class="loginField mdl-color-text--teal-100">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <div id="email-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="text" name="email" id="email">
               <label class="mdl-textfield__label mdl-color-text--teal-400" for="email">Email</label>
+              <span id="email-error" class="mdl-textfield__error"></span>
             </div>
           </div>
           <!-- END: Email -->
 
           <!-- START: Password -->
           <div class="loginField mdl-color-text--teal-100">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <div id="password-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="password" name="password" id="password">
               <label class="mdl-textfield__label mdl-color-text--teal-400" for="password">Password</label>
+              <span id="password-error" class="mdl-textfield__error"></span>
             </div>
           </div>
           <!-- END: Password -->
@@ -96,8 +98,10 @@ limitations under the License.
 
           <!-- START: Sign-out -->
           <div class="welcomeActions mdl-card__actions">
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="password-reset" name="password-reset">Change/Reset Password</button>
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="enter-site" name="enter-site">Enter Site</button>
+            <br>
+            <button class="mdl-button mdl-js-button mdl-button--primary" id="password-reset" name="password-reset">Change/Reset Password</button>
+            <br>
             <button class="mdl-button mdl-js-button mdl-button--primary" id="sign-out" name="sign-out">Sign Out</button>
           </div>
           <!-- END: Sign-out -->

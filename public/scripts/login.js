@@ -19,11 +19,13 @@ function signIn() {
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
     if (email.length < 4) {
-      alert('Please enter a valid email address.');
+      $('#email-error').text('Please enter a valid email address.');
+      $('#email-container').addClass('is-invalid');
       return;
     }
-    if (password.length < 4) {
-      alert('Password should be longer than 4 characters.');
+    if (password.length < 6) {
+      $('#password-error').text('Wrong password. Check invite email.');
+      $('#password-container').addClass('is-invalid');
       return;
     }
     // Sign in with email and pass.
@@ -33,10 +35,23 @@ function signIn() {
       var errorCode = error.code;
       var errorMessage = error.message;
       // [START_EXCLUDE]
-      if (errorCode === 'auth/wrong-password') {
-        alert('Wrong password.');
-      } else {
-        alert(errorMessage);
+      switch (errorCode) {
+        case 'auth/invalid-email':
+          $('#email-error').text('Invalid email format');
+          $('#email-container').addClass('is-invalid');
+          break;
+        case 'auth/user-not-found':
+        case 'auth/user-disabled':
+          $('#email-error').text('Email not in guest invite list, sorry! :)');
+          $('#email-container').addClass('is-invalid');
+          break;
+        case 'auth/wrong-password':
+          $('#password-error').text('Wrong password. Check invite email.');
+          $('#password-container').addClass('is-invalid');
+          break;
+        default:
+          alert(errorMessage);
+          break;
       }
       console.log(error);
       document.getElementById('sign-in').disabled = false;
