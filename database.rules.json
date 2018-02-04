@@ -1,6 +1,6 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    ".read" : "auth != null && root.child('guests').hasChild(auth.uid)",
+    ".write" : "auth != null && root.child('guests').hasChild(auth.uid)"
   }
 }
