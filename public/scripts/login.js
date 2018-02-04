@@ -155,7 +155,9 @@ function initApp() {
       $('#login').addClass('logged-in');
       $('#login .loginField').find('button').prop('disabled', true);
       $('#login .welcomeActions').find('button').prop('disabled', false);
-      document.getElementById('password').value = '';   // Clear password
+      $('#email').val(email);   // Populate email field
+      $('#password').val('');   // Clear password
+      document.querySelector('.mdl-textfield').MaterialTextfield.checkDirty();
       console.log(JSON.stringify(user, null, '  '));
       // document.getElementById('account-details').textContent = JSON.stringify(user, null, '  ');
       // if (!emailVerified) {
