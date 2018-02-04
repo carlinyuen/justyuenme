@@ -172,7 +172,7 @@ body .login-page {
   box-sizing: border-box;
 }
 
-#quickstart-verify-email, #quickstart-password-reset {
+#password-reset {
   display: none;
 }
 

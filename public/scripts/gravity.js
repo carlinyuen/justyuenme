@@ -12,7 +12,6 @@ window.requestAnimationFrame = (function(){
             };
 })();
 
-
 /**
  * Vector
  */
@@ -339,20 +338,17 @@ Particle.prototype = (function(o) {
 });
 
 
-
 // Initialize
-
 (function() {
 
     // Configs
-
     var BACKGROUND_COLOR      = 'rgba(11, 51, 56, 1)',
+        PARTICLE_NUM          = 100,
         PARTICLE_RADIUS       = 1,
         G_POINT_RADIUS        = 10;
 
 
     // Vars
-
     var canvas, context,
         bufferCvs, bufferCtx,
         screenWidth, screenHeight,
@@ -363,9 +359,7 @@ Particle.prototype = (function(o) {
         // gui,
         control;
 
-
     // Event Listeners
-
     function resize(e) {
         screenWidth  = canvas.width  = window.innerWidth;
         screenHeight = canvas.height = window.innerHeight;
@@ -393,7 +387,6 @@ Particle.prototype = (function(o) {
             else
                 g.isMouseOver = false;
         }
-
         canvas.style.cursor = hit ? 'pointer' : 'default';
     }
 
@@ -428,9 +421,7 @@ Particle.prototype = (function(o) {
         }
     }
 
-
     // Functions
-
     function addParticle(num) {
         var i, p;
         for (i = 0; i < num; i++) {
@@ -451,46 +442,21 @@ Particle.prototype = (function(o) {
         }
     }
 
-
-    // GUI Control
-
-    control = {
-        particleNum: 100
-    };
-
-
     // Init
-
     canvas  = document.getElementById('c');
     bufferCvs = document.createElement('canvas');
 
     window.addEventListener('resize', resize, false);
     resize(null);
 
-    addParticle(control.particleNum);
+    addParticle(PARTICLE_NUM);
 
     canvas.addEventListener('mousemove', mouseMove, false);
     canvas.addEventListener('mousedown', mouseDown, false);
     canvas.addEventListener('mouseup', mouseUp, false);
     canvas.addEventListener('dblclick', doubleClick, false);
 
-
-    // GUI
-
-    // gui = new dat.GUI();
-    // gui.add(control, 'particleNum', 0, 500).step(1).name('Particle Num').onChange(function() {
-    //     var n = (control.particleNum | 0) - particles.length;
-    //     if (n > 0)
-    //         addParticle(n);
-    //     else if (n < 0)
-    //         removeParticle(-n);
-    // });
-    // gui.add(GravityPoint, 'interferenceToPoint').name('Interference Between Point');
-    // gui.close();
-
-
     // Start Update
-
     var loop = function() {
         var i, len, g, p;
 
@@ -548,5 +514,4 @@ Particle.prototype = (function(o) {
         requestAnimationFrame(loop);
     };
     loop();
-
 })();
