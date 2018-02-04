@@ -176,15 +176,14 @@ body .login-page {
 #login {
   background: rgba(0, 0, 0, 0.2);
   padding: 16px 0;
-  /*text-align: center;*/
 }
-#login .welcomeActions {
+#login .welcomeInfo {
   display: none;
 }
 #login.logged-in .loginField {
   display: none;
 }
-#login.logged-in .welcomeActions {
+#login.logged-in .welcomeInfo {
   display: initial;
 }
 
@@ -194,9 +193,21 @@ body .login-page {
 #login .mdl-textfield:not(.is-focused) .mdl-textfield__label {
   color: rgba(38, 166, 154, 0.50) !important;
 }
-#login .mdl-card__actions {
-  margin-top: 24px;
+#login .loginField.mdl-card__actions {
+  margin-top: 16px;
 }
 #login #password-reset {
   margin-top: 16px;
+}
+
+#login #welcome-message h2 {
+  font-weight: bold;
+  font-family: 'Dancing Script', cursive;
+}
+
+.mdl-color-text--firefly {
+  color: #faf3ba;
+}
+.mdl-color--firefly {
+  background-color: #faf3ba;
 }

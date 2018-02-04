@@ -107,16 +107,16 @@ function enterSite() {
 /**
 * Sends an email verification to the user.
 */
-function sendEmailVerification() {
-  // [START sendemailverification]
-  firebase.auth().currentUser.sendEmailVerification().then(function() {
-    // Email Verification sent!
-    // [START_EXCLUDE]
-    alert('Email Verification Sent!');
-    // [END_EXCLUDE]
-  });
-  // [END sendemailverification]
-}
+// function sendEmailVerification() {
+//   // [START sendemailverification]
+//   firebase.auth().currentUser.sendEmailVerification().then(function() {
+//     // Email Verification sent!
+//     // [START_EXCLUDE]
+//     alert('Email Verification Sent!');
+//     // [END_EXCLUDE]
+//   });
+//   // [END sendemailverification]
+// }
 
 function sendPasswordReset() {
   var email = document.getElementById('email').value;
@@ -163,6 +163,12 @@ function initApp() {
       var isAnonymous = user.isAnonymous;
       var uid = user.uid;
       var providerData = user.providerData;
+
+      // Hack to personalize name by cutting off last name
+      if (displayName && displayName.length > 0) {
+        displayName = displayName.substring(0, displayName.lastIndexOf(' '));
+      }
+
       // [START_EXCLUDE]
       // document.getElementById('sign-in-status').textContent = 'Signed in';
       console.log('Signed in');
@@ -172,6 +178,7 @@ function initApp() {
       $('#login .welcomeActions').find('button').prop('disabled', false);
       $('#email').val(email);   // Populate email field
       $('#password').val('');   // Clear password
+      $('#welcome-name').text(displayName + '!');
       document.querySelector('.mdl-textfield').MaterialTextfield.checkDirty();
       console.log(JSON.stringify(user, null, '  '));
       // document.getElementById('account-details').textContent = JSON.stringify(user, null, '  ');
