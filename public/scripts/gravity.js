@@ -242,22 +242,44 @@ GravityPoint.prototype = (function(o) {
     },
 
     _draw: function(ctx) {
-        var grd, r;
+        var grd, r, rg, c, cg;
 
         ctx.save();
 
-        grd = ctx.createRadialGradient(this.x, this.y, this.radius, this.x, this.y, this.radius * 5);
-        grd.addColorStop(0, 'rgba(255, 249, 197, 0.1)');
+        // Pick colors earlier to affect glow
+        c = Math.random();
+        rg = this.radius * 5;
+        switch (true) {
+          case (c < 0.1):
+            c = 'rgba(255, 237, 0, .75)';
+            cg = 'rgba(255, 237, 0, .1)';
+            rg *= 1.5;
+            break;
+          case (c < 0.2):
+            c = 'rgba(103, 191, 183, 0.30)';
+            cg = 'rgba(103, 191, 183, 0.1)';
+            rg *= 0.5;
+            break;
+          default:
+            c = 'rgba(154, 99, 26, 0.75)';
+            cg = 'rgba(154, 99, 26, 0.1)';
+            break;
+        }
+        grd = ctx.createRadialGradient(this.x, this.y, this.radius, this.x, this.y, rg);
+        // grd.addColorStop(0, 'rgba(255, 249, 197, 0.1)');
+        grd.addColorStop(0, cg);
         grd.addColorStop(1, 'rgba(255, 249, 197, 0)');
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius * 5, 0, Math.PI * 2, false);
         ctx.fillStyle = grd;
         ctx.fill();
 
-        r = Math.random() * this.currentRadius * 0.7 + this.currentRadius * 0.3;
+        // Use more of the ball to make it look more natural
+        // r = Math.random() * this.currentRadius * 0.7 + this.currentRadius * 0.3;
+        r = Math.random() * this.currentRadius;
         grd = ctx.createRadialGradient(this.x, this.y, r, this.x, this.y, this.currentRadius);
-        grd.addColorStop(0, 'rgba(255, 241, 198, 1)');
-        grd.addColorStop(1, Math.random() < 0.2 ? 'rgba(255, 196, 0, 0.15)' : 'rgba(103, 181, 191, 0.75)');
+        grd.addColorStop(0, 'rgba(255, 240, 190, 1)');
+        grd.addColorStop(1, c);
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2, false);
         ctx.fillStyle = grd;
