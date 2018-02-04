@@ -133,7 +133,11 @@ function initApp() {
       // [START_EXCLUDE]
       // document.getElementById('sign-in-status').textContent = 'Signed in';
       console.log('Signed in');
-      document.getElementById('sign-in').textContent = 'Sign out';
+      // document.getElementById('sign-in').textContent = 'Sign out';
+      document.getElementById('sign-in').disabled = true;
+      document.getElementById('sign-in').style.display = 'none';
+      document.getElementById('enter-site').disabled = false;
+      document.getElementById('enter-site').style.display = 'initial';
       console.log(JSON.stringify(user, null, '  '));
       // document.getElementById('account-details').textContent = JSON.stringify(user, null, '  ');
       // if (!emailVerified) {
@@ -144,17 +148,22 @@ function initApp() {
       // User is signed out.
       // [START_EXCLUDE]
       // document.getElementById('sign-in-status').textContent = 'Signed out';
-      document.getElementById('sign-in').textContent = 'Sign in';
+      // document.getElementById('sign-in').textContent = 'Sign in';
+      document.getElementById('sign-in').disabled = false;
+      document.getElementById('sign-in').style.display = 'initial';
+      document.getElementById('enter-site').disabled = true;
+      document.getElementById('enter-site').style.display = 'none';
       // document.getElementById('account-details').textContent = 'null';
       // [END_EXCLUDE]
     }
     // [START_EXCLUDE silent]
-    document.getElementById('sign-in').disabled = false;
+    // document.getElementById('sign-in').disabled = false;
     // [END_EXCLUDE]
   });
   // [END authstatelistener]
 
   document.getElementById('sign-in').addEventListener('click', toggleSignIn, false);
+  document.getElementById('enter-site').addEventListener('click', enterSite, false);
   // document.getElementById('sign-up').addEventListener('click', handleSignUp, false);
   // document.getElementById('verify-email').addEventListener('click', sendEmailVerification, false);
   document.getElementById('password-reset').addEventListener('click', sendPasswordReset, false);

@@ -45,7 +45,7 @@ body .login-page {
           align-items: stretch;
   flex-wrap: wrap;
   justify-content: center;
-  min-height: 360px;
+  min-height: 280px;
 }
 .login-page .mdl-card__title {
   padding: 16px;
@@ -172,12 +172,13 @@ body .login-page {
   box-sizing: border-box;
 }
 
-#password-reset {
+#password-reset, #enter-site {
   display: none;
 }
 
 #login {
   background: rgba(0, 0, 0, 0.2);
+  padding: 16px 0;
   /*text-align: center;*/
 }
 
