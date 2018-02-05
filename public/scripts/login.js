@@ -83,8 +83,11 @@ function enterSite() {
 
     // Switch views
     $('#login-page, #firefly-field').fadeOut('fast', function() {
+      // TODO: load main.js
       // TODO: populate main page
-      $('#main-page').fadeIn('fast');
+      $('#main-page').fadeIn('fast', function() {
+        // TODO: initialize main.js
+      });
     });
   } else {
     $('#user-warnings').text('Session expired. Please log in again.');
