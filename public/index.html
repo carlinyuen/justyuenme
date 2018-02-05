@@ -72,31 +72,32 @@ limitations under the License.
 
       <!-- START: login page -->
       <section id="login-page" class="login-page__content mdl-card mdl-shadow--2dp mdl-typography--text-center" aria-label="login to enter">
-        <!-- START: Email -->
-        <div class="loginInfo mdl-color-text--teal-100">
-          <div id="email-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" name="email" id="email-input">
-            <label class="mdl-textfield__label mdl-color-text--teal-400" for="email-input">Email</label>
-            <span id="email-error" class="mdl-textfield__error"></span>
-          </div>
-        </div>
-        <!-- END: Email -->
 
-        <!-- START: Password -->
-        <div class="loginInfo mdl-color-text--teal-100">
-          <div id="password-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="password" name="password" id="password-input">
-            <label class="mdl-textfield__label mdl-color-text--teal-400" for="password-input">Password</label>
-            <span id="password-error" class="mdl-textfield__error"></span>
+        <form id="login-form" class="loginInfo">
+          <!-- START: Email -->
+          <div class="mdl-color-text--teal-100">
+            <div id="email-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" name="email" id="email-input">
+              <label class="mdl-textfield__label mdl-color-text--teal-400" for="email-input">Email</label>
+              <span id="email-error" class="mdl-textfield__error"></span>
+            </div>
           </div>
-        </div>
-        <!-- END: Password -->
-
-        <!-- START: Buttons -->
-        <div class="loginInfo mdl-card__actions">
-          <button disabled class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="signin-button" name="signin">Sign In</button>
-        </div>
-        <!-- END: Buttons -->
+          <!-- END: Email -->
+          <!-- START: Password -->
+          <div class="mdl-color-text--teal-100">
+            <div id="password-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="password" name="password" id="password-input">
+              <label class="mdl-textfield__label mdl-color-text--teal-400" for="password-input">Password</label>
+              <span id="password-error" class="mdl-textfield__error"></span>
+            </div>
+          </div>
+          <!-- END: Password -->
+          <!-- START: Buttons -->
+          <div class="mdl-card__actions">
+            <button disabled class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" type="submit" id="signin-button" name="signin">Sign In</button>
+          </div>
+          <!-- END: Buttons -->
+        </form>
 
         <!-- START: Welcome message -->
         <div class="welcomeInfo mdl-card__title mdl-color-text--firefly">
@@ -106,13 +107,17 @@ limitations under the License.
 
         <!-- START: Buttons -->
         <div class="welcomeInfo mdl-card__actions">
-          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="enter-site" name="enter-site">Enter Site</button>
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="entersite-button" name="entersite">Enter Site</button>
           <br>
           <button class="mdl-button mdl-js-button mdl-button--primary" id="changepassword-button" name="changepassword">Change Password</button>
           <br>
           <button class="mdl-button mdl-js-button mdl-button--primary" id="signout-button" name="signout">Sign Out</button>
         </div>
         <!-- END: Buttons -->
+
+        <!-- START: Error messages -->
+        <div class="welcomeInfo"><span id="user-warnings"></span></div>
+        <!-- END: Error messages -->
       </section>
       <!-- END: login page -->
 

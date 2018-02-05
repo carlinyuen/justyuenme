@@ -12,12 +12,15 @@ function signOut() {
 /**
 * Handles the sign in button press.
 */
-function signIn() {
+function signIn(event) {
+  event.preventDefault();   // Prevent default form submit
+
+  // Try to sign in user
   if (firebase.auth().currentUser) {
     alert('Already signed in!');
   } else {
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
+    var email = $('#email-input').val();
+    var password = $('#password-input').val();
     if (email.length < 4) {
       $('#email-error').text('Please enter a valid email address.');
       $('#email-container').addClass('is-invalid');
@@ -67,26 +70,33 @@ function signIn() {
 * Serves site content if the user is auth'd
 */
 function enterSite() {
+  // Disable button for now to prevent multiple calls
+  document.getElementById('entersite-button').disabled = true;
 
+  // Check user is logged in
+  if (firebase.auth().currentUser) {
+    // TODO:
+  } else {
+    $('#user-warnings').text('Session expired. Please log in again.');
+    signOut();
+  }
 }
 
 /**
 * Sends password reset/change email to email account
 */
 function sendPasswordReset() {
-  var email = document.getElementById('email').value;
+  var email = $('#email-input').val();
   // [START sendpasswordemail]
   firebase.auth().sendPasswordResetEmail(email).then(function() {
-    // Password Reset Email Sent!
-    alert('Password Reset Email Sent!');
+    $('#user-warnings').text('Password reset email sent.');
   }).catch(function(error) {
-    // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
     if (errorCode == 'auth/invalid-email') {
-      alert(errorMessage);
+      $('#user-warnings').text(errorMessage);
     } else if (errorCode == 'auth/user-not-found') {
-      alert(errorMessage);
+      $('#user-warnings').text(errorMessage);
     }
     console.log(error);
   });
@@ -103,7 +113,7 @@ function initApp() {
   // [START authstatelistener]
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      // User is signed in.
+      console.log(JSON.stringify(user, null, '  '));
       var displayName = user.displayName;
       var email = user.email;
       var emailVerified = user.emailVerified;
@@ -111,13 +121,6 @@ function initApp() {
       var isAnonymous = user.isAnonymous;
       var uid = user.uid;
       var providerData = user.providerData;
-
-      // Hack to personalize name by cutting off last name
-      // if (displayName && displayName.length > 0) {
-      //   displayName = displayName.substring(0, displayName.lastIndexOf(' '));
-      // }
-
-      console.log('Signed in');
       $('#login-page').addClass('logged-in');
       $('#login-page .loginInfo').find('button').prop('disabled', true);
       $('#login-page .welcomeInfo').find('button').prop('disabled', false);
@@ -125,9 +128,8 @@ function initApp() {
       $('#password-input').val('');   // Clear password
       $('#welcome-name').text(displayName + '!');
       document.querySelector('.mdl-textfield').MaterialTextfield.checkDirty();
-      console.log(JSON.stringify(user, null, '  '));
     } else {
-      // User is signed out.
+      console.log('user signed out')
       $('#login-page').removeClass('logged-in');
       $('#login-page .loginInfo').find('button').prop('disabled', false);
       $('#login-page .welcomeInfo').find('button').prop('disabled', true);
@@ -135,10 +137,11 @@ function initApp() {
   });
   // [END authstatelistener]
 
-  document.getElementById('signin-button').addEventListener('click', signIn, false);
-  document.getElementById('signout-button').addEventListener('click', signOut, false);
-  document.getElementById('enter-site').addEventListener('click', enterSite, false);
-  document.getElementById('changepassword-button').addEventListener('click', sendPasswordReset, false);
+  $('#signin-button').on('click', signIn);
+  $('#signout-button').on('click', signOut);
+  $('#entersite-button').on('click', enterSite);
+  $('#changepassword-button').on('click', sendPasswordReset);
+  $('#login-form').submit(signIn);
 }
 
 window.onload = function() {
