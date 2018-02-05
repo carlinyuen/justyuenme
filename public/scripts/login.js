@@ -113,9 +113,9 @@ function initApp() {
       var providerData = user.providerData;
 
       // Hack to personalize name by cutting off last name
-      if (displayName && displayName.length > 0) {
-        displayName = displayName.substring(0, displayName.lastIndexOf(' '));
-      }
+      // if (displayName && displayName.length > 0) {
+      //   displayName = displayName.substring(0, displayName.lastIndexOf(' '));
+      // }
 
       console.log('Signed in');
       $('#login-page').addClass('logged-in');
