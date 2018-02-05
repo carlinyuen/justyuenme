@@ -409,55 +409,62 @@ Particle.prototype = (function(o) {
 
   // Start Update
   var loop = function() {
-      var i, len, g, p;
-      context.save();
-      context.fillStyle = BACKGROUND_COLOR;
-      context.fillRect(0, 0, screenWidth, screenHeight);
-      context.fillStyle = grad;
-      context.fillRect(0, 0, screenWidth, screenHeight);
-      context.restore();
 
-      for (i = 0, len = gravities.length; i < len; i++) {
-          g = gravities[i];
-          if (g.dragging) g.drag(mouse);
-          g.render(context);
-          if (g.destroyed) {
-              gravities.splice(i, 1);
-              len--;
-              i--;
-          }
-      }
-
-      bufferCtx.save();
-      bufferCtx.globalCompositeOperation = 'destination-out';
-      bufferCtx.globalAlpha = 0.35;
-      bufferCtx.fillRect(0, 0, screenWidth, screenHeight);
-      bufferCtx.restore();
-
-      len = particles.length;
-      bufferCtx.save();
-      bufferCtx.fillStyle = bufferCtx.strokeStyle = '#faf3ba';
-      bufferCtx.lineCap = bufferCtx.lineJoin = 'round';
-      bufferCtx.lineWidth = PARTICLE_RADIUS * 2;
-      bufferCtx.beginPath();
-      for (i = 0; i < len; i++) {
-          p = particles[i];
-          p.update();
-          bufferCtx.moveTo(p.x, p.y);
-          bufferCtx.lineTo(p._latest.x, p._latest.y);
-      }
-      bufferCtx.stroke();
-      bufferCtx.beginPath();
-      for (i = 0; i < len; i++) {
-          p = particles[i];
-          bufferCtx.moveTo(p.x, p.y);
-          bufferCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2, false);
-      }
-      bufferCtx.fill();
-      bufferCtx.restore();
-
-      context.drawImage(bufferCvs, 0, 0);
+    // Emergency pause function if global variable is set
+    if (PAUSE_GRAVITY_SIMULATION) {
       requestAnimationFrame(loop);
+      return;
+    }
+
+    var i, len, g, p;
+    context.save();
+    context.fillStyle = BACKGROUND_COLOR;
+    context.fillRect(0, 0, screenWidth, screenHeight);
+    context.fillStyle = grad;
+    context.fillRect(0, 0, screenWidth, screenHeight);
+    context.restore();
+
+    for (i = 0, len = gravities.length; i < len; i++) {
+        g = gravities[i];
+        if (g.dragging) g.drag(mouse);
+        g.render(context);
+        if (g.destroyed) {
+            gravities.splice(i, 1);
+            len--;
+            i--;
+        }
+    }
+
+    bufferCtx.save();
+    bufferCtx.globalCompositeOperation = 'destination-out';
+    bufferCtx.globalAlpha = 0.35;
+    bufferCtx.fillRect(0, 0, screenWidth, screenHeight);
+    bufferCtx.restore();
+
+    len = particles.length;
+    bufferCtx.save();
+    bufferCtx.fillStyle = bufferCtx.strokeStyle = '#faf3ba';
+    bufferCtx.lineCap = bufferCtx.lineJoin = 'round';
+    bufferCtx.lineWidth = PARTICLE_RADIUS * 2;
+    bufferCtx.beginPath();
+    for (i = 0; i < len; i++) {
+        p = particles[i];
+        p.update();
+        bufferCtx.moveTo(p.x, p.y);
+        bufferCtx.lineTo(p._latest.x, p._latest.y);
+    }
+    bufferCtx.stroke();
+    bufferCtx.beginPath();
+    for (i = 0; i < len; i++) {
+        p = particles[i];
+        bufferCtx.moveTo(p.x, p.y);
+        bufferCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2, false);
+    }
+    bufferCtx.fill();
+    bufferCtx.restore();
+
+    context.drawImage(bufferCvs, 0, 0);
+    requestAnimationFrame(loop);
   };
   loop();
 })();

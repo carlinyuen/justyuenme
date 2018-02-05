@@ -7,6 +7,9 @@ function signOut() {
   document.getElementById('signin-button').disabled = true;
   document.getElementById('signout-button').disabled = true;
   firebase.auth().signOut();
+
+  // Unpause firefly simulation
+  PAUSE_GRAVITY_SIMULATION = false;
 }
 
 /**
@@ -75,7 +78,14 @@ function enterSite() {
 
   // Check user is logged in
   if (firebase.auth().currentUser) {
-    // TODO:
+    // Pause firefly field in the background
+    PAUSE_GRAVITY_SIMULATION = true;
+
+    // Switch views
+    $('#login-page, #firefly-field').fadeOut('fast', function() {
+      // TODO: populate main page
+      $('#main-page').fadeIn('fast');
+    });
   } else {
     $('#user-warnings').text('Session expired. Please log in again.');
     signOut();

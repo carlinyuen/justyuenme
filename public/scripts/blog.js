@@ -276,7 +276,7 @@ function startDatabaseQueries() {
           createPostElement(data.key, data.val().title, data.val().body, author, data.val().uid, data.val().authorPic),
           containerElement.firstChild);
     });
-    postsRef.on('child_changed', function(data) {	
+    postsRef.on('child_changed', function(data) {
 		var containerElement = sectionElement.getElementsByClassName('posts-container')[0];
 		var postElement = containerElement.getElementsByClassName('post-' + data.key)[0];
 		postElement.getElementsByClassName('mdl-card__title-text')[0].innerText = data.val().title;
