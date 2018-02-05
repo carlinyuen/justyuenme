@@ -49,33 +49,27 @@ Vector.prototype = {
         this.y = y || 0;
         return this;
     },
-
     add: function(v) {
         this.x += v.x;
         this.y += v.y;
         return this;
     },
-
     sub: function(v) {
         this.x -= v.x;
         this.y -= v.y;
         return this;
     },
-
     scale: function(s) {
         this.x *= s;
         this.y *= s;
         return this;
     },
-
     length: function() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     },
-
     lengthSq: function() {
         return this.x * this.x + this.y * this.y;
     },
-
     normalize: function() {
         var m = Math.sqrt(this.x * this.x + this.y * this.y);
         if (m) {
@@ -84,44 +78,36 @@ Vector.prototype = {
         }
         return this;
     },
-
     angle: function() {
         return Math.atan2(this.y, this.x);
     },
-
     angleTo: function(v) {
         var dx = v.x - this.x,
             dy = v.y - this.y;
         return Math.atan2(dy, dx);
     },
-
     distanceTo: function(v) {
         var dx = v.x - this.x,
             dy = v.y - this.y;
         return Math.sqrt(dx * dx + dy * dy);
     },
-
     distanceToSq: function(v) {
         var dx = v.x - this.x,
             dy = v.y - this.y;
         return dx * dx + dy * dy;
     },
-
     lerp: function(v, t) {
         this.x += (v.x - this.x) * t;
         this.y += (v.y - this.y) * t;
         return this;
     },
-
     clone: function() {
         return new Vector(this.x, this.y);
     },
-
     toString: function() {
         return '(x:' + this.x + ', y:' + this.y + ')';
     }
 };
-
 
 /**
  * GravityPoint
@@ -146,157 +132,149 @@ GravityPoint.prototype = (function(o) {
     for (p in o) s[p] = o[p];
     return s;
 })({
-    gravity:       0.05,
-    isMouseOver:   false,
-    dragging:      false,
-    destroyed:     false,
-    _easeRadius:   0,
-    _dragDistance: null,
-    _collapsing:   false,
+  gravity:       0.05,
+  isMouseOver:   false,
+  dragging:      false,
+  destroyed:     false,
+  _easeRadius:   0,
+  _dragDistance: null,
+  _collapsing:   false,
 
-    hitTest: function(p) {
-        return this.distanceTo(p) < this.radius;
-    },
+  hitTest: function(p) {
+      return this.distanceTo(p) < this.radius;
+  },
+  startDrag: function(dragStartPoint) {
+      this._dragDistance = Vector.sub(dragStartPoint, this);
+      this.dragging = true;
+  },
+  drag: function(dragToPoint) {
+      this.x = dragToPoint.x - this._dragDistance.x;
+      this.y = dragToPoint.y - this._dragDistance.y;
+  },
+  endDrag: function() {
+      this._dragDistance = null;
+      this.dragging = false;
+  },
+  addSpeed: function(d) {
+      this._speed = this._speed.add(d);
+  },
+  collapse: function(e) {
+      this.currentRadius *= 1.75;
+      this._collapsing = true;
+  },
+  render: function(ctx) {
+      if (this.destroyed) {
+        return;
+      }
 
-    startDrag: function(dragStartPoint) {
-        this._dragDistance = Vector.sub(dragStartPoint, this);
-        this.dragging = true;
-    },
+      var particles = this._targets.particles,
+          i, len;
+      for (i = 0, len = particles.length; i < len; i++) {
+          particles[i].addSpeed(Vector.sub(this, particles[i]).normalize().scale(this.gravity));
+      }
 
-    drag: function(dragToPoint) {
-        this.x = dragToPoint.x - this._dragDistance.x;
-        this.y = dragToPoint.y - this._dragDistance.y;
-    },
+      this._easeRadius = (this._easeRadius + (this.radius - this.currentRadius) * 0.07) * 0.95;
+      this.currentRadius += this._easeRadius;
+      if (this.currentRadius < 0) this.currentRadius = 0;
 
-    endDrag: function() {
-        this._dragDistance = null;
-        this.dragging = false;
-    },
+      if (this._collapsing) {
+          this.radius *= 0.75;
+          if (this.currentRadius < 1) this.destroyed = true;
+          this._draw(ctx);
+          return;
+      }
 
-    addSpeed: function(d) {
-        this._speed = this._speed.add(d);
-    },
+      var gravities = this._targets.gravities,
+          g, absorp,
+          area = this.radius * this.radius * Math.PI, garea;
 
-    collapse: function(e) {
-        this.currentRadius *= 1.75;
-        this._collapsing = true;
-    },
-
-    render: function(ctx) {
-        if (this.destroyed) return;
-
-        var particles = this._targets.particles,
-            i, len;
-
-        for (i = 0, len = particles.length; i < len; i++) {
-            particles[i].addSpeed(Vector.sub(this, particles[i]).normalize().scale(this.gravity));
+      for (i = 0, len = gravities.length; i < len; i++)
+      {
+        g = gravities[i];
+        if (g === this || g.destroyed) {
+          continue;
         }
 
-        this._easeRadius = (this._easeRadius + (this.radius - this.currentRadius) * 0.07) * 0.95;
-        this.currentRadius += this._easeRadius;
-        if (this.currentRadius < 0) this.currentRadius = 0;
+        if ((this.currentRadius >= g.radius || this.dragging)
+          && this.distanceTo(g) < (this.currentRadius + g.radius) * 0.85)
+        {
+            g.destroyed = true;
+            this.gravity += g.gravity;
 
-        if (this._collapsing) {
-            this.radius *= 0.75;
-            if (this.currentRadius < 1) this.destroyed = true;
-            this._draw(ctx);
-            return;
+            absorp = Vector.sub(g, this).scale(g.radius / this.radius * 0.5);
+            this.addSpeed(absorp);
+
+            garea = g.radius * g.radius * Math.PI;
+            this.currentRadius = Math.sqrt((area + garea * 3) / Math.PI);
+            this.radius = Math.sqrt((area + garea) / Math.PI);
         }
+        g.addSpeed(Vector.sub(this, g).normalize().scale(this.gravity));
+      }
 
-        var gravities = this._targets.gravities,
-            g, absorp,
-            area = this.radius * this.radius * Math.PI, garea;
+      if (GravityPoint.interferenceToPoint && !this.dragging) {
+          this.add(this._speed);
+      }
+      this._speed = new Vector();
 
-        for (i = 0, len = gravities.length; i < len; i++) {
-            g = gravities[i];
+      if (this.currentRadius > GravityPoint.RADIUS_LIMIT) {
+        this.collapse();
+      }
+      this._draw(ctx);
+  },
 
-            if (g === this || g.destroyed) continue;
+  _draw: function(ctx) {
+      var grd, r, rg, c, cg;
+      ctx.save();
 
-            if (
-                (this.currentRadius >= g.radius || this.dragging) &&
-                this.distanceTo(g) < (this.currentRadius + g.radius) * 0.85
-            ) {
-                g.destroyed = true;
-                this.gravity += g.gravity;
+      // Pick colors earlier to affect glow
+      c = Math.random();
+      rg = this.radius * 5;
+      switch (true) {
+        case (c < 0.1):
+          c = 'rgba(255, 237, 0, .75)';
+          cg = 'rgba(255, 237, 0, .1)';
+          rg *= 1.5;
+          break;
+        case (c < 0.2):
+          c = 'rgba(103, 191, 183, 0.30)';
+          cg = 'rgba(103, 191, 183, 0.1)';
+          rg *= 0.5;
+          break;
+        default:
+          c = 'rgba(154, 99, 26, 0.75)';
+          cg = 'rgba(154, 99, 26, 0.1)';
+          break;
+      }
+      grd = ctx.createRadialGradient(this.x, this.y, this.radius, this.x, this.y, rg);
+      grd.addColorStop(0, cg);
+      grd.addColorStop(1, 'rgba(255, 249, 197, 0)');
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius * 5, 0, Math.PI * 2, false);
+      ctx.fillStyle = grd;
+      ctx.fill();
 
-                absorp = Vector.sub(g, this).scale(g.radius / this.radius * 0.5);
-                this.addSpeed(absorp);
-
-                garea = g.radius * g.radius * Math.PI;
-                this.currentRadius = Math.sqrt((area + garea * 3) / Math.PI);
-                this.radius = Math.sqrt((area + garea) / Math.PI);
-            }
-
-            g.addSpeed(Vector.sub(this, g).normalize().scale(this.gravity));
-        }
-
-        if (GravityPoint.interferenceToPoint && !this.dragging)
-            this.add(this._speed);
-
-        this._speed = new Vector();
-
-        if (this.currentRadius > GravityPoint.RADIUS_LIMIT) this.collapse();
-
-        this._draw(ctx);
-    },
-
-    _draw: function(ctx) {
-        var grd, r, rg, c, cg;
-
-        ctx.save();
-
-        // Pick colors earlier to affect glow
-        c = Math.random();
-        rg = this.radius * 5;
-        switch (true) {
-          case (c < 0.1):
-            c = 'rgba(255, 237, 0, .75)';
-            cg = 'rgba(255, 237, 0, .1)';
-            rg *= 1.5;
-            break;
-          case (c < 0.2):
-            c = 'rgba(103, 191, 183, 0.30)';
-            cg = 'rgba(103, 191, 183, 0.1)';
-            rg *= 0.5;
-            break;
-          default:
-            c = 'rgba(154, 99, 26, 0.75)';
-            cg = 'rgba(154, 99, 26, 0.1)';
-            break;
-        }
-        grd = ctx.createRadialGradient(this.x, this.y, this.radius, this.x, this.y, rg);
-        // grd.addColorStop(0, 'rgba(255, 249, 197, 0.1)');
-        grd.addColorStop(0, cg);
-        grd.addColorStop(1, 'rgba(255, 249, 197, 0)');
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius * 5, 0, Math.PI * 2, false);
-        ctx.fillStyle = grd;
-        ctx.fill();
-
-        // Use more of the ball to make it look more natural
-        // r = Math.random() * this.currentRadius * 0.7 + this.currentRadius * 0.3;
-        r = Math.random() * this.currentRadius;
-        grd = ctx.createRadialGradient(this.x, this.y, r, this.x, this.y, this.currentRadius);
-        grd.addColorStop(0, 'rgba(255, 240, 190, 1)');
-        grd.addColorStop(1, c);
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2, false);
-        ctx.fillStyle = grd;
-        ctx.fill();
-        ctx.restore();
-    }
+      // Use more of the ball to make it look more natural
+      // r = Math.random() * this.currentRadius * 0.7 + this.currentRadius * 0.3;
+      r = Math.random() * this.currentRadius;
+      grd = ctx.createRadialGradient(this.x, this.y, r, this.x, this.y, this.currentRadius);
+      grd.addColorStop(0, 'rgba(255, 240, 190, 1)');
+      grd.addColorStop(1, c);
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2, false);
+      ctx.fillStyle = grd;
+      ctx.fill();
+      ctx.restore();
+  }
 });
-
 
 /**
  * Particle
  */
 function Particle(x, y, radius) {
-    Vector.call(this, x, y);
-    this.radius = radius;
-
-    this._latest = new Vector();
-    this._speed  = new Vector();
+  Vector.call(this, x, y);
+  this.radius = radius;
+  this._latest = new Vector();
+  this._speed  = new Vector();
 }
 
 Particle.PARTICLE_SPEED_LIMIT = 5;
@@ -305,213 +283,181 @@ Particle.prototype = (function(o) {
     for (p in o) s[p] = o[p];
     return s;
 })({
-    addSpeed: function(d) {
-        this._speed.add(d);
-    },
+  addSpeed: function(d) {
+    this._speed.add(d);
+  },
 
-    update: function() {
-        if (this._speed.length() > Particle.PARTICLE_SPEED_LIMIT) this._speed.normalize().scale(Particle.PARTICLE_SPEED_LIMIT);
-
-        this._latest.set(this);
-        this.add(this._speed);
+  update: function() {
+    if (this._speed.length() > Particle.PARTICLE_SPEED_LIMIT) {
+      this._speed.normalize().scale(Particle.PARTICLE_SPEED_LIMIT);
     }
-
-    // render: function(ctx) {
-    //     if (this._speed.length() > 12) this._speed.normalize().scale(12);
-
-    //     this._latest.set(this);
-    //     this.add(this._speed);
-
-    //     ctx.save();
-    //     ctx.fillStyle = ctx.strokeStyle = '#fff';
-    //     ctx.lineCap = ctx.lineJoin = 'round';
-    //     ctx.lineWidth = this.radius * 2;
-    //     ctx.beginPath();
-    //     ctx.moveTo(this.x, this.y);
-    //     ctx.lineTo(this._latest.x, this._latest.y);
-    //     ctx.stroke();
-    //     ctx.beginPath();
-    //     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-    //     ctx.fill();
-    //     ctx.restore();
-    // }
+    this._latest.set(this);
+    this.add(this._speed);
+  }
 });
 
 
 // Initialize
 (function() {
+  // Configs
+  var BACKGROUND_COLOR      = 'rgba(11, 51, 56, 1)',
+      PARTICLE_NUM          = 100,
+      PARTICLE_RADIUS       = 1,
+      G_POINT_RADIUS        = 10;
 
-    // Configs
-    var BACKGROUND_COLOR      = 'rgba(11, 51, 56, 1)',
-        PARTICLE_NUM          = 100,
-        PARTICLE_RADIUS       = 1,
-        G_POINT_RADIUS        = 10;
+  // Vars
+  var canvas, context,
+      bufferCvs, bufferCtx,
+      screenWidth, screenHeight,
+      mouse = new Vector(),
+      gravities = [],
+      particles = [],
+      grad;
 
+  // Event Listeners
+  function resize(e) {
+      screenWidth  = canvas.width  = window.innerWidth;
+      screenHeight = canvas.height = window.innerHeight;
+      bufferCvs.width  = screenWidth;
+      bufferCvs.height = screenHeight;
+      context   = canvas.getContext('2d');
+      bufferCtx = bufferCvs.getContext('2d');
 
-    // Vars
-    var canvas, context,
-        bufferCvs, bufferCtx,
-        screenWidth, screenHeight,
-        mouse = new Vector(),
-        gravities = [],
-        particles = [],
-        grad,
-        // gui,
-        control;
+      var cx = canvas.width * 0.5,
+          cy = canvas.height * 0.5;
+      grad = context.createRadialGradient(cx, cy, 0, cx, cy, Math.sqrt(cx * cx + cy * cy));
+      grad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0.35)');
+  }
 
-    // Event Listeners
-    function resize(e) {
-        screenWidth  = canvas.width  = window.innerWidth;
-        screenHeight = canvas.height = window.innerHeight;
-        bufferCvs.width  = screenWidth;
-        bufferCvs.height = screenHeight;
-        context   = canvas.getContext('2d');
-        bufferCtx = bufferCvs.getContext('2d');
+  function mouseMove(e) {
+      mouse.set(e.clientX, e.clientY);
+      var i, g, hit = false;
+      for (i = gravities.length - 1; i >= 0; i--) {
+          g = gravities[i];
+          if ((!hit && g.hitTest(mouse)) || g.dragging)
+              g.isMouseOver = hit = true;
+          else
+              g.isMouseOver = false;
+      }
+      canvas.style.cursor = hit ? 'pointer' : 'default';
+  }
 
-        var cx = canvas.width * 0.5,
-            cy = canvas.height * 0.5;
+  function mouseDown(e) {
+      for (var i = gravities.length - 1; i >= 0; i--) {
+          if (gravities[i].isMouseOver) {
+              gravities[i].startDrag(mouse);
+              return;
+          }
+      }
+      gravities.push(new GravityPoint(e.clientX, e.clientY, G_POINT_RADIUS, {
+          particles: particles,
+          gravities: gravities
+      }));
+  }
 
-        grad = context.createRadialGradient(cx, cy, 0, cx, cy, Math.sqrt(cx * cx + cy * cy));
-        grad.addColorStop(0, 'rgba(0, 0, 0, 0)');
-        grad.addColorStop(1, 'rgba(0, 0, 0, 0.35)');
-    }
+  function mouseUp(e) {
+      for (var i = 0, len = gravities.length; i < len; i++) {
+          if (gravities[i].dragging) {
+              gravities[i].endDrag();
+              break;
+          }
+      }
+  }
 
-    function mouseMove(e) {
-        mouse.set(e.clientX, e.clientY);
+  function doubleClick(e) {
+      for (var i = gravities.length - 1; i >= 0; i--) {
+          if (gravities[i].isMouseOver) {
+              gravities[i].collapse();
+              break;
+          }
+      }
+  }
 
-        var i, g, hit = false;
-        for (i = gravities.length - 1; i >= 0; i--) {
-            g = gravities[i];
-            if ((!hit && g.hitTest(mouse)) || g.dragging)
-                g.isMouseOver = hit = true;
-            else
-                g.isMouseOver = false;
-        }
-        canvas.style.cursor = hit ? 'pointer' : 'default';
-    }
+  // Functions
+  function addParticle(num) {
+      var i, p;
+      for (i = 0; i < num; i++) {
+          p = new Particle(
+              Math.floor(Math.random() * screenWidth - PARTICLE_RADIUS * 2) + 1 + PARTICLE_RADIUS,
+              Math.floor(Math.random() * screenHeight - PARTICLE_RADIUS * 2) + 1 + PARTICLE_RADIUS,
+              PARTICLE_RADIUS
+          );
+          p.addSpeed(Vector.random());
+          particles.push(p);
+      }
+  }
 
-    function mouseDown(e) {
-        for (var i = gravities.length - 1; i >= 0; i--) {
-            if (gravities[i].isMouseOver) {
-                gravities[i].startDrag(mouse);
-                return;
-            }
-        }
-        gravities.push(new GravityPoint(e.clientX, e.clientY, G_POINT_RADIUS, {
-            particles: particles,
-            gravities: gravities
-        }));
-    }
+  function removeParticle(num) {
+      if (particles.length < num) num = particles.length;
+      for (var i = 0; i < num; i++) {
+          particles.pop();
+      }
+  }
 
-    function mouseUp(e) {
-        for (var i = 0, len = gravities.length; i < len; i++) {
-            if (gravities[i].dragging) {
-                gravities[i].endDrag();
-                break;
-            }
-        }
-    }
+  // Init
+  canvas  = document.getElementById('firefly-field');
+  bufferCvs = document.createElement('canvas');
+  window.addEventListener('resize', resize, false);
+  resize(null);
+  addParticle(PARTICLE_NUM);
 
-    function doubleClick(e) {
-        for (var i = gravities.length - 1; i >= 0; i--) {
-            if (gravities[i].isMouseOver) {
-                gravities[i].collapse();
-                break;
-            }
-        }
-    }
+  canvas.addEventListener('mousemove', mouseMove, false);
+  canvas.addEventListener('mousedown', mouseDown, false);
+  canvas.addEventListener('mouseup', mouseUp, false);
+  canvas.addEventListener('dblclick', doubleClick, false);
 
-    // Functions
-    function addParticle(num) {
-        var i, p;
-        for (i = 0; i < num; i++) {
-            p = new Particle(
-                Math.floor(Math.random() * screenWidth - PARTICLE_RADIUS * 2) + 1 + PARTICLE_RADIUS,
-                Math.floor(Math.random() * screenHeight - PARTICLE_RADIUS * 2) + 1 + PARTICLE_RADIUS,
-                PARTICLE_RADIUS
-            );
-            p.addSpeed(Vector.random());
-            particles.push(p);
-        }
-    }
+  // Start Update
+  var loop = function() {
+      var i, len, g, p;
+      context.save();
+      context.fillStyle = BACKGROUND_COLOR;
+      context.fillRect(0, 0, screenWidth, screenHeight);
+      context.fillStyle = grad;
+      context.fillRect(0, 0, screenWidth, screenHeight);
+      context.restore();
 
-    function removeParticle(num) {
-        if (particles.length < num) num = particles.length;
-        for (var i = 0; i < num; i++) {
-            particles.pop();
-        }
-    }
+      for (i = 0, len = gravities.length; i < len; i++) {
+          g = gravities[i];
+          if (g.dragging) g.drag(mouse);
+          g.render(context);
+          if (g.destroyed) {
+              gravities.splice(i, 1);
+              len--;
+              i--;
+          }
+      }
 
-    // Init
-    canvas  = document.getElementById('c');
-    bufferCvs = document.createElement('canvas');
+      bufferCtx.save();
+      bufferCtx.globalCompositeOperation = 'destination-out';
+      bufferCtx.globalAlpha = 0.35;
+      bufferCtx.fillRect(0, 0, screenWidth, screenHeight);
+      bufferCtx.restore();
 
-    window.addEventListener('resize', resize, false);
-    resize(null);
+      len = particles.length;
+      bufferCtx.save();
+      bufferCtx.fillStyle = bufferCtx.strokeStyle = '#faf3ba';
+      bufferCtx.lineCap = bufferCtx.lineJoin = 'round';
+      bufferCtx.lineWidth = PARTICLE_RADIUS * 2;
+      bufferCtx.beginPath();
+      for (i = 0; i < len; i++) {
+          p = particles[i];
+          p.update();
+          bufferCtx.moveTo(p.x, p.y);
+          bufferCtx.lineTo(p._latest.x, p._latest.y);
+      }
+      bufferCtx.stroke();
+      bufferCtx.beginPath();
+      for (i = 0; i < len; i++) {
+          p = particles[i];
+          bufferCtx.moveTo(p.x, p.y);
+          bufferCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2, false);
+      }
+      bufferCtx.fill();
+      bufferCtx.restore();
 
-    addParticle(PARTICLE_NUM);
-
-    canvas.addEventListener('mousemove', mouseMove, false);
-    canvas.addEventListener('mousedown', mouseDown, false);
-    canvas.addEventListener('mouseup', mouseUp, false);
-    canvas.addEventListener('dblclick', doubleClick, false);
-
-    // Start Update
-    var loop = function() {
-        var i, len, g, p;
-
-        context.save();
-        context.fillStyle = BACKGROUND_COLOR;
-        context.fillRect(0, 0, screenWidth, screenHeight);
-        context.fillStyle = grad;
-        context.fillRect(0, 0, screenWidth, screenHeight);
-        context.restore();
-
-        for (i = 0, len = gravities.length; i < len; i++) {
-            g = gravities[i];
-            if (g.dragging) g.drag(mouse);
-            g.render(context);
-            if (g.destroyed) {
-                gravities.splice(i, 1);
-                len--;
-                i--;
-            }
-        }
-
-        bufferCtx.save();
-        bufferCtx.globalCompositeOperation = 'destination-out';
-        bufferCtx.globalAlpha = 0.35;
-        bufferCtx.fillRect(0, 0, screenWidth, screenHeight);
-        bufferCtx.restore();
-
-        // for (i = 0, len = particles.length; i < len; i++) {
-        //     particles[i].render(bufferCtx);
-        // }
-        len = particles.length;
-        bufferCtx.save();
-        bufferCtx.fillStyle = bufferCtx.strokeStyle = '#faf3ba';
-        bufferCtx.lineCap = bufferCtx.lineJoin = 'round';
-        bufferCtx.lineWidth = PARTICLE_RADIUS * 2;
-        bufferCtx.beginPath();
-        for (i = 0; i < len; i++) {
-            p = particles[i];
-            p.update();
-            bufferCtx.moveTo(p.x, p.y);
-            bufferCtx.lineTo(p._latest.x, p._latest.y);
-        }
-        bufferCtx.stroke();
-        bufferCtx.beginPath();
-        for (i = 0; i < len; i++) {
-            p = particles[i];
-            bufferCtx.moveTo(p.x, p.y);
-            bufferCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2, false);
-        }
-        bufferCtx.fill();
-        bufferCtx.restore();
-
-        context.drawImage(bufferCvs, 0, 0);
-
-        requestAnimationFrame(loop);
-    };
-    loop();
+      context.drawImage(bufferCvs, 0, 0);
+      requestAnimationFrame(loop);
+  };
+  loop();
 })();

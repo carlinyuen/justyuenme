@@ -51,6 +51,7 @@ limitations under the License.
 
   <link rel="stylesheet" href="styles/gravity.css">
   <link rel="stylesheet" href="styles/login.css">
+  <link rel="stylesheet" href="styles/main.css">
 
   <!-- Import and configure the Firebase SDK -->
   <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
@@ -62,70 +63,101 @@ limitations under the License.
   <script src="scripts/login.js"></script>
 </head>
 <body>
-  <!-- START: login/welcome -->
-  <div class="login-page mdl-layout mdl-js-layout has-drawer is-upgraded">
+  <div class="mdl-layout mdl-js-layout has-drawer is-upgraded">
     <main class="mdl-layout__content">
       <!-- START: firefly field -->
-      <canvas id="c"></canvas>
+      <canvas id="firefly-field"></canvas>
       <!-- END: firefly field -->
 
-      <div class="login-page__content mdl-grid">
-        <div id="login" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop mdl-typography--text-center" aria-label="login to enter">
-          <!-- START: Email -->
-          <div class="loginField mdl-color-text--teal-100">
-            <div id="email-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" name="email" id="email">
-              <label class="mdl-textfield__label mdl-color-text--teal-400" for="email">Email</label>
-              <span id="email-error" class="mdl-textfield__error"></span>
-            </div>
+      <!-- START: login page -->
+      <section id="login-page" class="login-page__content mdl-card mdl-shadow--2dp mdl-typography--text-center" aria-label="login to enter">
+        <!-- START: Email -->
+        <div class="loginInfo mdl-color-text--teal-100">
+          <div id="email-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" name="email" id="email-input">
+            <label class="mdl-textfield__label mdl-color-text--teal-400" for="email-input">Email</label>
+            <span id="email-error" class="mdl-textfield__error"></span>
           </div>
-          <!-- END: Email -->
-
-          <!-- START: Password -->
-          <div class="loginField mdl-color-text--teal-100">
-            <div id="password-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="password" name="password" id="password">
-              <label class="mdl-textfield__label mdl-color-text--teal-400" for="password">Password</label>
-              <span id="password-error" class="mdl-textfield__error"></span>
-            </div>
-          </div>
-          <!-- END: Password -->
-
-          <!-- START: Buttons -->
-          <div class="loginField mdl-card__actions">
-            <button disabled class="loginField mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="sign-in" name="signin">Sign In</button>
-          </div>
-          <!-- END: Buttons -->
-
-          <!-- START: Welcome message -->
-          <div id="welcome-message" class="welcomeInfo mdl-card__title mdl-color-text--firefly">
-            <h2>Welcome, <span id="welcome-name"></span></h2>
-          </div>
-          <!-- END: Welcome message -->
-
-          <!-- START: Buttons -->
-          <div class="welcomeInfo mdl-card__actions">
-            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="enter-site" name="enter-site">Enter Site</button>
-            <br>
-            <button class="mdl-button mdl-js-button mdl-button--primary" id="password-reset" name="password-reset">Change Password</button>
-            <br>
-            <button class="mdl-button mdl-js-button mdl-button--primary" id="sign-out" name="sign-out">Sign Out</button>
-          </div>
-          <!-- END: Buttons -->
-
-          <!-- START: Error messages -->
-          <div id="welcome-error-container" class="welcomeInfo mdl-textfield">
-              <span id="welcome-error" class="mdl-textfield__error"></span>
-          </div>
-          <!-- END: Error messages -->
-
         </div>
-      </div>
+        <!-- END: Email -->
+
+        <!-- START: Password -->
+        <div class="loginInfo mdl-color-text--teal-100">
+          <div id="password-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="password" name="password" id="password-input">
+            <label class="mdl-textfield__label mdl-color-text--teal-400" for="password-input">Password</label>
+            <span id="password-error" class="mdl-textfield__error"></span>
+          </div>
+        </div>
+        <!-- END: Password -->
+
+        <!-- START: Buttons -->
+        <div class="loginInfo mdl-card__actions">
+          <button disabled class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="signin-button" name="signin">Sign In</button>
+        </div>
+        <!-- END: Buttons -->
+
+        <!-- START: Welcome message -->
+        <div class="welcomeInfo mdl-card__title mdl-color-text--firefly">
+          <h2 id="welcome-header">Welcome, <span id="welcome-name"></span></h2>
+        </div>
+        <!-- END: Welcome message -->
+
+        <!-- START: Buttons -->
+        <div class="welcomeInfo mdl-card__actions">
+          <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="enter-site" name="enter-site">Enter Site</button>
+          <br>
+          <button class="mdl-button mdl-js-button mdl-button--primary" id="changepassword-button" name="changepassword">Change Password</button>
+          <br>
+          <button class="mdl-button mdl-js-button mdl-button--primary" id="signout-button" name="signout">Sign Out</button>
+        </div>
+        <!-- END: Buttons -->
+      </section>
+      <!-- END: login page -->
+
+      <!-- START: main content -->
+      <section id="main-page" class="main-page__content mdl-grid">
+        <section id="intro" class="____">
+          <h1></h1>
+        </section>
+        <section id="our-story" class="____">
+          <article>
+            <div class="media"></div>
+            <div>
+              <h2></h2>
+              <p></p>
+            </div>
+          </article>
+        </section>
+        <section id="event-details" class="____">
+          <section id="schedule"></section>
+          <section id="location"></section>
+        </section>
+        <section id="wedding-rsvp" class="____"></section>
+        <section id="transportation" class="____">
+          <div>By air</div>
+          <div>By car</div>
+          <div>By train</div>
+          <div>Taxi information</div>
+        </section>
+        <section id="accommodations" class="____">
+          <div>Hotel 1</div>
+          <div>Hotel 2</div>
+          <div>Airbnb 3</div>
+        </section>
+        <section id="gift-registry" class="____">
+          <h3></h3>
+          <p></p>
+        </section>
+        <section id="photo-gallery" class="____"></section>
+      </section>
+      <!-- END: main content -->
+
     </main>
     <div class="mdl-layout__obfuscator"></div>
   </div>
-  <!-- END: login/welcome -->
 
-  <script src="scripts/gravity.js"></script>
+  <!-- TODO: Uncomment -->
+  <!-- <script src="scripts/gravity.js"></script> -->
 </body>
 </html>
