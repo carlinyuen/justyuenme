@@ -1,3 +1,4 @@
+'use strict';
 
 /**
 * Handles the sign out button press.
@@ -81,13 +82,9 @@ function enterSite() {
     // Pause firefly field in the background
     PAUSE_GRAVITY_SIMULATION = true;
 
-    // Switch views
-    $('#login-page, #firefly-field').fadeOut('fast', function() {
-      // TODO: load main.js
-      // TODO: populate main page
-      $('#main-page').fadeIn('fast', function() {
-        // TODO: initialize main.js
-      });
+    // Load new js and switch views
+    $.getScript("scripts/main.js", function() {
+      console.log("main.js loaded and executed.");
     });
   } else {
     $('#user-warnings').text('Session expired. Please log in again.');
