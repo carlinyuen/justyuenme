@@ -9,8 +9,24 @@ function signOut() {
   document.getElementById('signout-button').disabled = true;
   firebase.auth().signOut();
 
-  // Unpause firefly simulation
-  PAUSE_GRAVITY_SIMULATION = false;
+  // Switch back to login page
+  $('#main-page').fadeOut('fast', function() {
+    console.log('main page fade out');
+    PAUSE_GRAVITY_SIMULATION = false;   // Unpause firefly simulation
+    $('#login-page, #firefly-field').fadeIn('fast', function() {
+      console.log('login page fade in');
+    });
+  }
+}
+
+// Check if current user is logged in, otherwise signout
+function checkAuthOrSignin() {
+  if (firebase.auth().currentUser) {
+    return true;
+  }
+  $('#user-warnings').text('Session expired. Please log in again.');
+  signOut();
+  return false;
 }
 
 /**
@@ -77,18 +93,11 @@ function enterSite() {
   // Disable button for now to prevent multiple calls
   document.getElementById('entersite-button').disabled = true;
 
-  // Check user is logged in
-  if (firebase.auth().currentUser) {
-    // Pause firefly field in the background
-    PAUSE_GRAVITY_SIMULATION = true;
-
-    // Load new js and switch views
+  // Check user is logged in, load new js and switch views
+  if (checkAuthOrSignin()) {
     $.getScript("scripts/main.js", function() {
       console.log("main.js loaded and executed.");
     });
-  } else {
-    $('#user-warnings').text('Session expired. Please log in again.');
-    signOut();
   }
 }
 
