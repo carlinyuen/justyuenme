@@ -126,20 +126,23 @@ function initApp() {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       console.log(JSON.stringify(user, null, '  '));
-      var displayName = user.displayName;
-      var email = user.email;
-      var emailVerified = user.emailVerified;
-      var photoURL = user.photoURL;
-      var isAnonymous = user.isAnonymous;
       var uid = user.uid;
-      var providerData = user.providerData;
-      $('#login-page').addClass('logged-in');
-      $('#login-page .loginInfo').find('button').prop('disabled', true);
-      $('#login-page .welcomeInfo').find('button').prop('disabled', false);
-      $('#email-input').val(email);   // Populate email field
-      $('#password-input').val('');   // Clear password
-      $('#welcome-name').text(displayName + '!');
-      document.querySelector('.mdl-textfield').MaterialTextfield.checkDirty();
+
+      // Grab intended displayName and email from database
+      firebase.database().ref('users/' + uid) .once('value').then(function(userData) {
+        var displayName = userData.val().username;
+        var email = userData.val().email;
+        $('#login-page').addClass('logged-in');
+        $('#login-page .loginInfo').find('button').prop('disabled', true);
+        $('#login-page .welcomeInfo').find('button').prop('disabled', false);
+        $('#email-input').val(email);   // Populate email field
+        $('#password-input').val('');   // Clear password
+        if (displayName) {
+          $('#welcome-name').text(', ' + displayName + '!');
+        }
+        document.querySelector('.mdl-textfield').MaterialTextfield.checkDirty();
+
+      });
     } else {
       console.log('user signed out')
       $('#login-page').removeClass('logged-in');
