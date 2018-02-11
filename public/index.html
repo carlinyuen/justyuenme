@@ -92,9 +92,9 @@ limitations under the License.
           <div class="welcomeInfo mdl-card__actions">
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="entersite-button" name="entersite">Enter Site</button>
             <br>
-            <button class="mdl-button mdl-js-button mdl-button--primary" id="changepassword-button" name="changepassword">Change Password</button>
+            <button class="mdl-button mdl-js-button mdl-button--primary changepassword-button" name="changepassword">Change Password</button>
             <br>
-            <button class="mdl-button mdl-js-button mdl-button--primary" id="signout-button" name="signout">Sign Out</button>
+            <button class="mdl-button mdl-js-button mdl-button--primary signout-button" name="signout">Sign Out</button>
           </div>
           <!-- END: Buttons -->
 
@@ -107,6 +107,14 @@ limitations under the License.
 
       <!-- START: main content -->
       <section id="main-page">
+        <header>
+          <nav></nav>
+          <menu>
+            <button class="mdl-button mdl-js-button mdl-button--primary changepassword-button" name="changepassword">Change Password</button>
+            <br>
+            <button class="mdl-button mdl-js-button mdl-button--primary signout-button" name="signout">Sign Out</button>
+          </menu>
+        </header>
         <div class="main-page__content mdl-typography--text-center">
           <section id="intro" class="main-page__section">
             <h1>Justine &hearts; Carlin</h1>
@@ -116,9 +124,9 @@ limitations under the License.
           </article>
           <section id="event-details" class="main-page__section mdl-grid">
             <h2>Ceremony &amp; Reception</h2>
-            <address id="location" class="mdl-cell--6-col"><h3>Where</h3></address>
-            <section id="schedule" class="mdl-cell--6-col"><h3>When</h3></section>
-            <section id="dresscode" class="mdl-cell--12-col"><h3>Dress Code</h3></section>
+            <address id="location" class="mdl-cell mdl-cell--6-col"><h3>Where</h3></address>
+            <section id="schedule" class="mdl-cell mdl-cell--6-col"><h3>When</h3></section>
+            <section id="dresscode" class="mdl-cell mdl-cell--12-col"><h3>Dress Code</h3></section>
           </section>
           <section id="wedding-rsvp" class="main-page__section">
             <h2>RSVP</h2>
@@ -135,6 +143,7 @@ limitations under the License.
           <section id="photo-gallery" class="main-page__section">
           </section>
         </div>
+        <footer class="mdl-mini-footer"></footer>
       </section>
       <!-- END: main content -->
 

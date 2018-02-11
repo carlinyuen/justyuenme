@@ -23,10 +23,14 @@
 }
 
 .main-page__section {
-  /* width: 100%; */
   max-width: 600px;
-  margin: 0 auto;
   padding: 0 44px;
+}
+@media screen and (min-width: 688px) {
+  .main-page__section {
+    width: 100%;
+    margin: 0 auto;
+  }
 }
 .main-page__section:after {
   content: "";
@@ -34,17 +38,44 @@
   clear: both;
 }
 
-.main-page__section h1 {
+#intro h1 {
   font-family: 'Dancing Script';
 }
+
 .main-page__section h2 {
   width: 100%;
+  text-align: center;
   font-family: 'Dancing Script', cursive;
+  margin-top: 44px;
+  overflow: hidden;
 }
+.main-page__section h2:before,
+.main-page__section h2:after {
+    background-color: #000;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+    width: 50%;
+}
+.main-page__section h2:before {
+    right: 0.5em;
+    margin-left: -50%;
+}
+.main-page__section h2:after {
+    left: 0.5em;
+    margin-right: -50%;
+}
+
 .main-page__section h3 {
   width: 100%;
   font: 100 150%/1em 'Roboto', sans-serif;
   text-transform: uppercase;
+}
+
+#event-details .mdl-cell {
+  margin: 0 auto;
 }
 
 .social-btn {

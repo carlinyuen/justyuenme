@@ -118,7 +118,7 @@ function populateMainPage(pagedata) {
   if (data) {
     container = $('#gift-registry');
     $(document.createElement('p'))
-      .text(data)
+      .html(data.split('\n').join('<br>'))
       .appendTo(container);
   }
   // END: gift-registry

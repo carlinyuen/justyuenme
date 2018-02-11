@@ -45,7 +45,7 @@
 .loginInfo.mdl-card__actions {
   margin-top: 16px;
 }
-#login-page #changepassword-button {
+#login-page .changepassword-button {
   margin-top: 16px;
 }
 

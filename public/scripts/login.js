@@ -5,8 +5,7 @@
 */
 function signOut() {
   // Disable buttons for now to prevent multiple calls
-  document.getElementById('signin-button').disabled = true;
-  document.getElementById('signout-button').disabled = true;
+  $('.signout-button, #signin-button').prop('disabled', true);
   firebase.auth().signOut();
 
   // Switch back to login page
@@ -82,8 +81,7 @@ function signIn(event) {
   }
 
   // Disable buttons for now to prevent multiple calls
-  document.getElementById('signin-button').disabled = true;
-  document.getElementById('signout-button').disabled = true;
+  $('.signout-button, #signin-button').prop('disabled', true);
 }
 
 /**
@@ -153,9 +151,9 @@ function initApp() {
   // [END authstatelistener]
 
   $('#signin-button').on('click', signIn);
-  $('#signout-button').on('click', signOut);
+  $('.signout-button').on('click', signOut);
   $('#entersite-button').on('click', enterSite);
-  $('#changepassword-button').on('click', sendPasswordReset);
+  $('.changepassword-button').on('click', sendPasswordReset);
   $('#login-form').submit(signIn);
 }
 
