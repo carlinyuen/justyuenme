@@ -47,12 +47,44 @@ limitations under the License.
 
 </head>
 <body>
-  <div class="mdl-layout mdl-js-layout has-drawer is-upgraded">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header id="header" class="main-page mdl-layout__header mdl-layout__header--transparent">
+      <menu class="mdl-layout__header-row">
+        <!-- START: Nav -->
+        <!-- <div id="nav" class="mdl-layout__drawer"> -->
+        <div id="nav" class="">
+          <!-- <span id="title" class="mdl-layout__title"></span> -->
+          <nav id="nav-links" class="mdl-navigation">
+            <a class="mdl-navigation__link" href="#">Our Story</a>
+            <a class="mdl-navigation__link" href="#">Ceremony &amp; Reception</a>
+            <a class="mdl-navigation__link" href="#">RSVP</a>
+            <a class="mdl-navigation__link" href="#">Transportation</a>
+            <a class="mdl-navigation__link" href="#">Accommodations</a>
+            <a class="mdl-navigation__link" href="#">Gift Registry</a>
+          </nav>
+        </div>
+        <!-- END: Nav & Menu -->
+        <!-- START: Settings Menu -->
+        <div class="mdl-layout-spacer"></div>
+        <button id="menu-button"
+        class="mdl-button mdl-js-button mdl-button--icon">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul id="menu" class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
+        for="menu-button">
+          <li class="mdl-menu__item changepassword-button" name="changepassword">Change Password</li>
+          <li class="mdl-menu__item signout-button" name="signout">Sign Out</li>
+        </ul>
+        <!-- END: Settings Menu -->
+      </menu>
+    </header>
+
+
+    <!-- Main Content -->
     <main class="mdl-layout__content">
       <!-- START: firefly field -->
       <canvas id="firefly-field"></canvas>
       <!-- END: firefly field -->
-
       <!-- START: login page -->
       <section id="login-page" aria-label="login to enter">
         <div class="login-page__content mdl-card mdl-shadow--2dp mdl-typography--text-center">
@@ -81,13 +113,11 @@ limitations under the License.
             </div>
             <!-- END: Buttons -->
           </form>
-
           <!-- START: Welcome message -->
           <div class="welcomeInfo mdl-card__title mdl-color-text--firefly">
             <h2 id="welcome-header">Welcome<span id="welcome-name"></span></h2>
           </div>
           <!-- END: Welcome message -->
-
           <!-- START: Buttons -->
           <div class="welcomeInfo mdl-card__actions">
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="entersite-button" name="entersite">Enter Site</button>
@@ -97,7 +127,6 @@ limitations under the License.
             <button class="mdl-button mdl-js-button mdl-button--primary signout-button" name="signout">Sign Out</button>
           </div>
           <!-- END: Buttons -->
-
           <!-- START: Error messages -->
           <div class="welcomeInfo"><span id="user-warnings"></span></div>
           <!-- END: Error messages -->
@@ -106,15 +135,7 @@ limitations under the License.
       <!-- END: login page -->
 
       <!-- START: main content -->
-      <section id="main-page">
-        <header>
-          <nav></nav>
-          <menu>
-            <button class="mdl-button mdl-js-button mdl-button--primary changepassword-button" name="changepassword">Change Password</button>
-            <br>
-            <button class="mdl-button mdl-js-button mdl-button--primary signout-button" name="signout">Sign Out</button>
-          </menu>
-        </header>
+      <section id="main-page" class="main-page">
         <div class="main-page__content mdl-typography--text-center">
           <section id="intro" class="main-page__section">
             <h1>Justine &hearts; Carlin</h1>
@@ -143,7 +164,7 @@ limitations under the License.
           <section id="photo-gallery" class="main-page__section">
           </section>
         </div>
-        <footer class="mdl-mini-footer"></footer>
+        <footer id="footer" class="mdl-mini-footer"></footer>
       </section>
       <!-- END: main content -->
 

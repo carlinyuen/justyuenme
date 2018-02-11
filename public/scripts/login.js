@@ -9,10 +9,11 @@ function signOut() {
   firebase.auth().signOut();
 
   // Switch back to login page
-  $('#main-page').fadeOut('fast', function() {
+  $('.main-page').fadeOut('fast', function() {
     console.log('main page fade out');
     PAUSE_GRAVITY_SIMULATION = false;   // Unpause firefly simulation
-    $('#login-page, #firefly-field').fadeIn('fast');
+    $('#firefly-field').removeClass('blur');
+    $('#login-page').fadeIn('fast');
   });
 }
 
@@ -99,16 +100,24 @@ function sendPasswordReset() {
   var email = $('#email-input').val();
   // [START sendpasswordemail]
   firebase.auth().sendPasswordResetEmail(email).then(function() {
-    $('#user-warnings').text('Password reset email sent.');
-  }).catch(function(error) {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    if (errorCode == 'auth/invalid-email') {
-      $('#user-warnings').text(errorMessage);
-    } else if (errorCode == 'auth/user-not-found') {
-      $('#user-warnings').text(errorMessage);
+    if ($('#user-warnings').is(':visible')) {
+      $('#user-warnings').text('Password reset email sent.');
+    } else {
+      alert('Password reset email sent.');
     }
-    console.log(error);
+  }).catch(function(error) {
+    var errorCode = error.code
+      , errorMessage = error.message
+      , $warning = $('#user-warnings')
+      , fn_warn = ($warning.is(':visible') ? $warning.text : alert);
+    switch (errorCode) {
+      case 'auth/invalid-email':
+      case 'auth/user-not-found':
+        fn_warn(errorMessage);
+        break;
+      default:
+        console.log(error);
+    }
   });
   // [END sendpasswordemail];
 }

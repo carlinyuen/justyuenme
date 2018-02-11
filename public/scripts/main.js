@@ -4,14 +4,13 @@
 function loadMainPage() {
   if (checkAuthOrSignin()) {
     // Fade out login page, load in data, and fade in main page
-    $('#firefly-field').fadeOut('fast', function() {
-      console.log('fireflies fade out');
-      PAUSE_GRAVITY_SIMULATION = true;  // Pause firefly field in the background
-    });
+    console.log('fireflies fade out');
+    $('#firefly-field').addClass('blur');
+    PAUSE_GRAVITY_SIMULATION = true;  // Pause firefly field in the background
     $('#login-page').fadeOut('fast', function() {
       console.log('login page fade out');
       firebase.database().ref('content').once('value').then(populateMainPage);
-      $('#main-page').fadeIn('fast', function() {
+      $('.main-page').fadeIn('fast', function() {
         console.log('main page fade in');
       });
     });
