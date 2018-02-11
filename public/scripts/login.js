@@ -13,20 +13,20 @@ function signOut() {
   $('#main-page').fadeOut('fast', function() {
     console.log('main page fade out');
     PAUSE_GRAVITY_SIMULATION = false;   // Unpause firefly simulation
-    $('#login-page, #firefly-field').fadeIn('fast', function() {
-      console.log('login page fade in');
-    });
-  }
+    $('#login-page, #firefly-field').fadeIn('fast');
+  });
 }
 
 // Check if current user is logged in, otherwise signout
 function checkAuthOrSignin() {
-  if (firebase.auth().currentUser) {
-    return true;
+  var user = firebase.auth().currentUser;
+  if (user) {
+    return user;
+  } else {
+    $('#user-warnings').text('Session expired. Please log in again.');
+    signOut();
+    return false;
   }
-  $('#user-warnings').text('Session expired. Please log in again.');
-  signOut();
-  return false;
 }
 
 /**
@@ -90,15 +90,8 @@ function signIn(event) {
 * Serves site content if the user is auth'd
 */
 function enterSite() {
-  // Disable button for now to prevent multiple calls
   document.getElementById('entersite-button').disabled = true;
-
-  // Check user is logged in, load new js and switch views
-  if (checkAuthOrSignin()) {
-    $.getScript("scripts/main.js", function() {
-      console.log("main.js loaded and executed.");
-    });
-  }
+  loadMainPage();
 }
 
 /**

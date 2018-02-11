@@ -2,6 +2,16 @@
   display: none;
 }
 
+.main-page__content {
+  
+}
+
+.main-page__section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .social-btn {
   background-position: center;
   background-size: contain;
