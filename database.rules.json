@@ -1,6 +1,12 @@
 {
   "rules": {
     ".read" : "auth != null && root.child('guests').hasChild(auth.uid)",
-    ".write" : "auth != null && root.child('guests').hasChild(auth.uid)"
+    ".write" : false,
+
+    "users": {
+      "$uid": {
+        ".write": "$uid === auth.uid"
+      }
+    }
   }
 }

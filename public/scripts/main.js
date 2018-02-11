@@ -26,19 +26,45 @@ function populateMainPage(pagedata) {
   if (!pagedata.val()) {
     return alert('Could not load data! Please let us know if you see this error.');
   }
-  var data, container;
+  var data, container, temp;
 
-  // Start with our-story
+  // START: our-story
   data = pagedata.val()['our-story'];
   if (data) {
     container = $('#our-story');
-    $.each(data, function(key, value) {
-      $(document.createElement('h3'))
-        .text(key)
-        .appendTo(container);
-      $(document.createElement('p'))
-        .text(value)
-        .appendTo(container);
+    data.forEach(function(section) {
+      $.each(section, function(key, value) {
+        $(document.createElement('h3'))
+          .text(key)
+          .appendTo(container);
+        temp = value.split('\n');
+        temp.forEach(function(text) {
+          $(document.createElement('p'))
+            .text(text)
+            .appendTo(container);
+        });
+      });
     });
   }
+  // END: our-story
+
+  // START: our-story
+  data = pagedata.val()['event-details'];
+  if (data) {
+    container = $('#event-details');
+    data.forEach(function(section) {
+      $.each(section, function(key, value) {
+        $(document.createElement('h3'))
+        .text(key)
+        .appendTo(container);
+        temp = value.split('\n');
+        temp.forEach(function(text) {
+          $(document.createElement('p'))
+          .text(text)
+          .appendTo(container);
+        });
+      });
+    });
+  }
+  // END: our-story
 }
