@@ -52,7 +52,7 @@ function populateMainPage(pagedata) {
   data = pagedata.val()['event-details'];
   if (data) {
     container = $('#location');
-    $(document.createElement('h4'))
+    $(document.createElement('p'))
       .text(data.location['venue-name'])
       .appendTo(container);
     $(document.createElement('p'))

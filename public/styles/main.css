@@ -1,5 +1,6 @@
 #main-page {
   display: none;
+  background: white;
 }
 
 .main-page__content {
@@ -19,19 +20,31 @@
       -ms-flex-negative: 0;
           flex-shrink: 0;
   padding: 256px 0 0 0;
-  color: wheat;
 }
 
 .main-page__section {
-  width: 100%;
-  max-width: 800px;
+  /* width: 100%; */
+  max-width: 600px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 44px;
 }
 .main-page__section:after {
   content: "";
   display: table;
   clear: both;
+}
+
+.main-page__section h1 {
+  font-family: 'Dancing Script';
+}
+.main-page__section h2 {
+  width: 100%;
+  font-family: 'Dancing Script', cursive;
+}
+.main-page__section h3 {
+  width: 100%;
+  font: 100 150%/1em 'Roboto', sans-serif;
+  text-transform: uppercase;
 }
 
 .social-btn {
