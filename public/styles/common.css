@@ -2,7 +2,8 @@
   font-family: 'Roboto', 'Helvetica', sans-serif;
 }
 
-.mdl-layout .mdl-layout__content {
+.mdl-layout__content {
+  height: 100%;
   position: relative;
   -webkit-overflow-scrolling: touch;
   display: -webkit-flex;
@@ -15,10 +16,10 @@
       -ms-flex-align: stretch;
           align-items: stretch;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
-.mdl-layout .mdl-card {
+.mdl-card {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -32,13 +33,13 @@
   justify-content: center;
   min-height: 280px;
 }
-.mdl-layout .mdl-card__title {
+.mdl-card__title {
   padding: 16px;
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
-.mdl-layout .mdl-card__supporting-text {
+.mdl-card__supporting-text {
   width: 100%;
   padding: 16px;
   min-height: 64px;
@@ -49,23 +50,23 @@
       -ms-flex-align: center;
           align-items: center;
 }
-.mdl-layout .mdl-card__supporting-text:not(:last-child) {
+.mdl-card__supporting-text:not(:last-child) {
   box-sizing: border-box;
   min-height: 76px;
 }
 
-.mdl-layout .mdl-card > a {
+.mdl-card > a {
   color: inherit;
   text-decoration: none;
   font-weight: inherit;
 }
-.mdl-layout .mdl-card h3 {
+.mdl-card h3 {
   margin: 0;
 }
-.mdl-layout .mdl-card h3 a {
+.mdl-card h3 a {
   text-decoration: none;
 }
-.mdl-layout .section-spacer {
+.section-spacer {
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
@@ -78,7 +79,7 @@
   display: flex !important;
 }
 
-.mdl-layout .mdl-mini-footer {
+.mdl-mini-footer {
   margin-top: 80px;
   height: 120px;
   padding: 40px;
