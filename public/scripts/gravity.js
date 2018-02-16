@@ -279,7 +279,7 @@ function Particle(x, y, radius) {
   this._speed  = new Vector();
 }
 
-Particle.PARTICLE_SPEED_LIMIT = 5;
+Particle.PARTICLE_SPEED_LIMIT = 4;
 Particle.prototype = (function(o) {
     var s = new Vector(0, 0), p;
     for (p in o) s[p] = o[p];

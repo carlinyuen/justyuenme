@@ -36,10 +36,12 @@ limitations under the License.
 
   <!-- Material Design Theming -->
   <link href="https://fonts.googleapis.com/css?family=Dancing+Script:400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Crete+Round:400i" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-amber.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="styles/gravity.css">
   <link rel="stylesheet" href="styles/common.css">
   <link rel="stylesheet" href="styles/login.css">
@@ -49,22 +51,19 @@ limitations under the License.
 <body>
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header id="header" class="main-page mdl-layout__header mdl-layout__header--transparent">
+      <!-- START: Nav -->
+      <nav id="nav" class="nav flex-column align-items-start">
+          <a class="nav-item nav-link" href="#our-story">Our Story</a>
+          <a class="nav-item nav-link" href="#event-details">Ceremony &amp; Reception</a>
+          <a class="nav-item nav-link" href="#rsvp">RSVP</a>
+          <a class="nav-item nav-link" href="#transportation">Transportation</a>
+          <a class="nav-item nav-link" href="#accommodations">Accommodations</a>
+          <a class="nav-item nav-link" href="#gift-registry">Gift Registry</a>
+      </nav>
+      <!-- END: Nav -->
+      <!-- START: Settings Menu -->
       <menu class="mdl-layout__header-row">
-        <!-- START: Nav -->
-        <!-- <div id="nav" class="mdl-layout__drawer"> -->
-        <div id="nav" class="">
-          <!-- <span id="title" class="mdl-layout__title"></span> -->
-          <nav id="nav-links" class="mdl-navigation">
-            <a class="mdl-navigation__link" href="#">Our Story</a>
-            <a class="mdl-navigation__link" href="#">Ceremony &amp; Reception</a>
-            <a class="mdl-navigation__link" href="#">RSVP</a>
-            <a class="mdl-navigation__link" href="#">Transportation</a>
-            <a class="mdl-navigation__link" href="#">Accommodations</a>
-            <a class="mdl-navigation__link" href="#">Gift Registry</a>
-          </nav>
-        </div>
-        <!-- END: Nav & Menu -->
-        <!-- START: Settings Menu -->
+        <!-- <span id="title" class="mdl-layout__title"></span> -->
         <div class="mdl-layout-spacer"></div>
         <button id="menu-button"
         class="mdl-button mdl-js-button mdl-button--icon">
@@ -75,8 +74,8 @@ limitations under the License.
           <li class="mdl-menu__item changepassword-button" name="changepassword">Change Password</li>
           <li class="mdl-menu__item signout-button" name="signout">Sign Out</li>
         </ul>
-        <!-- END: Settings Menu -->
       </menu>
+      <!-- END: Settings Menu -->
     </header>
 
 

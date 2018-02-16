@@ -52,6 +52,8 @@
 #welcome-header {
   font-weight: bold;
   font-family: 'Dancing Script', cursive;
+  font-size: 3em;
+  line-height: 1.5em;
 }
 
 #login-page #user-warnings {

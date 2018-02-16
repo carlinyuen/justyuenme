@@ -159,6 +159,13 @@ function initApp() {
   });
   // [END authstatelistener]
 
+  $('.nav .nav-link').on('click', function(event) {
+    console.log('nav clicked');
+    event.preventDefault();
+    $('.mdl-layout__content').animate({
+        scrollTop: $($(event.target).attr('href')).offset().top
+    }, 1000);
+  });
   $('#signin-button').on('click', signIn);
   $('.signout-button').on('click', signOut);
   $('#entersite-button').on('click', enterSite);
