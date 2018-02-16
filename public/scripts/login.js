@@ -11,6 +11,7 @@ function signOut() {
   // Switch back to login page
   $('.main-page').fadeOut('fast', function() {
     console.log('main page fade out');
+    $('.main-page__data').remove();     // Clear out any data we loaded from auth
     PAUSE_GRAVITY_SIMULATION = false;   // Unpause firefly simulation
     $('#firefly-field').removeClass('blur');
     $('#login-page').fadeIn('fast');

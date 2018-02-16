@@ -34,11 +34,13 @@ function populateMainPage(pagedata) {
     data.forEach(function(section) {
       $.each(section, function(key, value) {
         $(document.createElement('h3'))
+          .addClass('main-page__data')
           .text(key)
           .appendTo(container);
         temp = value.split('\n');
         temp.forEach(function(text) {
           $(document.createElement('p'))
+            .addClass('main-page__data')
             .text(text)
             .appendTo(container);
         });
@@ -52,22 +54,27 @@ function populateMainPage(pagedata) {
   if (data) {
     container = $('#location');
     $(document.createElement('p'))
+      .addClass('main-page__data')
       .text(data.location['venue-name'])
       .appendTo(container);
     $(document.createElement('p'))
+      .addClass('main-page__data')
       .text(data.location['address'])
       .appendTo(container);
 
     container = $('#schedule');
     $(document.createElement('p'))
+      .addClass('main-page__data')
       .text(data.schedule['date'])
       .appendTo(container);
     $(document.createElement('p'))
+      .addClass('main-page__data')
       .text(data.schedule['time'])
       .appendTo(container);
 
     container = $('#dresscode');
     $(document.createElement('p'))
+      .addClass('main-page__data')
       .text(data.dresscode)
       .appendTo(container);
   }
@@ -80,9 +87,11 @@ function populateMainPage(pagedata) {
     data.forEach(function(mode) {
       $.each(mode, function(key, value) {
         $(document.createElement('h3'))
+          .addClass('main-page__data')
           .text(key)
           .appendTo(container);
         $(document.createElement('p'))
+          .addClass('main-page__data')
           .text(value)
           .appendTo(container);
       });
@@ -96,15 +105,19 @@ function populateMainPage(pagedata) {
     container = $('#accommodations');
     data.forEach(function(hotel) {
       $(document.createElement('h3'))
+        .addClass('main-page__data')
         .text(hotel.name)
         .appendTo(container);
       $(document.createElement('p'))
+        .addClass('main-page__data')
         .text(hotel.address)
         .appendTo(container);
       $(document.createElement('p'))
+        .addClass('main-page__data')
         .text(hotel.description)
         .appendTo(container);
       $(document.createElement('a'))
+        .addClass('main-page__data')
         .text(hotel.url)
         .attr('href', hotel.url)
         .appendTo(container);
@@ -117,6 +130,7 @@ function populateMainPage(pagedata) {
   if (data) {
     container = $('#gift-registry');
     $(document.createElement('p'))
+      .addClass('main-page__data')
       .html(data.split('\n').join('<br>'))
       .appendTo(container);
   }
