@@ -31,9 +31,13 @@
 .parallax {
   background-size: cover;
   box-sizing: border-box;
+
+  /* video trick to keep aspect ratio */
   width: 100%;
   height: auto;
-  padding: 57% 0 0; /* uses video trick to keep aspect ratio */
+  padding: 63% 0 0;
+
+  margin-bottom: -63%; /* bring images closer together */
 }
 
 .main-page__content {
@@ -72,6 +76,9 @@
   clear: both;
 }
 
+#intro {
+  margin-top: 1000px;
+}
 #intro h1 {
   font-family: 'Dancing Script';
 }
