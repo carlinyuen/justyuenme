@@ -22,21 +22,14 @@
 }
 
 #parallax {
-  z-index: -1;
 }
 .parallax {
   background-size: cover;
   box-sizing: border-box;
   width: 100%;
-  /* height: auto; */
-  /* padding: 57% 0 0; */
-  height: 1836px;
-  margin-bottom: -1836px;
-  /* Since the parallax elements still consume space, we set the margin to undo
-     the height of this parallax element making it essentially consume 0 space.
-  */
+  height: auto;
+  padding: 57% 0 0; /* uses video trick to keep aspect ratio */
 }
-
 
 
 .main-page__content {

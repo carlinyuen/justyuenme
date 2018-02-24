@@ -32,6 +32,7 @@ function populateMainPage(pagedata) {
   if (data) {
     container = $('#parallax');
     data.forEach(function(view) {
+      console.log('parallax:', view);
       temp = $(document.createElement('div'))
         .addClass('main-page__data parallax');
       if (view.parallax) {
