@@ -30,7 +30,9 @@
 
 .parallax {
   background-size: cover;
+  background-position: center;
   box-sizing: border-box;
+  min-height: 600px;
 
   /* video trick to keep aspect ratio */
   width: 100%;
@@ -38,6 +40,11 @@
   padding: 63% 0 0;
 
   margin-bottom: -63%; /* bring images closer together */
+}
+@media screen and (max-width: 400px) {
+  .parallax {
+    margin-bottom: -100%;
+  }
 }
 
 .main-page__content {
