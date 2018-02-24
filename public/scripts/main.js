@@ -27,6 +27,27 @@ function populateMainPage(pagedata) {
   }
   var data, container, temp;
 
+  // START: intro
+  data = pagedata.val()['intro'];
+  if (data) {
+    container = $('#parallax');
+    data.forEach(function(view) {
+      temp = $(document.createElement('div'))
+        .addClass('main-page__data parallax');
+      if (view.parallax) {
+        temp.attr('parallax', view.parallax);
+      } else {
+        temp.prop('parallax');
+      }
+      if (view.src) {
+        temp.css('background-image', 'url(images/' + view.src + ')');
+      }
+      temp.appendTo(container);
+    });
+    initializeParallax(document.querySelector('#main-page .main-page__content'));
+  }
+  // END: intro
+
   // START: our-story
   data = pagedata.val()['our-story'];
   if (data) {
@@ -120,6 +141,7 @@ function populateMainPage(pagedata) {
         .addClass('main-page__data')
         .text(hotel.url)
         .attr('href', hotel.url)
+        .attr('target', '_blank')
         .appendTo(container);
     });
   }

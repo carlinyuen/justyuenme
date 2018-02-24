@@ -21,6 +21,23 @@
   transition: opacity 1s ease;
 }
 
+#parallax {
+  z-index: -1;
+}
+.parallax {
+  background-size: cover;
+  box-sizing: border-box;
+  width: 100%;
+  /* height: auto; */
+  /* padding: 57% 0 0; */
+  height: 1836px;
+  margin-bottom: -1836px;
+  /* Since the parallax elements still consume space, we set the margin to undo
+     the height of this parallax element making it essentially consume 0 space.
+  */
+}
+
+
 
 .main-page__content {
   display: -webkit-flex;
@@ -40,6 +57,13 @@
           flex-shrink: 0;
   padding: 256px 0 0 0;
   color: wheat;
+
+  /* For parallax effects */
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
 }
 
 .main-page__section {
