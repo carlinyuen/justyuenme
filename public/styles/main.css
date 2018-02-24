@@ -3,6 +3,13 @@
 }
 #main-page {
   z-index: 2;
+
+  /* For parallax effects */
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
 }
 
 #nav {
@@ -21,8 +28,6 @@
   transition: opacity 1s ease;
 }
 
-#parallax {
-}
 .parallax {
   background-size: cover;
   box-sizing: border-box;
@@ -30,7 +35,6 @@
   height: auto;
   padding: 57% 0 0; /* uses video trick to keep aspect ratio */
 }
-
 
 .main-page__content {
   display: -webkit-flex;
@@ -50,13 +54,6 @@
           flex-shrink: 0;
   padding: 256px 0 0 0;
   color: wheat;
-
-  /* For parallax effects */
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: relative;
-  -webkit-overflow-scrolling: touch;
 }
 
 .main-page__section {

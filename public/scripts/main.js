@@ -30,7 +30,7 @@ function populateMainPage(pagedata) {
   // START: intro
   data = pagedata.val()['intro'];
   if (data) {
-    container = $('#parallax');
+    container = $('#main-page .main-page__content');
     data.forEach(function(view) {
       console.log('parallax:', view);
       temp = $(document.createElement('div'))
@@ -43,9 +43,9 @@ function populateMainPage(pagedata) {
       if (view.src) {
         temp.css('background-image', 'url(images/' + view.src + ')');
       }
-      temp.appendTo(container);
+      temp.prependTo(container);
     });
-    initializeParallax(document.querySelector('#main-page .main-page__content'));
+    initializeParallax(document.querySelector('#main-page'));
   }
   // END: intro
 
