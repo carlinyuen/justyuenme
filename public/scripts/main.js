@@ -41,11 +41,11 @@ function populateMainPage(pagedata) {
         temp.prop('parallax');
       }
       if (view.src) {
-        temp.css('background-image', 'url(images/' + view.src + ')');
+        temp.css('background-image', 'url(images/parallax/' + view.src + ')');
       }
       temp.prependTo(container);
     });
-    initializeParallax(document.querySelector('#main-page'));
+    // initializeParallax(document.querySelector('#main-page'));
   }
   // END: intro
 
