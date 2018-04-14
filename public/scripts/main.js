@@ -24,11 +24,13 @@ function setupParallaxIntro() {
 
   var container = $('#parallax');
   container.children('.parallax').each(function(i) {
+    var $this = $(this);
     getDownloadURL('parallax/' + i + '.png', function(url) {
-      $(this).css('background-image', 'url(' + url + ')');
+      $this.css('background-image', 'url(' + url + ')');
     });
   });
-  container.fadeIn('fast');
+  container.delay(2000).fadeIn('fast');
+  // TODO: try loading in background using CSS and then show?
 
   /* Using rellax.min.js from Open Source */
   // var rellax = new Rellax('.parallax');

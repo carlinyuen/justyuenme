@@ -129,7 +129,10 @@ function sendPasswordReset() {
 function preloadParallaxImages() {
   console.log('preloadParallaxImages');
   $('.parallax').each(function(i) {
-    getDownloadURL('parallax/' + i + '.png', jQuery.get);
+    getDownloadURL('parallax/' + i + '.png', function(url) {
+      console.log('prefetch url:', url);
+      jQuery.get(url);
+    });
   });
 }
 
