@@ -21,13 +21,17 @@ function loadMainPage() {
 // Setup parallax intro scene
 function setupParallaxIntro() {
   console.log('setupParallaxIntro');
-  var container, children, temp;
-  container = $('#intro');
-  children = container.children('.parallax');
-  children.each(function(i) {
+  var container = $('#parallax');
+  container.children('.parallax').each(function(i) {
     console.log('parallax:', i);
     $(this).css('background-image', 'url(images/parallax/' + (i+1) + '.png)');
   });
+  container.fadeIn('fast');
+
+  /* Using rellax.min.js from Open Source */
+  // var rellax = new Rellax('.parallax');
+
+  /* Using parallax.js from Google Developers */
   // initializeParallax(document.querySelector('#main-page'));
 }
 
