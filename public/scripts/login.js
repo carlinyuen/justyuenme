@@ -13,6 +13,7 @@ function signOut() {
     console.log('main page fade out');
     $('.main-page__data').remove();     // Clear out any data we loaded from auth
     PAUSE_GRAVITY_SIMULATION = false;   // Unpause firefly simulation
+    $('body').addClass('gravity');
     $('#firefly-field').removeClass('blur');
     $('#login-page').fadeIn('fast');
   });
