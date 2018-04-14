@@ -21,10 +21,12 @@ function loadMainPage() {
 // Setup parallax intro scene
 function setupParallaxIntro() {
   console.log('setupParallaxIntro');
+
   var container = $('#parallax');
   container.children('.parallax').each(function(i) {
-    console.log('parallax:', i);
-    $(this).css('background-image', 'url(images/parallax/' + (i+1) + '.png)');
+    getDownloadURL('parallax/' + i + '.png', function(url) {
+      $(this).css('background-image', 'url(' + url + ')');
+    });
   });
   container.fadeIn('fast');
 
@@ -33,6 +35,30 @@ function setupParallaxIntro() {
 
   /* Using parallax.js from Google Developers */
   // initializeParallax(document.querySelector('#main-page'));
+}
+
+// Get download URL from cloud storage
+function getDownloadURL(path, callback) {
+  console.log('getDownloadURL:', path);
+  if (!callback) {
+    console.log('Error! Callback DNE');
+    return;
+  }
+  // Create a reference to the file we want to download
+  firebase.storage().ref(path).getDownloadURL().then(callback
+    // Insert url into an <img> tag to "download"
+    // jQuery.get(url);   // Preload/cache images
+  ).catch(function(error) {
+    // https://firebase.google.com/docs/storage/web/handle-errors
+    switch (error.code) {
+      case 'storage/canceled': break;
+      case 'storage/object_not_found':  // DNE
+      case 'storage/unauthorized':      // Not auth'd
+      case 'storage/unknown':           // Unknown error
+      default:
+        console.log(error);
+    }
+  });
 }
 
 // Populate main page data

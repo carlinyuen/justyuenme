@@ -124,6 +124,16 @@ function sendPasswordReset() {
 }
 
 /**
+* Preloads parallax images
+*/
+function preloadParallaxImages() {
+  console.log('preloadParallaxImages');
+  $('.parallax').each(function(i) {
+    getDownloadURL('parallax/' + i + '.png', jQuery.get);
+  });
+}
+
+/**
 * initApp handles setting up UI event listeners and registering Firebase auth listeners:
 *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
 *    out, and that is where we update the UI.
@@ -148,8 +158,12 @@ function initApp() {
         if (displayName) {
           $('#welcome-name').text(', ' + displayName + '!');
         }
+
+        // Update login fields
         document.querySelector('.mdl-textfield').MaterialTextfield.checkDirty();
 
+        // Preload the parallax images
+        preloadParallaxImages();
       });
     } else {
       console.log('user signed out')
