@@ -1,10 +1,11 @@
-.main-page, #header, #main-page {
+.main-page, #header, #main-page, #parallax {
   display: none;
 }
 #main-page {
   z-index: 2;
+}
 
-  /* For parallax effects */
+#parallax {
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -29,8 +30,8 @@
 }
 
 .parallax {
-  background-size: cover;
-  background-position: center;
+  /* background-size: cover; */
+  background-position: center top;
   box-sizing: border-box;
   min-height: 600px;
 

@@ -11,7 +11,7 @@
     ],
     "headers": [
       {
-        "source":"**/*.@(css|js)", 
+        "source":"**/*.@(css|js)",
         "headers": [
           {
             "key": "Cache-Control",
@@ -21,10 +21,6 @@
       }
     ],
     "rewrites": [
-      {
-        "source": "/bigben",
-        "function": "bigben"
-      },
       {
         "source": "**",
         "destination": "/index.html"

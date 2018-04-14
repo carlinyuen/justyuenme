@@ -10,11 +10,25 @@ function loadMainPage() {
     $('#login-page').fadeOut('fast', function() {
       console.log('login page fade out');
       firebase.database().ref('content').once('value').then(populateMainPage);
+      setupParallaxIntro();
       $('.main-page').fadeIn('fast', function() {
         console.log('main page fade in');
       });
     });
   }
+}
+
+// Setup parallax intro scene
+function setupParallaxIntro() {
+  console.log('setupParallaxIntro');
+  var container, children, temp;
+  container = $('#intro');
+  children = container.children('.parallax');
+  children.each(function(i) {
+    console.log('parallax:', i);
+    $(this).css('background-image', 'url(images/parallax/' + (i+1) + '.png)');
+  });
+  // initializeParallax(document.querySelector('#main-page'));
 }
 
 // Populate main page data
@@ -26,28 +40,6 @@ function populateMainPage(pagedata) {
     return alert('Could not load data! Please let us know if you see this error.');
   }
   var data, container, temp;
-
-  // START: intro
-  data = pagedata.val()['intro'];
-  if (data) {
-    container = $('#main-page .main-page__content');
-    data.forEach(function(view) {
-      console.log('parallax:', view);
-      temp = $(document.createElement('div'))
-        .addClass('main-page__data parallax');
-      if (view.parallax) {
-        temp.attr('parallax', view.parallax);
-      } else {
-        temp.prop('parallax');
-      }
-      if (view.src) {
-        temp.css('background-image', 'url(images/parallax/' + view.src + ')');
-      }
-      temp.prependTo(container);
-    });
-    // initializeParallax(document.querySelector('#main-page'));
-  }
-  // END: intro
 
   // START: our-story
   data = pagedata.val()['our-story'];

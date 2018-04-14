@@ -39,8 +39,9 @@
 .mdl-textfield__input {
   border-bottom: 1px solid rgba(38, 166, 154, 0.33);
 }
-.mdl-textfield:not(.is-focused) .mdl-textfield__label {
+.mdl-textfield .mdl-textfield__label {
   color: rgba(38, 166, 154, 0.50) !important;
+  margin-bottom: 0 !important;
 }
 .loginInfo.mdl-card__actions {
   margin-top: 16px;
