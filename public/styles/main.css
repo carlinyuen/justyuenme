@@ -43,7 +43,7 @@
   height: 2160px;
   background-repeat: no-repeat;
   background-position: center top;
-  position: absolute;
+  position: fixed;
 
   /* background-size: cover; */
   /* box-sizing: border-box; */
