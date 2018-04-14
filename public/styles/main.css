@@ -1,6 +1,9 @@
 .main-page, #header, #main-page, #parallax {
   display: none;
 }
+#header {
+  position: fixed;
+}
 #main-page {
   z-index: 2;
 }
