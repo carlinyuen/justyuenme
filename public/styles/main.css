@@ -71,29 +71,27 @@
 #navicon {
   display: inline-block;
   cursor: pointer;
-  opacity: 0.5;
-}
-#navicon:hover {
-  opacity: 1.0;
-  transition: opacity 1s ease;
+  position: fixed;
+  left: 16px;
+  top: 16px;
 }
 .navicon {
-    width: 35px;
-    height: 5px;
+    width: 32px;
+    height: 2px;
     background-color: rgb(255, 229, 187);
     margin: 6px 0;
     transition: 0.4s;
 }
 #title.expanded .topbar {
-    -webkit-transform: rotate(-45deg) translate(-8px, 8px);
-    transform: rotate(-45deg) translate(-8px, 8px);
+    -webkit-transform: rotate(-45deg) translate(-6px, 6px);
+    transform: rotate(-45deg) translate(-6px, 6px);
 }
 #title.expanded .midbar {
   opacity: 0;
 }
 #title.expanded .bottombar {
-    -webkit-transform: rotate(45deg) translate(-8px, -8px);
-    transform: rotate(45deg) translate(-8px, -8px);
+    -webkit-transform: rotate(45deg) translate(-6px, -6px);
+    transform: rotate(45deg) translate(-6px, -6px);
 }
 #nav {
   position: fixed;
@@ -101,6 +99,8 @@
   left: 0;
   opacity: 0;
   transition: opacity 0.4s ease;
+  font-size: 16px;
+  line-height: 16px;
 }
 #title.expanded #nav {
   opacity: 1.0;
@@ -114,6 +114,10 @@
 #nav > a:hover {
   opacity: 1.0;
   transition: opacity 1s ease;
+}
+#menu-button {
+  position: fixed;
+  right: 16px;
 }
 
 #parallax {
