@@ -15,6 +15,7 @@ function loadMainPage() {
       setupParallaxIntro();
       $('.main-page').fadeIn('fast', function() {
         console.log('main page fade in');
+        $(window).scroll(scrollHandler);
       });
     });
   }
@@ -37,28 +38,29 @@ function setupParallaxIntro() {
   // initializeParallax(document.querySelector('#main-page'));
 }
 
-// Get download URL from cloud storage
-function getDownloadURL(path, callback) {
-  console.log('getDownloadURL:', path);
-  if (!callback) {
-    console.log('Error! Callback DNE');
-    return;
+// Scroll handler
+var BACKGROUND_GRADIENT_START_POS = 1420
+  , BACKGROUND_GRADIENT_END_POS = 1820;
+function scrollHandler(event) {
+  // console.log('scrollHandler:', event);
+
+  var scrollPos = $(this).scrollTop();
+  if (scrollPos > BACKGROUND_GRADIENT_START_POS && scrollPos < BACKGROUND_GRADIENT_END_POS) {
+    console.log('changing nav color');
+    var startColor = [255, 229, 187]
+      , endColor = [5, 11, 33]
+      , scale = (scrollPos - BACKGROUND_GRADIENT_START_POS) / (BACKGROUND_GRADIENT_END_POS - BACKGROUND_GRADIENT_START_POS)
+      , textColor = [0, 0, 0];
+    console.log(scale);
+    $.each(textColor, function(i) {
+      textColor[i] = ((endColor[i] - startColor[i]) * scale) + startColor[i];
+    });
+    console.log(textColor);
+    $('#nav > a').css('color', 'rgb('
+      + Math.round(textColor[0]) + ', '
+      + Math.round(textColor[1]) + ', '
+      + Math.round(textColor[2]) + ')');
   }
-  // Create a reference to the file we want to download
-  firebase.storage().ref(path).getDownloadURL().then(callback
-    // Insert url into an <img> tag to "download"
-    // jQuery.get(url);   // Preload/cache images
-  ).catch(function(error) {
-    // https://firebase.google.com/docs/storage/web/handle-errors
-    switch (error.code) {
-      case 'storage/canceled': break;
-      case 'storage/object_not_found':  // DNE
-      case 'storage/unauthorized':      // Not auth'd
-      case 'storage/unknown':           // Unknown error
-      default:
-        console.log(error);
-    }
-  });
 }
 
 // Populate main page data

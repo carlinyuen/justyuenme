@@ -148,6 +148,30 @@ function preloadParallaxImages() {
   });
 }
 
+// Get download URL from cloud storage
+function getDownloadURL(path, callback) {
+  console.log('getDownloadURL:', path);
+  if (!callback) {
+    console.log('Error! Callback DNE');
+    return;
+  }
+  // Create a reference to the file we want to download
+  firebase.storage().ref(path).getDownloadURL().then(callback
+    // Insert url into an <img> tag to "download"
+    // jQuery.get(url);   // Preload/cache images
+  ).catch(function(error) {
+    // https://firebase.google.com/docs/storage/web/handle-errors
+    switch (error.code) {
+      case 'storage/canceled': break;
+      case 'storage/object_not_found':  // DNE
+      case 'storage/unauthorized':      // Not auth'd
+      case 'storage/unknown':           // Unknown error
+      default:
+        console.log(error);
+    }
+  });
+}
+
 /**
 * initApp handles setting up UI event listeners and registering Firebase auth listeners:
 *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or

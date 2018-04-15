@@ -16,7 +16,7 @@
 #nav > a {
   font-weight: bold;
   font-family: 'Crete Round', serif;
-  color: wheat;
+  color: rgb(255, 229, 187);
   opacity: 0.5;
 }
 #nav > a:hover {
@@ -31,6 +31,8 @@
   left: 0;
   right: 0;
   bottom: 0;
+
+  /* Improve performance, per https://www.fourkitchens.com/blog/article/fix-scrolling-performance-css-will-change-property/ */
   will-change: transform;
 
   /* height: 100%;
