@@ -5,7 +5,8 @@ function loadMainPage() {
   if (checkAuthOrSignin()) {
     // Fade out login page, load in data, and fade in main page
     console.log('fireflies fade out');
-    $('#firefly-field').addClass('blur');
+    // $('#firefly-field').addClass('blur');
+    $('#firefly-field').fadeOut('fast');
     $('body').removeClass('gravity');
     PAUSE_GRAVITY_SIMULATION = true;  // Pause firefly field in the background
     $('#login-page').fadeOut('fast', function() {

@@ -18,7 +18,8 @@ function signOut() {
     }
     $('.parallax').css('background-image', ''); // Kill images
     $('body').addClass('gravity');
-    $('#firefly-field').removeClass('blur');
+    // $('#firefly-field').removeClass('blur');
+    $('#firefly-field').fadeIn('fast');
     $('#login-page').fadeIn('fast');
   });
 }
