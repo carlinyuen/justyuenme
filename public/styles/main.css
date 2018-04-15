@@ -31,6 +31,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  will-change: transform;
 
   /* height: 100%;
   overflow-x: hidden;
@@ -45,6 +46,7 @@
   background-position: center top;
   background-size: auto;
   position: fixed;
+  will-change: transform;
   -webkit-transform: translate3d(0,0,0);
   -webkit-backface-visibility: hidden;
 }
