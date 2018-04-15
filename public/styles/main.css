@@ -8,6 +8,33 @@
   z-index: 2;
 }
 
+#title {
+  display: inline-block;
+  cursor: pointer;
+  opacity: 0.5;
+}
+#title:hover {
+  opacity: 1.0;
+  transition: opacity 1s ease;
+}
+.navicon {
+    width: 35px;
+    height: 5px;
+    background-color: rgb(255, 229, 187);
+    margin: 6px 0;
+    transition: 0.4s;
+}
+#title.expanded .topbar {
+    -webkit-transform: rotate(-45deg) translate(-8px, 8px);
+    transform: rotate(-45deg) translate(-8px, 8px);
+}
+#title.expanded .midbar {
+  opacity: 0;
+}
+#title.expanded .bottombar {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+}
 #nav {
   position: fixed;
   top: 56px;
