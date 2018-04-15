@@ -410,8 +410,15 @@ function initApp() {
   $('#entersite-button').click(enterSite);
   $('.changepassword-button').click(sendPasswordReset);
   $('#login-form').submit(signIn);
-  $('#title').click(function() {
-    $(this).toggleClass('expanded');
+  $('#navicon').click(function() {
+    var $title = $('#title');
+    if ($title.hasClass('expanded')) {
+      $title.removeClass('expanded');
+      $('#nav').slideUp();
+    } else {
+      $title.addClass('expanded');
+      $('#nav').slideDown();
+    }
   });
 }
 

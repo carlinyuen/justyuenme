@@ -53,11 +53,24 @@ limitations under the License.
     <header id="header" class="main-page mdl-layout__header mdl-layout__header--transparent">
       <!-- START: Header Nav Bar / Menu -->
       <menu class="mdl-layout__header-row">
-        <div id="title" class="mdl-layout__title expanded">
-          <div class="navicon topbar"></div>
-          <div class="navicon midbar"></div>
-          <div class="navicon bottombar"></div>
-        </div>
+        <span id="title" class="mdl-layout__title expanded">
+          <div id="navicon">
+            <div class="navicon topbar"></div>
+            <div class="navicon midbar"></div>
+            <div class="navicon bottombar"></div>
+          </div>
+          <!-- START: Nav -->
+          <nav id="nav" class="nav flex-column align-items-start">
+              <a class="nav-item nav-link" href="#intro">Home</a>
+              <a class="nav-item nav-link" href="#our-story">Our Story</a>
+              <a class="nav-item nav-link" href="#event-details">Ceremony &amp; Reception</a>
+              <a class="nav-item nav-link" href="#rsvp">RSVP</a>
+              <a class="nav-item nav-link" href="#transportation">Transportation</a>
+              <a class="nav-item nav-link" href="#accommodations">Accommodations</a>
+              <a class="nav-item nav-link" href="#gift-registry">Gift Registry</a>
+          </nav>
+          <!-- END: Nav -->
+        </span>
         <div class="mdl-layout-spacer"></div>
         <button id="menu-button"
         class="mdl-button mdl-js-button mdl-button--icon">
@@ -70,17 +83,6 @@ limitations under the License.
         </ul>
       </menu>
       <!-- END: Header Nav Bar / Menu -->
-      <!-- START: Nav -->
-      <nav id="nav" class="nav flex-column align-items-start">
-          <a class="nav-item nav-link" href="#intro">Home</a>
-          <a class="nav-item nav-link" href="#our-story">Our Story</a>
-          <a class="nav-item nav-link" href="#event-details">Ceremony &amp; Reception</a>
-          <a class="nav-item nav-link" href="#rsvp">RSVP</a>
-          <a class="nav-item nav-link" href="#transportation">Transportation</a>
-          <a class="nav-item nav-link" href="#accommodations">Accommodations</a>
-          <a class="nav-item nav-link" href="#gift-registry">Gift Registry</a>
-      </nav>
-      <!-- END: Nav -->
     </header>
 
 
