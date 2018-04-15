@@ -13,6 +13,10 @@ function signOut() {
     console.log('main page fade out');
     $('.main-page__data').remove();     // Clear out any data we loaded from auth
     PAUSE_GRAVITY_SIMULATION = false;   // Unpause firefly simulation
+    if (rellax) {                       // Remove parallax
+      rellax.destroy();
+    }
+    $('.parallax').css('background-image', ''); // Kill images
     $('body').addClass('gravity');
     $('#firefly-field').removeClass('blur');
     $('#login-page').fadeIn('fast');
@@ -127,7 +131,6 @@ function sendPasswordReset() {
 /**
 * Preloads parallax images
 */
-// var PARALLAX_PRELOADED_IMAGES = {};
 function preloadParallaxImages() {
   console.log('preloadParallaxImages');
   $('.parallax').each(function(i) {
@@ -135,9 +138,6 @@ function preloadParallaxImages() {
     var $el = $(this);
     getDownloadURL(path, function(url) {
       console.log('prefetch url:', url);
-      // PARALLAX_PRELOADED_IMAGES[path] = url;
-      // jQuery.get(url);  // Preload image
-
       /* Preload image: https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded */
       $('<img/>').attr('src', url).on('load', function() {
         $(this).remove(); // prevent memory leaks

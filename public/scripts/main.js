@@ -20,29 +20,17 @@ function loadMainPage() {
 }
 
 // Setup parallax intro scene
+var rellax;   // Reference to rellax object
 function setupParallaxIntro() {
   console.log('setupParallaxIntro');
 
-  var container = $('#parallax');
-  // container.children('.parallax').each(function(i) {
-  //   var url = PARALLAX_PRELOADED_IMAGES['parallax/' + i + '.png'];
-  //   if (url) {
-  //     $(this).css('background-image', 'url(' + url + ')');
-  //   } else {
-  //     console.log('Invalid image path!');
-  //   }
-
-    // var $this = $(this);
-    // getDownloadURL('parallax/' + i + '.png', function(url) {
-    //   $this.css('background-image', 'url(' + url + ')');
-    // });
-  // });
-  // container.delay(2000).fadeIn('fast');
-  container.fadeIn('fast');
-  // TODO: try loading in background using CSS and then show?
+  $('#parallax').fadeIn('fast');
 
   /* Using rellax.min.js from Open Source */
-  // var rellax = new Rellax('.parallax');
+  if (rellax) {
+    rellax.destroy();
+  }
+  rellax = new Rellax('.parallax');
 
   /* Using parallax.js from Google Developers */
   // initializeParallax(document.querySelector('#main-page'));
