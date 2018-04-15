@@ -25,13 +25,13 @@ var rellax;   // Reference to rellax object
 function setupParallaxIntro() {
   console.log('setupParallaxIntro');
 
-  $('#parallax').fadeIn('fast');
-
   /* Using rellax.min.js from Open Source */
   if (rellax) {
     rellax.destroy();
   }
-  rellax = new Rellax('.parallax');
+  $('#parallax').fadeIn(1500, function() {
+    rellax = new Rellax('.parallax');
+  });
 
   /* Using parallax.js from Google Developers */
   // initializeParallax(document.querySelector('#main-page'));
