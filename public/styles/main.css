@@ -4,9 +4,69 @@
 #header {
   position: fixed;
 }
-#main-page {
-  z-index: 2;
+
+#login-page {
+  height: 100%;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-align-items: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+
+.login-page__content {
+  max-width: 450px;
+  padding: 0;
+  width: 100%;
+  margin: 0 auto;
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 16px 0;
+}
+
+.welcomeInfo {
+  display: none;
+}
+.logged-in .loginInfo {
+  display: none;
+}
+.logged-in .welcomeInfo {
+  display: initial;
+}
+
+.mdl-textfield__input {
+  border-bottom: 1px solid rgba(38, 166, 154, 0.33);
+}
+.mdl-textfield .mdl-textfield__label {
+  color: rgba(38, 166, 154, 0.50) !important;
+  margin-bottom: 0 !important;
+}
+.loginInfo.mdl-card__actions {
+  margin-top: 16px;
+}
+#login-page .changepassword-button {
+  margin-top: 16px;
+}
+
+#welcome-header {
+  font-weight: bold;
+  font-family: 'Dancing Script', cursive;
+  font-size: 3em;
+  line-height: 1.5em;
+}
+
+#login-page #user-warnings {
+  color: #888888;
+}
+
 
 #navicon {
   display: inline-block;
@@ -39,6 +99,11 @@
   position: fixed;
   top: 56px;
   left: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+#title.expanded #nav {
+  opacity: 1.0;
 }
 #nav > a {
   font-weight: bold;
@@ -89,6 +154,10 @@
   }
 }
 
+
+#main-page {
+  z-index: 2;
+}
 .main-page__content {
   display: -webkit-flex;
   display: -ms-flexbox;

@@ -411,14 +411,7 @@ function initApp() {
   $('.changepassword-button').click(sendPasswordReset);
   $('#login-form').submit(signIn);
   $('#navicon').click(function() {
-    var $title = $('#title');
-    if ($title.hasClass('expanded')) {
-      $title.removeClass('expanded');
-      $('#nav').slideUp();
-    } else {
-      $title.addClass('expanded');
-      $('#nav').slideDown();
-    }
+    $('#title').toggleClass('expanded');
   });
 }
 
