@@ -1,7 +1,8 @@
 'use strict';
-var ANIMATE_DURATION_LONG = 1500
-  , ANIMATE_DURATION_MEDIUM = 1000
-  , ANIMATE_DURATION_FAST = 400
+var TIME_DURATION_XL = 3000
+  , TIME_DURATION_LONG = 1500
+  , TIME_DURATION_MEDIUM = 1000
+  , TIME_DURATION_FAST = 400
 ;
 
 /**
@@ -120,7 +121,10 @@ function loadMainPage() {
       setupParallaxIntro();
       $('.main-page').fadeIn('fast', function() {
         console.log('main page fade in');
-        $(window).scroll(scrollHandler);
+        $(window).scroll(scrollHandler);  // Add scroll position listener for effects
+        setTimeout(function() {
+          $('#title').toggleClass('expanded', false);
+        }, TIME_DURATION_XL);
       });
     });
   }
@@ -135,7 +139,7 @@ function setupParallaxIntro() {
   if (rellax) {
     rellax.destroy();
   }
-  $('#parallax').fadeIn(ANIMATE_DURATION_LONG, function() {
+  $('#parallax').fadeIn(TIME_DURATION_LONG, function() {
     rellax = new Rellax('.parallax');
   });
 
@@ -407,7 +411,7 @@ function initApp() {
     e.preventDefault();
     $('html').animate({
       scrollTop: $($(e.target).attr('href')).offset().top
-    }, ANIMATE_DURATION_MEDIUM);
+    }, TIME_DURATION_MEDIUM);
   });
   $('#signin-button').click(signIn);
   $('.signout-button').click(signOut);
