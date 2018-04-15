@@ -6,6 +6,14 @@
 }
 #main-page {
   z-index: 2;
+
+  /* background to match parallax */
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#122649+48,050b21+54,cac9c0+83,faf0ea+94,ffffff+100 */
+background: #122649; /* Old browsers */
+background: -moz-linear-gradient(top, #122649 48%, #050b21 54%, #cac9c0 83%, #faf0ea 94%, #ffffff 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, #122649 48%,#050b21 54%,#cac9c0 83%,#faf0ea 94%,#ffffff 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #122649 48%,#050b21 54%,#cac9c0 83%,#faf0ea 94%,#ffffff 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#122649', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 }
 
 #nav {
@@ -43,6 +51,7 @@
   height: 2160px;
   background-repeat: no-repeat;
   background-position: center top;
+  background-size: auto;
   position: fixed;
 
   /* background-size: cover; */
