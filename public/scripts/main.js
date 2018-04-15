@@ -24,13 +24,21 @@ function setupParallaxIntro() {
   console.log('setupParallaxIntro');
 
   var container = $('#parallax');
-  container.children('.parallax').each(function(i) {
-    var $this = $(this);
-    getDownloadURL('parallax/' + i + '.png', function(url) {
-      $this.css('background-image', 'url(' + url + ')');
-    });
-  });
-  container.delay(2000).fadeIn('fast');
+  // container.children('.parallax').each(function(i) {
+  //   var url = PARALLAX_PRELOADED_IMAGES['parallax/' + i + '.png'];
+  //   if (url) {
+  //     $(this).css('background-image', 'url(' + url + ')');
+  //   } else {
+  //     console.log('Invalid image path!');
+  //   }
+
+    // var $this = $(this);
+    // getDownloadURL('parallax/' + i + '.png', function(url) {
+    //   $this.css('background-image', 'url(' + url + ')');
+    // });
+  // });
+  // container.delay(2000).fadeIn('fast');
+  container.fadeIn('fast');
   // TODO: try loading in background using CSS and then show?
 
   /* Using rellax.min.js from Open Source */

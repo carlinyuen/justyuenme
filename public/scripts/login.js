@@ -127,12 +127,22 @@ function sendPasswordReset() {
 /**
 * Preloads parallax images
 */
+// var PARALLAX_PRELOADED_IMAGES = {};
 function preloadParallaxImages() {
   console.log('preloadParallaxImages');
   $('.parallax').each(function(i) {
-    getDownloadURL('parallax/' + i + '.png', function(url) {
+    var path = 'parallax/' + i + '.png';
+    var $el = $(this);
+    getDownloadURL(path, function(url) {
       console.log('prefetch url:', url);
-      jQuery.get(url);
+      // PARALLAX_PRELOADED_IMAGES[path] = url;
+      // jQuery.get(url);  // Preload image
+
+      /* Preload image: https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded */
+      $('<img/>').attr('src', url).on('load', function() {
+        $(this).remove(); // prevent memory leaks
+        $el.css('background-image', 'url(' + url + ')');
+      });
     });
   });
 }
