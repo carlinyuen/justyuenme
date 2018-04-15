@@ -1,4 +1,8 @@
 'use strict';
+var ANIMATE_DURATION_LONG = 1500
+  , ANIMATE_DURATION_MEDIUM = 1000
+  , ANIMATE_DURATION_FAST = 400
+;
 
 /**
 * Handles the sign out button press.
@@ -131,7 +135,7 @@ function setupParallaxIntro() {
   if (rellax) {
     rellax.destroy();
   }
-  $('#parallax').fadeIn(1500, function() {
+  $('#parallax').fadeIn(ANIMATE_DURATION_LONG, function() {
     rellax = new Rellax('.parallax');
   });
 
@@ -398,12 +402,12 @@ function initApp() {
   });
   // [END authstatelistener]
 
-  $('.nav .nav-link').on('click', function(event) {
-    console.log('nav clicked');
-    event.preventDefault();
-    $('.mdl-layout__content').animate({
-        scrollTop: $($(event.target).attr('href')).offset().top
-    }, 1000);
+  $('.nav .nav-link').on('click', function(e) {
+    console.log('nav clicked:', e.target);
+    e.preventDefault();
+    $('html').animate({
+      scrollTop: $($(e.target).attr('href')).offset().top
+    }, ANIMATE_DURATION_MEDIUM);
   });
   $('#signin-button').click(signIn);
   $('.signout-button').click(signOut);
