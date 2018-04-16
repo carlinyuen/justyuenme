@@ -19,6 +19,9 @@ body {
   opacity: 1.0;
   transition: opacity 1s ease;
 }
+.opaque {
+  opacity: 1.0 !important;
+}
 
 .mdl-layout {
   font-family: 'Roboto', 'Helvetica', sans-serif;
