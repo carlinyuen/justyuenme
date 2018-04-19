@@ -323,6 +323,13 @@ function sendPasswordReset() {
 }
 
 /**
+* Toggles debug mode to show element layers
+*/
+function toggleDebugMode() {
+  $('body').find('*').toggleClass('parallax__debug');
+}
+
+/**
 * Preloads parallax images
 */
 function preloadParallaxImages() {
@@ -414,10 +421,11 @@ function initApp() {
     }, TIME_DURATION_MEDIUM);
   });
   $('#signin-button').click(signIn);
-  $('.signout-button').click(signOut);
   $('#entersite-button').click(enterSite);
-  $('.changepassword-button').click(sendPasswordReset);
   $('#login-form').submit(signIn);
+  $('.changepassword-button').click(sendPasswordReset);
+  $('.debug-button').click(toggleDebugMode);
+  $('.signout-button').click(signOut);
   $('#navicon').click(function() {
     $('#title').toggleClass('expanded');
   });

@@ -1,3 +1,7 @@
+.parallax__debug {
+  transform: translate3d(700px, 0, -800px) rotateY(30deg) !important;
+}
+
 .main-page, #header, #parallax, #main-page {
   display: none;
 }
