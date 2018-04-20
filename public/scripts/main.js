@@ -326,7 +326,8 @@ function sendPasswordReset() {
 * Toggles debug mode to show element layers
 */
 function toggleDebugMode() {
-  $('body').find('*').toggleClass('parallax__debug');
+  // $('body').find('*').toggleClass('parallax__debug');
+  $('.mdl-layout').find('*').toggleClass('parallax__debug');
 }
 
 /**
