@@ -198,19 +198,8 @@ var PARALLAX_CLOUDS_SHOW_POS = 350
   , PARALLAX_BUILDINGS_HIDE_POS = 1000
 ;
 function updateParallaxDisplay(scrollPos) {
-  switch (true) {
-    case scrollPos >= PARALLAX_BUILDINGS_HIDE_POS:
-      // console.log('hide buildings');
-      $('.scenery, .buildings').toggleClass('hidden', true);
-    case scrollPos >= PARALLAX_CLOUDS_SHOW_POS:
-      // console.log('show clouds');
-      $('.clouds').toggleClass('hidden', false);
-      break;
-    default:
-      $('.clouds').toggleClass('hidden', true);
-      $('.scenery, .buildings').toggleClass('hidden', false);
-      break;
-  }
+  $('.scenery, .buildings').toggleClass('hidden', (scrollPos >= PARALLAX_BUILDINGS_HIDE_POS));
+  $('.clouds').toggleClass('hidden', (scrollPos < PARALLAX_CLOUDS_SHOW_POS));
 }
 
 // Populate main page data
