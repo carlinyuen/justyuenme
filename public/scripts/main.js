@@ -153,7 +153,7 @@ var BACKGROUND_GRADIENT_START_POS = 1420
 function scrollHandler(event) {
   // console.log('scrollHandler:', event);
 
-  var scrollPos = $(this).scrollTop();
+  var scrollPos = $(this).scrollTop()
     , startColor = [255, 229, 187]
     , endColor = [5, 11, 33]
     , textColor = [0, 0, 0]
