@@ -202,7 +202,10 @@
           flex-shrink: 0;
   padding: 256px 0 0 0;
   color: black;
-  background: #fff;   /* Replace with background image later? */
+  background: transparent url('') no-repeat center 1700px;   /* Replace with background image later? */
+}
+.main-page__content.light {
+  background-color: #FDF6F2;
 }
 
 .main-page__section {

@@ -159,6 +159,9 @@ function scrollHandler(event) {
   // Update navigation text color
   updateNavColor(scrollPos);
 
+  // Update background color
+  updateBackgroundColor(scrollPos);
+
   // Update which parallax images to display
   updateParallaxDisplay(scrollPos);
 }
@@ -195,6 +198,11 @@ function updateNavColor(scrollPos) {
     + Math.round(textColor[0]) + ', '
     + Math.round(textColor[1]) + ', '
     + Math.round(textColor[2]) + ')');
+}
+
+// Update the background color of the main content div once the user has scrolled far enough
+function updateBackgroundColor(scrollPos) {
+  $('.main-page__content').toggleClass('light', (scrollPos >= BACKGROUND_GRADIENT_END_POS));
 }
 
 // Update which parallax images to display, in an effort to conserve CPU and reduce performance lag
