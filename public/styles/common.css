@@ -22,6 +22,9 @@ body {
 .opaque {
   opacity: 1.0 !important;
 }
+.hidden {
+  display: none !important;
+}
 
 .mdl-layout {
   font-family: 'Roboto', 'Helvetica', sans-serif;

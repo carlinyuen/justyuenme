@@ -171,7 +171,8 @@
   -ms-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-.parallax.tall { height: 2110px; }
+.parallax.gradient { height: 2110px; }
+.parallax.clouds { display: none; }
 .parallax.cloud1 { height: 3110px; }
 .parallax.cloud2 { height: 5110px; }
 .parallax.cloud3 { height: 8110px; }

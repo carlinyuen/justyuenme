@@ -148,36 +148,69 @@ function setupParallaxIntro() {
 }
 
 // Scroll handler
-var BACKGROUND_GRADIENT_START_POS = 1420
-  , BACKGROUND_GRADIENT_END_POS = 1820;
 function scrollHandler(event) {
-  // console.log('scrollHandler:', event);
+  var scrollPos = $(this).scrollTop();
+  console.log('scrollHandler:', scrollPos);
 
-  var scrollPos = $(this).scrollTop()
-    , startColor = [255, 229, 187]
+  // Update navigation text color
+  updateNavColor(scrollPos);
+
+  // Update which parallax images to display
+  updateParallaxDisplay(scrollPos);
+}
+
+// Update the text color of the navigation links based on scroll position to account for gradient background
+var BACKGROUND_GRADIENT_START_POS = 1420
+  , BACKGROUND_GRADIENT_END_POS = 1820
+;
+function updateNavColor(scrollPos) {
+  var startColor = [255, 229, 187]
     , endColor = [5, 11, 33]
     , textColor = [0, 0, 0]
-  ;
   switch (true) {
-    case scrollPos > BACKGROUND_GRADIENT_START_POS && scrollPos < BACKGROUND_GRADIENT_END_POS:
-      var scale = (scrollPos - BACKGROUND_GRADIENT_START_POS) / (BACKGROUND_GRADIENT_END_POS - BACKGROUND_GRADIENT_START_POS);
-      console.log(scale);
-      $.each(textColor, function(i) {
-        textColor[i] = ((endColor[i] - startColor[i]) * scale) + startColor[i];
-      });
-      break;
     case scrollPos <= BACKGROUND_GRADIENT_START_POS:
       textColor =  startColor;
+      break;
+    case scrollPos > BACKGROUND_GRADIENT_START_POS && scrollPos < BACKGROUND_GRADIENT_END_POS:
+      $.each(textColor, function(i) {
+        textColor[i] = (
+          (endColor[i] - startColor[i])
+          * (
+            (scrollPos - BACKGROUND_GRADIENT_START_POS)
+            / (BACKGROUND_GRADIENT_END_POS - BACKGROUND_GRADIENT_START_POS)
+          )
+        ) + startColor[i];
+      });
       break;
     case scrollPos >= BACKGROUND_GRADIENT_END_POS:
       textColor =  endColor;
       break;
   }
-  console.log(textColor);
+  // console.log(textColor);
   $('#nav > a').css('color', 'rgb('
     + Math.round(textColor[0]) + ', '
     + Math.round(textColor[1]) + ', '
     + Math.round(textColor[2]) + ')');
+}
+
+// Update which parallax images to display, in an effort to conserve CPU and reduce performance lag
+var PARALLAX_CLOUDS_SHOW_POS = 350
+  , PARALLAX_BUILDINGS_HIDE_POS = 1000
+;
+function updateParallaxDisplay(scrollPos) {
+  switch (true) {
+    case scrollPos >= PARALLAX_CLOUDS_SHOW_POS:
+      // console.log('show clouds');
+      $('.clouds').toggleClass('hidden', false);
+    case scrollPos >= PARALLAX_BUILDINGS_HIDE_POS:
+      // console.log('hide buildings');
+      $('.scenery, .buildings').toggleClass('hidden', true);
+      break;
+    default:
+      $('.clouds').toggleClass('hidden', true);
+      $('.scenery, .buildings').toggleClass('hidden', false);
+      break;
+  }
 }
 
 // Populate main page data
