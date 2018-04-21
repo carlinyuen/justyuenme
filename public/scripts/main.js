@@ -22,6 +22,7 @@ function signOut() {
       rellax.destroy();
     }
     $('.parallax').css('background-image', ''); // Kill images
+    $('#parallax').hide();
     $('body').addClass('gravity');
     // $('#firefly-field').removeClass('blur');
     $('#firefly-field').fadeIn('fast');
