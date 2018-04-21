@@ -201,8 +201,9 @@ function updateNavColor(scrollPos) {
 }
 
 // Update the background color of the main content div once the user has scrolled far enough
+var BACKGROUND_LIGHT_START_POS = 1100;
 function updateBackgroundColor(scrollPos) {
-  $('.main-page__content').toggleClass('light', (scrollPos >= BACKGROUND_GRADIENT_END_POS));
+  $('.main-page__content').toggleClass('light', (scrollPos >= BACKGROUND_LIGHT_START_POS));
 }
 
 // Update which parallax images to display, in an effort to conserve CPU and reduce performance lag
