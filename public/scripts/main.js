@@ -14,6 +14,7 @@ function signOut() {
   firebase.auth().signOut();
 
   // Switch back to login page
+  $('#header').fadeOut('fast');
   $('.main-page').fadeOut('fast', function() {
     console.log('main page fade out');
     $('.main-page__data').remove();     // Clear out any data we loaded from auth
@@ -120,6 +121,7 @@ function loadMainPage() {
       console.log('login page fade out');
       firebase.database().ref('content').once('value').then(populateMainPage);
       setupParallaxIntro();
+      $('#header').fadeIn('fast');
       $('.main-page').fadeIn('fast', function() {
         console.log('main page fade in');
         $(window).scroll(scrollHandler);  // Add scroll position listener for effects
