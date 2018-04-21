@@ -74,7 +74,6 @@
   color: #888888;
 }
 
-
 #navicon {
   display: inline-block;
   cursor: pointer;
@@ -83,26 +82,26 @@
   top: 16px;
 }
 .navicon {
-    width: 32px;
-    height: 2px;
-    background-color: rgb(255, 229, 187);
-    margin: 6px 0;
-    transition: 0.4s;
+  width: 32px;
+  height: 2px;
+  background-color: rgb(255, 229, 187);
+  margin: 6px 0;
+  transition: 0.4s;
 }
 #title {
   overflow: visible;
   text-align: left;
 }
 #title.expanded .topbar {
-    -webkit-transform: rotate(-45deg) translate(-6px, 6px);
-    transform: rotate(-45deg) translate(-6px, 6px);
+  -webkit-transform: rotate(-45deg) translate(-6px, 6px);
+  transform: rotate(-45deg) translate(-6px, 6px);
 }
 #title.expanded .midbar {
   opacity: 0;
 }
 #title.expanded .bottombar {
-    -webkit-transform: rotate(45deg) translate(-6px, -6px);
-    transform: rotate(45deg) translate(-6px, -6px);
+  -webkit-transform: rotate(45deg) translate(-6px, -6px);
+  transform: rotate(45deg) translate(-6px, -6px);
 }
 #nav {
   position: fixed;
@@ -120,7 +119,7 @@
 }
 #nav > a {
   font-weight: bold;
-  font-family: 'Crete Round', serif;
+  font-family: 'Trebuchet MS', serif;
   color: rgb(255, 229, 187);
   opacity: 0.5;
 }
@@ -131,6 +130,7 @@
 #menu-button {
   position: fixed;
   right: 16px;
+  color: rgb(255, 229, 187);
 }
 
 #parallax {

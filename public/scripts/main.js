@@ -16,7 +16,7 @@ function signOut() {
   // Switch back to login page
   $('#header').fadeOut(TIME_DURATION_FAST);
   $('#main-page').fadeOut(TIME_DURATION_FAST, function() {
-    console.log('main page fade out');
+    // console.log('main page fade out');
     $('.main-page__data').remove();     // Clear out any data we loaded from auth
     gravityAnimation.start();           // Restart firefly simulation
     if (rellax) {                       // Remove parallax
@@ -112,19 +112,19 @@ function enterSite() {
 function loadMainPage() {
   if (checkAuthOrSignin()) {
     // Fade out login page, load in data, and fade in main page
-    console.log('fireflies fade out');
+    // console.log('fireflies fade out');
     // $('#firefly-field').addClass('blur');
     gravityAnimation.stop();         // Stop firefly animation in background
     $('#firefly-field').fadeOut(TIME_DURATION_FAST, function() {
       $('body').removeClass('gravity');
     });
     $('#login-page').fadeOut(TIME_DURATION_FAST, function() {
-      console.log('login page fade out');
+      // console.log('login page fade out');
       firebase.database().ref('content').once('value').then(populateMainPage);
       setupParallaxIntro();
       $('#header').fadeIn(TIME_DURATION_FAST);
       $('#main-page').fadeIn(TIME_DURATION_FAST, function() {
-        console.log('main page fade in');
+        // console.log('main page fade in');
         $(window).scroll(scrollHandler);  // Add scroll position listener for effects
         setTimeout(function() {
           $('#title').toggleClass('expanded', false);
@@ -137,7 +137,7 @@ function loadMainPage() {
 // Setup parallax intro scene
 var rellax;   // Reference to rellax object
 function setupParallaxIntro() {
-  console.log('setupParallaxIntro');
+  // console.log('setupParallaxIntro');
 
   /* Using rellax.min.js from Open Source */
   if (rellax) {
@@ -180,13 +180,13 @@ function updateNavColor(scrollPos) {
       break;
     case scrollPos > BACKGROUND_GRADIENT_START_POS && scrollPos < BACKGROUND_GRADIENT_END_POS:
       $.each(textColor, function(i) {
-        textColor[i] = (
+        textColor[i] = Math.round((
           (endColor[i] - startColor[i])
           * (
             (scrollPos - BACKGROUND_GRADIENT_START_POS)
             / (BACKGROUND_GRADIENT_END_POS - BACKGROUND_GRADIENT_START_POS)
           )
-        ) + startColor[i];
+        ) + startColor[i]);
       });
       break;
     case scrollPos >= BACKGROUND_GRADIENT_END_POS:
@@ -194,14 +194,14 @@ function updateNavColor(scrollPos) {
       break;
   }
   // console.log(textColor);
-  $('#nav > a').css('color', 'rgb('
-    + Math.round(textColor[0]) + ', '
-    + Math.round(textColor[1]) + ', '
-    + Math.round(textColor[2]) + ')');
+  $('#nav > a, #menu-button').css('color', 'rgb('
+    + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
+  $('.navicon').css('background-color', 'rgb('
+    + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
 }
 
 // Update the background color of the main content div once the user has scrolled far enough
-var BACKGROUND_LIGHT_START_POS = 1100;
+var BACKGROUND_LIGHT_START_POS = 1000;
 function updateBackgroundColor(scrollPos) {
   $('.main-page__content').toggleClass('light', (scrollPos >= BACKGROUND_LIGHT_START_POS));
 }
@@ -217,7 +217,7 @@ function updateParallaxDisplay(scrollPos) {
 
 // Populate main page data
 function populateMainPage(pagedata) {
-  console.log('populateMainPage:', pagedata.val());
+  // console.log('populateMainPage:', pagedata.val());
 
   // Sanity check
   if (!pagedata.val()) {
@@ -377,12 +377,12 @@ function toggleDebugMode() {
 * Preloads parallax images
 */
 function preloadParallaxImages() {
-  console.log('preloadParallaxImages');
+  // console.log('preloadParallaxImages');
   $('.parallax').each(function(i) {
     var path = 'parallax/' + i + '.png';
     var $el = $(this);
     getDownloadURL(path, function(url) {
-      console.log('prefetch url:', url);
+      // console.log('prefetch url:', url);
       /* Preload image: https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded */
       $('<img/>').attr('src', url).on('load', function() {
         $(this).remove(); // prevent memory leaks
@@ -394,7 +394,7 @@ function preloadParallaxImages() {
 
 // Get download URL from cloud storage
 function getDownloadURL(path, callback) {
-  console.log('getDownloadURL:', path);
+  // console.log('getDownloadURL:', path);
   if (!callback) {
     console.log('Error! Callback DNE');
     return;
@@ -426,7 +426,7 @@ function initApp() {
   // [START authstatelistener]
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      console.log(JSON.stringify(user, null, '  '));
+      // console.log(JSON.stringify(user, null, '  '));
       var uid = user.uid;
 
       // Grab intended displayName and email from database
@@ -449,7 +449,7 @@ function initApp() {
         preloadParallaxImages();
       });
     } else {
-      console.log('user signed out')
+      // console.log('user signed out')
       $('#login-page').removeClass('logged-in');
       $('#login-page .loginInfo').find('button').prop('disabled', false);
       $('#login-page .welcomeInfo').find('button').prop('disabled', true);
@@ -458,8 +458,9 @@ function initApp() {
   // [END authstatelistener]
 
   $('.nav .nav-link').on('click', function(e) {
-    console.log('nav clicked:', e.target);
+    // console.log('nav clicked:', e.target);
     e.preventDefault();
+    $('#title').toggleClass('expanded', false);
     $('html, body').animate({   // Need 'body' for Safari
       scrollTop: $($(e.target).attr('href')).offset().top
     }, TIME_DURATION_MEDIUM);

@@ -280,6 +280,7 @@ function Particle(x, y, radius) {
 }
 
 Particle.PARTICLE_SPEED_LIMIT = 4;
+Particle.PARTICLE_DIRECTION_RANDOMIZER_DELAY = 5000;
 Particle.prototype = (function(o) {
     var s = new Vector(0, 0), p;
     for (p in o) s[p] = o[p];
@@ -303,7 +304,7 @@ Particle.prototype = (function(o) {
 var gravityAnimation = (function() {
   // Configs
   var BACKGROUND_COLOR      = 'rgba(11, 51, 56, 1)',
-      PARTICLE_NUM          = 100,
+      PARTICLE_NUM          = 50,
       PARTICLE_RADIUS       = 1,
       G_POINT_RADIUS        = 10;
 
@@ -469,7 +470,7 @@ var gravityAnimation = (function() {
       loop();
     },
     stop: function() {
-      console.log('cancel gravity animation');
+      console.log('stop gravity animation');
       cancelAnimationFrame(requestAnimationFrameID);
     },
   };
