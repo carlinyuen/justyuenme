@@ -181,8 +181,7 @@
 
 
 #main-page {
-  visibility: hidden;
-  opacity: 0;
+  display: none;
   z-index: 2;
 }
 .main-page__content {

@@ -15,8 +15,7 @@ function signOut() {
 
   // Switch back to login page
   $('#header').fadeOut(TIME_DURATION_FAST);
-  $('#main-page').fadeTo(TIME_DURATION_FAST, 0, function() {
-    $(this).css('visibility', 'hidden');
+  $('#main-page').fadeOut(TIME_DURATION_FAST, function() {
     console.log('main page fade out');
     $('.main-page__data').remove();     // Clear out any data we loaded from auth
     gravityAnimation.start();           // Restart firefly simulation
@@ -123,7 +122,7 @@ function loadMainPage() {
       firebase.database().ref('content').once('value').then(populateMainPage);
       setupParallaxIntro();
       $('#header').fadeIn(TIME_DURATION_FAST);
-      $('#main-page').css('visibility', 'visible').fadeTo(TIME_DURATION_FAST, 1, function() {
+      $('#main-page').fadeIn(TIME_DURATION_FAST, function() {
         console.log('main page fade in');
         $(window).scroll(scrollHandler);  // Add scroll position listener for effects
         setTimeout(function() {
