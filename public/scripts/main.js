@@ -112,9 +112,9 @@ function loadMainPage() {
     // Fade out login page, load in data, and fade in main page
     console.log('fireflies fade out');
     // $('#firefly-field').addClass('blur');
+    PAUSE_GRAVITY_SIMULATION = true;  // Pause firefly field in the background
     $('#firefly-field').fadeOut('fast');
     $('body').removeClass('gravity');
-    PAUSE_GRAVITY_SIMULATION = true;  // Pause firefly field in the background
     $('#login-page').fadeOut('fast', function() {
       console.log('login page fade out');
       firebase.database().ref('content').once('value').then(populateMainPage);
@@ -455,7 +455,7 @@ function initApp() {
   $('#entersite-button').click(enterSite);
   $('#login-form').submit(signIn);
   $('.changepassword-button').click(sendPasswordReset);
-  $('.debug-button').click(toggleDebugMode);
+  // $('.debug-button').click(toggleDebugMode);
   $('.signout-button').click(signOut);
   $('#navicon').click(function() {
     $('#title').toggleClass('expanded');

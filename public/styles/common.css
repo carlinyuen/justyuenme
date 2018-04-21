@@ -23,7 +23,7 @@ body {
   opacity: 1.0 !important;
 }
 .hidden {
-  display: none !important;
+  visibility: hidden !important;
 }
 
 .mdl-layout {

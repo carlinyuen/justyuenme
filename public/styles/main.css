@@ -1,14 +1,11 @@
-.parallax__debug {
-  /* transform: translate3d(700px, 0, -800px) rotateY(30deg) !important; */
-  /* -webkit-transform: translate3d(700px, 0, -800px) rotateY(30deg) !important; */
+/* .parallax__debug {
+  transform: translate3d(700px, 0, -800px) rotateY(30deg) !important;
+  -webkit-transform: translate3d(700px, 0, -800px) rotateY(30deg) !important;
   border: 1px solid #888;
-  -webkit-transform: rotateY(30deg) !important;
-  -ms-transform: rotateY(30deg) !important;
-  transform: rotateY(30deg) !important;
 }
 .parallax__debug * {
   opacity: 0.5;
-}
+} -- didn't quite work, only for pure CSS version */
 
 .main-page, #header, #parallax, #main-page {
   display: none;
@@ -148,6 +145,7 @@
 
   /* Improve performance, per https://www.fourkitchens.com/blog/article/fix-scrolling-performance-css-will-change-property/ */
   will-change: transform;
+  transform: translateZ(0);
 
   /* height: 100%;
   overflow-x: hidden;
