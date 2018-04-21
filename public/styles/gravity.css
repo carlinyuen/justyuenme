@@ -8,6 +8,10 @@ body.gravity {
   user-select: none;
 }
 
+body.gravity main.mdl-layout__content {
+  margin-top: 0;
+}
+
 #firefly-field {
   position: fixed;
   top: 0;
