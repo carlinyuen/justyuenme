@@ -115,8 +115,9 @@ function loadMainPage() {
     console.log('fireflies fade out');
     // $('#firefly-field').addClass('blur');
     gravityAnimation.stop();         // Stop firefly animation in background
-    $('#firefly-field').fadeOut(TIME_DURATION_FAST);
-    $('body').removeClass('gravity');
+    $('#firefly-field').fadeOut(TIME_DURATION_FAST, function() {
+      $('body').removeClass('gravity');
+    });
     $('#login-page').fadeOut(TIME_DURATION_FAST, function() {
       console.log('login page fade out');
       firebase.database().ref('content').once('value').then(populateMainPage);
