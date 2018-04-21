@@ -154,22 +154,30 @@ function scrollHandler(event) {
   // console.log('scrollHandler:', event);
 
   var scrollPos = $(this).scrollTop();
-  if (scrollPos > BACKGROUND_GRADIENT_START_POS && scrollPos < BACKGROUND_GRADIENT_END_POS) {
-    console.log('changing nav color');
-    var startColor = [255, 229, 187]
-      , endColor = [5, 11, 33]
-      , scale = (scrollPos - BACKGROUND_GRADIENT_START_POS) / (BACKGROUND_GRADIENT_END_POS - BACKGROUND_GRADIENT_START_POS)
-      , textColor = [0, 0, 0];
-    console.log(scale);
-    $.each(textColor, function(i) {
-      textColor[i] = ((endColor[i] - startColor[i]) * scale) + startColor[i];
-    });
-    console.log(textColor);
-    $('#nav > a').css('color', 'rgb('
-      + Math.round(textColor[0]) + ', '
-      + Math.round(textColor[1]) + ', '
-      + Math.round(textColor[2]) + ')');
+    , startColor = [255, 229, 187]
+    , endColor = [5, 11, 33]
+    , textColor = [0, 0, 0]
+  ;
+  switch (true) {
+    case scrollPos > BACKGROUND_GRADIENT_START_POS && scrollPos < BACKGROUND_GRADIENT_END_POS:
+      var scale = (scrollPos - BACKGROUND_GRADIENT_START_POS) / (BACKGROUND_GRADIENT_END_POS - BACKGROUND_GRADIENT_START_POS);
+      console.log(scale);
+      $.each(textColor, function(i) {
+        textColor[i] = ((endColor[i] - startColor[i]) * scale) + startColor[i];
+      });
+      break;
+    case scrollPos <= BACKGROUND_GRADIENT_START_POS:
+      textColor =  startColor;
+      break;
+    case scrollPos >= BACKGROUND_GRADIENT_END_POS:
+      textColor =  endColor;
+      break;
   }
+  console.log(textColor);
+  $('#nav > a').css('color', 'rgb('
+    + Math.round(textColor[0]) + ', '
+    + Math.round(textColor[1]) + ', '
+    + Math.round(textColor[2]) + ')');
 }
 
 // Populate main page data
@@ -417,7 +425,7 @@ function initApp() {
   $('.nav .nav-link').on('click', function(e) {
     console.log('nav clicked:', e.target);
     e.preventDefault();
-    $('html').animate({
+    $('html, body').animate({   // Need 'body' for Safari
       scrollTop: $($(e.target).attr('href')).offset().top
     }, TIME_DURATION_MEDIUM);
   });
