@@ -300,7 +300,7 @@ Particle.prototype = (function(o) {
 
 
 // Initialize
-(function() {
+var gravityAnimation = (function() {
   // Configs
   var BACKGROUND_COLOR      = 'rgba(11, 51, 56, 1)',
       PARTICLE_NUM          = 100,
@@ -410,14 +410,8 @@ Particle.prototype = (function(o) {
   canvas.addEventListener('dblclick', doubleClick, false);
 
   // Start Update
+  var requestAnimationFrameID;
   var loop = function() {
-
-    // Emergency pause function if global variable is set
-    if (PAUSE_GRAVITY_SIMULATION) {
-      requestAnimationFrame(loop);
-      return;
-    }
-
     var i, len, g, p;
     context.save();
     context.fillStyle = BACKGROUND_COLOR;
@@ -466,7 +460,17 @@ Particle.prototype = (function(o) {
     bufferCtx.restore();
 
     context.drawImage(bufferCvs, 0, 0);
-    requestAnimationFrame(loop);
+    requestAnimationFrameID = requestAnimationFrame(loop);
   };
-  loop();
+
+  return {
+    start: function() {
+      console.log('start gravity animation');
+      loop();
+    },
+    stop: function() {
+      console.log('cancel gravity animation');
+      cancelAnimationFrame(requestAnimationFrameID);
+    },
+  };
 })();

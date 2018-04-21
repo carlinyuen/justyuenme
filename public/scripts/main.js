@@ -17,7 +17,7 @@ function signOut() {
   $('.main-page').fadeOut('fast', function() {
     console.log('main page fade out');
     $('.main-page__data').remove();     // Clear out any data we loaded from auth
-    PAUSE_GRAVITY_SIMULATION = false;   // Unpause firefly simulation
+    gravityAnimation.start();           // Restart firefly simulation
     if (rellax) {                       // Remove parallax
       rellax.destroy();
     }
@@ -112,7 +112,7 @@ function loadMainPage() {
     // Fade out login page, load in data, and fade in main page
     console.log('fireflies fade out');
     // $('#firefly-field').addClass('blur');
-    PAUSE_GRAVITY_SIMULATION = true;  // Pause firefly field in the background
+    gravityAnimation.stop();         // Stop firefly animation in background
     $('#firefly-field').fadeOut('fast');
     $('body').removeClass('gravity');
     $('#login-page').fadeOut('fast', function() {
@@ -463,5 +463,6 @@ function initApp() {
 }
 
 window.onload = function() {
+  gravityAnimation.start();
   initApp();
 };
