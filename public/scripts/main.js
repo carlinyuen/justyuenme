@@ -150,7 +150,7 @@ function setupParallaxIntro() {
 // Scroll handler
 function scrollHandler(event) {
   var scrollPos = $(this).scrollTop();
-  console.log('scrollHandler:', scrollPos);
+  // console.log('scrollHandler:', scrollPos);
 
   // Update navigation text color
   updateNavColor(scrollPos);
