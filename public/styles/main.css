@@ -200,7 +200,8 @@
   -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
           flex-shrink: 0;
-  padding: 256px 0 0 0;
+  margin-top: 2000px;
+  padding: 0 0 256px 0;
   color: black;
   background: transparent url('') no-repeat center 1700px;   /* Replace with background image later? */
 }
@@ -226,7 +227,6 @@
 }
 
 #intro {
-  margin-top: 1800px;
 }
 #intro h1 {
   font-family: 'Dancing Script';
