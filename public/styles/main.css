@@ -96,6 +96,7 @@
 }
 #title {
   overflow: visible;
+  text-align: left;
 }
 #title.expanded .topbar {
     -webkit-transform: rotate(-45deg) translate(-6px, 6px);
