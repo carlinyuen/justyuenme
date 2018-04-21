@@ -6,30 +6,6 @@ var TIME_DURATION_XL = 3000
 ;
 
 /**
-* Visibility functions for jQuery
-*/
-$.fn.visible = function() {
-  return this.css('visibility', 'visible');
-};
-$.fn.fadeVisible = function(duration) {
-  this.css('visibility', 'visible');
-  return this.fadeTo(duration, 1);
-};
-$.fn.invisible = function() {
-  return this.css('visibility', 'hidden');
-};
-$.fn.fadeInvisible = function(duration) {
-  return this.fadeTo(duration, 0, function() {
-    this.css('visibility', 'hidden');
-  });
-};
-$.fn.visibilityToggle = function() {
-  return this.css('visibility', function(i, visibility) {
-    return (visibility == 'visible') ? 'hidden' : 'visible';
-  });
-};
-
-/**
 * Handles the sign out button press.
 */
 function signOut() {
@@ -38,8 +14,9 @@ function signOut() {
   firebase.auth().signOut();
 
   // Switch back to login page
-  $('#header').fadeInvisible('fast');
-  $('#main-page').fadeInvisible('fast', function() {
+  $('#header').fadeOut('fast');
+  $('#main-page').fadeTo('fast', 0, function() {
+    $(this).css('visibility', 'hidden');
     console.log('main page fade out');
     $('.main-page__data').remove();     // Clear out any data we loaded from auth
     gravityAnimation.start();           // Restart firefly simulation
@@ -50,8 +27,8 @@ function signOut() {
     $('#parallax').hide();
     $('body').addClass('gravity');
     // $('#firefly-field').removeClass('blur');
-    $('#firefly-field').fadeVisible('fast');
-    $('#login-page').fadeVisible('fast');
+    $('#firefly-field').fadeIn('fast');
+    $('#login-page').fadeIn('fast');
   });
 }
 
@@ -139,14 +116,14 @@ function loadMainPage() {
     console.log('fireflies fade out');
     // $('#firefly-field').addClass('blur');
     gravityAnimation.stop();         // Stop firefly animation in background
-    $('#firefly-field').fadeInvisible('fast');
+    $('#firefly-field').fadeOut('fast');
     $('body').removeClass('gravity');
-    $('#login-page').fadeInvisible('fast', function() {
+    $('#login-page').fadeOut('fast', function() {
       console.log('login page fade out');
       firebase.database().ref('content').once('value').then(populateMainPage);
       setupParallaxIntro();
-      $('#header').fadeVisible('fast');
-      $('#main-page').fadeVisible('fast', function() {
+      $('#header').fadeIn('fast');
+      $('#main-page').css('visibility', 'visible').fadeTo('fast', 1, function() {
         console.log('main page fade in');
         $(window).scroll(scrollHandler);  // Add scroll position listener for effects
         setTimeout(function() {
@@ -166,7 +143,7 @@ function setupParallaxIntro() {
   if (rellax) {
     rellax.destroy();
   }
-  $('#parallax').fadeVisible(TIME_DURATION_LONG, function() {
+  $('#parallax').fadeIn(TIME_DURATION_LONG, function() {
     rellax = new Rellax('.parallax');
   });
 
