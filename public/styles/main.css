@@ -203,14 +203,13 @@
           flex-shrink: 0;
   padding: 256px 0 0 0;
   color: black;
-  background: #fff;
+  background: #fff;   /* Replace with background image later? */
 }
 
 .main-page__section {
   max-width: 600px;
   padding: 0 44px;
   z-index: 3;
-  background: #fff;
 }
 @media screen and (min-width: 688px) {
   .main-page__section {
