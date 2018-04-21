@@ -7,10 +7,8 @@
   opacity: 0.5;
 } -- didn't quite work, only for pure CSS version */
 
-.main-page, #header, #parallax, #main-page {
-  display: none;
-}
 #header {
+  visibility: hidden;
   position: fixed;
 }
 
@@ -110,7 +108,7 @@
   position: fixed;
   top: 56px;
   left: 0;
-  display: none;
+  visibility: hidden;
   opacity: 0;
   transition: opacity 0.4s ease;
   font-size: 16px;
@@ -181,8 +179,8 @@
 
 
 #main-page {
+  visibility: hidden;
   z-index: 2;
-  background: #fff;   /* Replace with background image later? */
 }
 .main-page__content {
   display: -webkit-flex;
@@ -202,6 +200,7 @@
           flex-shrink: 0;
   padding: 256px 0 0 0;
   color: black;
+  background: #fff;   /* Replace with background image later? */
 }
 
 .main-page__section {
@@ -263,9 +262,6 @@
 
 #event-details .mdl-cell {
   margin: 0 auto;
-}
-
-#footer {
 }
 
 .social-btn {
