@@ -134,6 +134,8 @@
 }
 
 #parallax {
+  visibility: hidden;
+  opacity: 0;
   z-index: 1;
   position: fixed;
   top: 0;

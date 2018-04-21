@@ -14,8 +14,8 @@ function signOut() {
   firebase.auth().signOut();
 
   // Switch back to login page
-  $('#header').fadeOut('fast');
-  $('#main-page').fadeTo('fast', 0, function() {
+  $('#header').fadeOut(TIME_DURATION_FAST);
+  $('#main-page').fadeTo(TIME_DURATION_FAST, 0, function() {
     $(this).css('visibility', 'hidden');
     console.log('main page fade out');
     $('.main-page__data').remove();     // Clear out any data we loaded from auth
@@ -24,11 +24,11 @@ function signOut() {
       rellax.destroy();
     }
     $('.parallax').css('background-image', ''); // Kill images
-    $('#parallax').hide();
+    $('#parallax').css('visibility', 'hidden');
     $('body').addClass('gravity');
     // $('#firefly-field').removeClass('blur');
-    $('#firefly-field').fadeIn('fast');
-    $('#login-page').fadeIn('fast');
+    $('#firefly-field').fadeIn(TIME_DURATION_FAST);
+    $('#login-page').fadeIn(TIME_DURATION_FAST);
   });
 }
 
@@ -116,14 +116,14 @@ function loadMainPage() {
     console.log('fireflies fade out');
     // $('#firefly-field').addClass('blur');
     gravityAnimation.stop();         // Stop firefly animation in background
-    $('#firefly-field').fadeOut('fast');
+    $('#firefly-field').fadeOut(TIME_DURATION_FAST);
     $('body').removeClass('gravity');
-    $('#login-page').fadeOut('fast', function() {
+    $('#login-page').fadeOut(TIME_DURATION_FAST, function() {
       console.log('login page fade out');
       firebase.database().ref('content').once('value').then(populateMainPage);
       setupParallaxIntro();
-      $('#header').fadeIn('fast');
-      $('#main-page').css('visibility', 'visible').fadeTo('fast', 1, function() {
+      $('#header').fadeIn(TIME_DURATION_FAST);
+      $('#main-page').css('visibility', 'visible').fadeTo(TIME_DURATION_FAST, 1, function() {
         console.log('main page fade in');
         $(window).scroll(scrollHandler);  // Add scroll position listener for effects
         setTimeout(function() {
@@ -143,7 +143,7 @@ function setupParallaxIntro() {
   if (rellax) {
     rellax.destroy();
   }
-  $('#parallax').fadeIn(TIME_DURATION_LONG, function() {
+  $('#parallax').css('visibility', 'visible').fadeTo(TIME_DURATION_LONG, 1, function() {
     rellax = new Rellax('.parallax');
   });
 
