@@ -273,6 +273,10 @@ function populateMainPage(pagedata) {
   data = pagedata.val()['event-details'];
   if (data) {
     container = $('#location');
+    $(document.createElement('h3'))
+      .addClass('main-page__data')
+      .text(data.location['title'])
+      .appendTo(container);
     $(document.createElement('p'))
       .addClass('main-page__data')
       .text(data.location['venue-name'])
@@ -283,6 +287,10 @@ function populateMainPage(pagedata) {
       .appendTo(container);
 
     container = $('#schedule');
+    $(document.createElement('h3'))
+      .addClass('main-page__data')
+      .text(data.schedule['title'])
+      .appendTo(container);
     $(document.createElement('p'))
       .addClass('main-page__data')
       .text(data.schedule['date'])
@@ -293,9 +301,13 @@ function populateMainPage(pagedata) {
       .appendTo(container);
 
     container = $('#dresscode');
+    $(document.createElement('h3'))
+      .addClass('main-page__data')
+      .text(data.dresscode['title'])
+      .appendTo(container);
     $(document.createElement('p'))
       .addClass('main-page__data')
-      .text(data.dresscode)
+      .text(data.dresscode['text'])
       .appendTo(container);
   }
   // END: event-details
