@@ -122,6 +122,7 @@
   font-family: 'Trebuchet MS', serif;
   color: rgb(255, 229, 187);
   opacity: 0.5;
+  display: block;
 }
 #nav > a:hover {
   opacity: 1.0;
@@ -219,6 +220,9 @@
   display: none;
   z-index: 2;
 }
+#main-page.light {
+  background-color: #FDF6F3;
+}
 .main-page__content {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -235,13 +239,9 @@
   -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
           flex-shrink: 0;
-  margin-top: 2000px;
-  padding: 0 0 256px 0;
+  padding: 2000px 0 256px;
   color: black;
   background: transparent url('') no-repeat center 1700px;   /* Replace with background image later? */
-}
-.main-page__content.light {
-  background-color: #FDF6F2;
 }
 
 .main-page__section {

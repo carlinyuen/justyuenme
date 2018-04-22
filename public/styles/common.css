@@ -22,7 +22,7 @@ body {
 .opaque {
   opacity: 1.0 !important;
 }
-.hidden {
+.invisible {
   visibility: hidden !important;
 }
 

@@ -27,6 +27,7 @@ function signOut(event) {
   $('#main-page').fadeOut(TIME_DURATION_FAST, function() {
     // console.log('main page fade out');
     $('.main-page__data').remove();     // Clear out any data we loaded from auth
+    $('#main-page').removeClass('light');
     if (screenfull.enabled) {
       screenfull.exit();   // Go back to normal
     }
@@ -165,6 +166,7 @@ function setupParallaxIntro() {
   }
   $('#parallax').css('visibility', 'visible').fadeTo(TIME_DURATION_LONG, 1, function() {
     rellax = new Rellax('.parallax');
+    $('#main-page').addClass('light');
   });
 
   /* Using parallax.js from Google Developers */
@@ -180,7 +182,7 @@ function scrollHandler(event) {
   updateNavColor(scrollPos);
 
   // Update background color
-  updateBackgroundColor(scrollPos);
+  // updateBackgroundColor(scrollPos);
 
   // Update which parallax images to display
   updateParallaxDisplay(scrollPos);
@@ -223,7 +225,7 @@ function updateNavColor(scrollPos) {
 // Update the background color of the main content div once the user has scrolled far enough
 var BACKGROUND_LIGHT_START_POS = 1000;
 function updateBackgroundColor(scrollPos) {
-  $('.main-page__content').toggleClass('light', (scrollPos >= BACKGROUND_LIGHT_START_POS));
+  $('#main-page').toggleClass('light', (scrollPos >= BACKGROUND_LIGHT_START_POS));
 }
 
 // Update which parallax images to display, in an effort to conserve CPU and reduce performance lag
@@ -231,8 +233,8 @@ var PARALLAX_CLOUDS_SHOW_POS = 350
   , PARALLAX_BUILDINGS_HIDE_POS = 1000
 ;
 function updateParallaxDisplay(scrollPos) {
-  $('.scenery, .buildings').toggleClass('hidden', (scrollPos >= PARALLAX_BUILDINGS_HIDE_POS));
-  // $('.clouds').toggleClass('hidden', (scrollPos < PARALLAX_CLOUDS_SHOW_POS));
+  $('.scenery, .buildings').toggleClass('invisible', (scrollPos >= PARALLAX_BUILDINGS_HIDE_POS));
+  // $('.clouds').toggleClass('invisible', (scrollPos < PARALLAX_CLOUDS_SHOW_POS));
 }
 
 // Populate main page data
