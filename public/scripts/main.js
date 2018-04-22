@@ -79,7 +79,6 @@ function signIn(event) {
       return;
     }
     // Sign in with email and pass.
-    // [START authwithemail]
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -105,7 +104,6 @@ function signIn(event) {
       console.log(error);
       document.getElementById('signin-button').disabled = false;
     });
-    // [END authwithemail]
   }
 
   // Disable buttons for now to prevent multiple calls
@@ -245,9 +243,8 @@ function populateMainPage(pagedata) {
   if (!pagedata.val()) {
     return alert('Could not load data! Please let us know if you see this error.');
   }
-  var data, container, temp;
 
-  // START: our-story
+  var data, container, temp;
   data = pagedata.val()['our-story'];
   if (data) {
     container = $('#our-story');
@@ -267,9 +264,7 @@ function populateMainPage(pagedata) {
       });
     });
   }
-  // END: our-story
 
-  // START: event-details
   data = pagedata.val()['event-details'];
   if (data) {
     container = $('#location');
@@ -310,9 +305,7 @@ function populateMainPage(pagedata) {
       .text(data.dresscode['text'])
       .appendTo(container);
   }
-  // END: event-details
 
-  // START: transportation
   data = pagedata.val()['transportation'];
   if (data) {
     container = $('#transportation');
@@ -329,9 +322,7 @@ function populateMainPage(pagedata) {
       });
     });
   }
-  // END: transportation
 
-  // START: accommodations
   data = pagedata.val()['accommodations'];
   if (data) {
     container = $('#accommodations');
@@ -356,9 +347,7 @@ function populateMainPage(pagedata) {
         .appendTo(container);
     });
   }
-  // END: accommodations
 
-  // START: gift-registry
   data = pagedata.val()['gift-registry'];
   if (data) {
     container = $('#gift-registry');
@@ -367,7 +356,6 @@ function populateMainPage(pagedata) {
       .html(data.split('\n').join('<br>'))
       .appendTo(container);
   }
-  // END: gift-registry
 }
 
 /**
@@ -375,7 +363,6 @@ function populateMainPage(pagedata) {
 */
 function sendPasswordReset() {
   var email = $('#email-input').val();
-  // [START sendpasswordemail]
   firebase.auth().sendPasswordResetEmail(email).then(function() {
     if ($('#user-warnings').is(':visible')) {
       $('#user-warnings').text('Password reset email sent.');
@@ -396,15 +383,6 @@ function sendPasswordReset() {
         console.log(error);
     }
   });
-  // [END sendpasswordemail];
-}
-
-/**
-* Toggles debug mode to show element layers
-*/
-function toggleDebugMode() {
-  // $('body').find('*').toggleClass('parallax__debug');
-  $('.mdl-layout').find('*').toggleClass('parallax__debug');
 }
 
 /**
@@ -457,7 +435,6 @@ function getDownloadURL(path, callback) {
 */
 function initApp() {
   // Listening for auth state changes.
-  // [START authstatelistener]
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       // console.log(JSON.stringify(user, null, '  '));
@@ -489,8 +466,8 @@ function initApp() {
       $('#login-page .welcomeInfo').find('button').prop('disabled', true);
     }
   });
-  // [END authstatelistener]
 
+  // Initialization
   $('.nav .nav-link').on('click', function(e) {
     // console.log('nav clicked:', e.target);
     e.preventDefault();
@@ -503,7 +480,6 @@ function initApp() {
   $('#entersite-button').click(enterSite);
   $('#login-form').submit(signIn);
   $('.changepassword-button').click(sendPasswordReset);
-  // $('.debug-button').click(toggleDebugMode);
   $('.signout-button').click(signOut);
   $('#navicon').click(function() {
     $('#title').toggleClass('expanded');

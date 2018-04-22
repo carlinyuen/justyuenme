@@ -74,6 +74,10 @@
   color: #888888;
 }
 
+#title {
+  overflow: visible;
+  text-align: left;
+}
 #navicon {
   display: inline-block;
   cursor: pointer;
@@ -88,18 +92,14 @@
   margin: 6px 0;
   transition: 0.4s;
 }
-#title {
-  overflow: visible;
-  text-align: left;
-}
-#title.expanded .topbar {
+#title.expanded .navicon.topbar {
   -webkit-transform: rotate(-45deg) translate(-6px, 6px);
   transform: rotate(-45deg) translate(-6px, 6px);
 }
-#title.expanded .midbar {
+#title.expanded .navicon.midbar {
   opacity: 0;
 }
-#title.expanded .bottombar {
+#title.expanded .navicon.bottombar {
   -webkit-transform: rotate(45deg) translate(-6px, -6px);
   transform: rotate(45deg) translate(-6px, -6px);
 }
