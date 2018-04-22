@@ -50,13 +50,13 @@ limitations under the License.
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header id="header" class="mdl-layout__header mdl-layout__header--transparent">
       <menu class="mdl-layout__header-row">
+
         <div id="title" class="mdl-layout__drawer-button expanded">
           <div id="navicon" class="translucent">
             <div class="navicon topbar"></div>
             <div class="navicon midbar"></div>
             <div class="navicon bottombar"></div>
           </div>
-          <!-- START: Nav -->
           <nav id="nav" class="nav flex-column align-items-start">
             <a class="nav-item nav-link" href="#home">Home</a>
             <a class="nav-item nav-link" href="#our-story">Our Story</a>
@@ -66,9 +66,10 @@ limitations under the License.
             <a class="nav-item nav-link" href="#accommodations">Accommodations</a>
             <a class="nav-item nav-link" href="#gift-registry">Gift Registry</a>
           </nav>
-          <!-- END: Nav -->
         </div>
+
         <div class="mdl-layout-spacer"></div>
+
         <button id="menu-button"
         class="mdl-button mdl-js-button mdl-button--icon translucent">
           <i class="material-icons">more_vert</i>
@@ -78,19 +79,18 @@ limitations under the License.
           <li class="mdl-menu__item changepassword-button" name="changepassword">Change Password</li>
           <li class="mdl-menu__item signout-button" name="signout">Sign Out</li>
         </ul>
+
       </menu>
     </header>
 
     <!-- Main Content -->
     <main class="mdl-layout__content">
-      <!-- START: firefly field -->
       <canvas id="firefly-field"></canvas>
-      <!-- END: firefly field -->
-      <!-- START: login page -->
+
       <section id="login-page" aria-label="login to enter">
         <div class="login-page__content mdl-card mdl-shadow--2dp mdl-typography--text-center">
+          <!-- START: Login -->
           <form id="login-form" class="loginInfo">
-            <!-- START: Email -->
             <div class="mdl-color-text--teal-100">
               <div id="email-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" name="email" id="email-input">
@@ -98,8 +98,7 @@ limitations under the License.
                 <span id="email-error" class="mdl-textfield__error"></span>
               </div>
             </div>
-            <!-- END: Email -->
-            <!-- START: Password -->
+
             <div class="mdl-color-text--teal-100">
               <div id="password-container" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="password" name="password" id="password-input">
@@ -107,19 +106,16 @@ limitations under the License.
                 <span id="password-error" class="mdl-textfield__error"></span>
               </div>
             </div>
-            <!-- END: Password -->
-            <!-- START: Buttons -->
+
             <div class="mdl-card__actions">
               <button disabled class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" type="submit" id="signin-button" name="signin">Sign In</button>
             </div>
-            <!-- END: Buttons -->
           </form>
-          <!-- START: Welcome message -->
+          <!-- END: Login -->
+          <!-- START: Welcome -->
           <div class="welcomeInfo mdl-card__title mdl-color-text--firefly">
             <h2 id="welcome-header">Welcome<span id="welcome-name"></span></h2>
           </div>
-          <!-- END: Welcome message -->
-          <!-- START: Buttons -->
           <div class="welcomeInfo mdl-card__actions">
             <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="entersite-button" name="entersite">Enter Site</button>
             <br>
@@ -127,15 +123,11 @@ limitations under the License.
             <br>
             <button class="mdl-button mdl-js-button mdl-button--primary signout-button" name="signout">Sign Out</button>
           </div>
-          <!-- END: Buttons -->
-          <!-- START: Error messages -->
           <div class="welcomeInfo"><span id="user-warnings"></span></div>
-          <!-- END: Error messages -->
+          <!-- END: Welcome -->
         </div>
       </section>
-      <!-- END: login page -->
 
-      <!-- START: parallax -->
       <div id="parallax">
         <div id="sky" class="parallax scenery" data-rellax-speed="0"></div>
         <div id="stars" class="parallax scenery" data-rellax-speed="0.5"></div>
@@ -148,7 +140,6 @@ limitations under the License.
         <div id="cloud2" class="parallax clouds" data-rellax-speed="180"></div>
         <div id="cloud3" class="parallax clouds" data-rellax-speed="320"></div>
       </div>
-      <!-- END: parallax -->
 
       <!-- START: main content -->
       <section id="main-page" class="main-page">
@@ -180,10 +171,8 @@ limitations under the License.
           <section id="photo-gallery" class="main-page__section">
           </section>
         </div>
-        <!-- <footer id="footer" class="mdl-mini-footer"></footer> -->
       </section>
       <!-- END: main content -->
-
     </main>
     <div class="mdl-layout__obfuscator"></div>
   </div>
