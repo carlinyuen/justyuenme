@@ -1,5 +1,5 @@
 'use strict';
-var TIME_DURATION_XL = 3000
+var TIME_DURATION_XL = 2000
   , TIME_DURATION_LONG = 1500
   , TIME_DURATION_MEDIUM = 1000
   , TIME_DURATION_FAST = 400
@@ -232,7 +232,7 @@ var PARALLAX_CLOUDS_SHOW_POS = 350
 ;
 function updateParallaxDisplay(scrollPos) {
   $('.scenery, .buildings').toggleClass('hidden', (scrollPos >= PARALLAX_BUILDINGS_HIDE_POS));
-  $('.clouds').toggleClass('hidden', (scrollPos < PARALLAX_CLOUDS_SHOW_POS));
+  // $('.clouds').toggleClass('hidden', (scrollPos < PARALLAX_CLOUDS_SHOW_POS));
 }
 
 // Populate main page data
@@ -466,7 +466,7 @@ function initApp() {
         document.querySelector('.mdl-textfield').MaterialTextfield.checkDirty();
 
         // Preload the parallax images
-        preloadParallaxImages();
+        // preloadParallaxImages();
       });
     } else {
       // console.log('user signed out')
