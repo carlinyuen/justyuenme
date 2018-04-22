@@ -128,6 +128,7 @@ function loadMainPage() {
       screenfull.request();
     }
     if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent) && !window.MSStream) {
+      alert('iOS DEVICE');
       window.scrollTo(0,1);
     }
 
