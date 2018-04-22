@@ -12,6 +12,9 @@ body {
   background-color: rgb(255, 229, 187);
 }
 
+.transparent {
+  opacity: 0 !important;
+}
 .translucent {
   opacity: 0.5;
 }

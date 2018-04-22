@@ -178,14 +178,20 @@ function scrollHandler(event) {
   var scrollPos = $(this).scrollTop();
   // console.log('scrollHandler:', scrollPos);
 
-  // Update navigation text color
-  updateNavColor(scrollPos);
+  hideScrollIndicator(scrollPos);   // Hide scroll indicator
+  updateNavColor(scrollPos);        // Update navigation text color
+  updateParallaxDisplay(scrollPos); // Update which parallax images to display
+}
 
-  // Update background color
-  // updateBackgroundColor(scrollPos);
-
-  // Update which parallax images to display
-  updateParallaxDisplay(scrollPos);
+// Hide scroll indicator after scrolling down
+var SCROLL_INDICATOR_HIDE_POS = 256
+  , scrollIndicatorHidden = false
+;
+function hideScrollIndicator(scrollPos) {
+  if (!scrollIndicatorHidden && scrollPos >= SCROLL_INDICATOR_HIDE_POS) {
+    $('#scroll-indicator').addClass('transparent');
+    scrollIndicatorHidden = true;
+  }
 }
 
 // Update the text color of the navigation links based on scroll position to account for gradient background
@@ -220,12 +226,6 @@ function updateNavColor(scrollPos) {
     + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
   $('.navicon').css('background-color', 'rgb('
     + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
-}
-
-// Update the background color of the main content div once the user has scrolled far enough
-var BACKGROUND_LIGHT_START_POS = 1000;
-function updateBackgroundColor(scrollPos) {
-  $('#main-page').toggleClass('light', (scrollPos >= BACKGROUND_LIGHT_START_POS));
 }
 
 // Update which parallax images to display, in an effort to conserve CPU and reduce performance lag

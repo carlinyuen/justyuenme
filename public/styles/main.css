@@ -226,8 +226,9 @@
   color: rgb(255, 229, 187);
   text-align: center;
   font-family: 'Dancing Script', cursive;
+  transition: opacity 1s ease;
 }
-#scroll-indicator h4 {
+#scroll-indicator h3 {
   margin: 0;
 }
 #main-page {
