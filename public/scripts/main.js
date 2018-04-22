@@ -6,7 +6,7 @@ var TIME_DURATION_XL = 3000
 ;
 
 /**
-* Check for mobile browser
+* Check for mobile browser, from https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
 */
 window.mobilecheck = function() {
   var check = false;
@@ -123,10 +123,15 @@ function enterSite(event) {
 // Load the main page
 function loadMainPage() {
   if (checkAuthOrSignin()) {
-    // Fade out login page, load in data, and fade in main page
+    // Go fullscreen if on mobile
     if (window.mobilecheck() && screenfull.enabled) {
-      screenfull.request();   // Go fullscreen
+      screenfull.request();
     }
+    if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent) && !window.MSStream) {
+      window.scrollTo(0,1);
+    }
+
+    // Fade out login page, load in data, and fade in main page
     // console.log('fireflies fade out');
     // $('#firefly-field').addClass('blur');
     gravityAnimation.stop();         // Stop firefly animation in background
