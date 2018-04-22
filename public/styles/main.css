@@ -145,7 +145,12 @@
 
   /* Improve performance, per https://www.fourkitchens.com/blog/article/fix-scrolling-performance-css-will-change-property/ */
   will-change: transform;
-  transform: translateZ(0);
+  -webkit-transform: translate3d(0,0,0);
+  -ms-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+  -webkit-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
 
   /* height: 100%;
   overflow-x: hidden;

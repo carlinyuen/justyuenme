@@ -128,8 +128,7 @@ function loadMainPage() {
       screenfull.request();
     }
     if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent) && !window.MSStream) {
-      alert('iOS DEVICE');
-      window.scrollTo(0,1);
+      window.scrollTo(0,1);   // Tested, this doesn't seem to work, but detects iOS
     }
 
     // Fade out login page, load in data, and fade in main page
