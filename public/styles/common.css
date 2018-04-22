@@ -134,3 +134,138 @@ html, body {
 mdl-layout {
   min-height: 100%;
 }
+
+/* From Hover.css https://github.com/IanLunn/Hover/blob/master/css/hover.css */
+/* Hang */
+@-webkit-keyframes hvr-hang {
+  0% {
+    -webkit-transform: translateY(8px);
+    transform: translateY(8px);
+  }
+  50% {
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);
+  }
+  100% {
+    -webkit-transform: translateY(8px);
+    transform: translateY(8px);
+  }
+}
+@keyframes hvr-hang {
+  0% {
+    -webkit-transform: translateY(8px);
+    transform: translateY(8px);
+  }
+  50% {
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);
+  }
+  100% {
+    -webkit-transform: translateY(8px);
+    transform: translateY(8px);
+  }
+}
+@-webkit-keyframes hvr-hang-sink {
+  100% {
+    -webkit-transform: translateY(8px);
+    transform: translateY(8px);
+  }
+}
+@keyframes hvr-hang-sink {
+  100% {
+    -webkit-transform: translateY(8px);
+    transform: translateY(8px);
+  }
+}
+.hvr-hang {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+.hvr-hang:hover, .hvr-hang:focus, .hvr-hang:active {
+  -webkit-animation-name: hvr-hang-sink, hvr-hang;
+  animation-name: hvr-hang-sink, hvr-hang;
+  -webkit-animation-duration: .3s, 1.5s;
+  animation-duration: .3s, 1.5s;
+  -webkit-animation-delay: 0s, .3s;
+  animation-delay: 0s, .3s;
+  -webkit-animation-timing-function: ease-out, ease-in-out;
+  animation-timing-function: ease-out, ease-in-out;
+  -webkit-animation-iteration-count: 1, infinite;
+  animation-iteration-count: 1, infinite;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-direction: normal, alternate;
+  animation-direction: normal, alternate;
+}
+
+/* Icon Hang */
+@-webkit-keyframes hvr-icon-hang {
+  0% {
+    -webkit-transform: translateY(6px);
+    transform: translateY(6px);
+  }
+  50% {
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+  }
+  100% {
+    -webkit-transform: translateY(6px);
+    transform: translateY(6px);
+  }
+}
+@keyframes hvr-icon-hang {
+  0% {
+    -webkit-transform: translateY(6px);
+    transform: translateY(6px);
+  }
+  50% {
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+  }
+  100% {
+    -webkit-transform: translateY(6px);
+    transform: translateY(6px);
+  }
+}
+@-webkit-keyframes hvr-icon-hang-sink {
+  100% {
+    -webkit-transform: translateY(6px);
+    transform: translateY(6px);
+  }
+}
+@keyframes hvr-icon-hang-sink {
+  100% {
+    -webkit-transform: translateY(6px);
+    transform: translateY(6px);
+  }
+}
+.hvr-icon-hang {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+.hvr-icon-hang .hvr-icon {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-name: hvr-icon-hang-sink, hvr-icon-hang;
+  animation-name: hvr-icon-hang-sink, hvr-icon-hang;
+  -webkit-animation-duration: .3s, 1.5s;
+  animation-duration: .3s, 1.5s;
+  -webkit-animation-delay: 0s, .3s;
+  animation-delay: 0s, .3s;
+  -webkit-animation-timing-function: ease-out, ease-in-out;
+  animation-timing-function: ease-out, ease-in-out;
+  -webkit-animation-iteration-count: 1, infinite;
+  animation-iteration-count: 1, infinite;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-direction: normal, alternate;
+  animation-direction: normal, alternate;
+}

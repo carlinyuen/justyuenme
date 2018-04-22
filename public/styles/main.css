@@ -215,7 +215,21 @@
   }
 }
 
-
+#scroll-indicator {
+  opacity: 0.75;
+  position: fixed;
+  z-index: 5;
+  bottom: 16px;
+  height: 44px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgb(255, 229, 187);
+  text-align: center;
+  font-family: 'Dancing Script', cursive;
+}
+#scroll-indicator h4 {
+  margin: 0;
+}
 #main-page {
   display: none;
   z-index: 2;
