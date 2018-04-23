@@ -26,7 +26,7 @@ function signOut(event) {
   $('#header').fadeOut(TIME_DURATION_FAST);
   $('#main-page').fadeOut(TIME_DURATION_FAST, function() {
     // console.log('main page fade out');
-    $('.main-page__data').remove();     // Clear out any data we loaded from auth
+    $('.main-page__data').remove();     // Clear out any data we loaded
     $('#main-page').removeClass('light');
     if (screenfull.enabled) {
       screenfull.exit();   // Go back to normal
@@ -35,10 +35,8 @@ function signOut(event) {
     if (rellax) {                       // Remove parallax
       rellax.destroy();
     }
-    $('.parallax').css('background-image', ''); // Kill images
     $('#parallax').css('visibility', 'hidden');
     $('body').addClass('gravity');
-    // $('#firefly-field').removeClass('blur');
     $('#firefly-field').fadeIn(TIME_DURATION_FAST);
     $('#login-page').fadeIn(TIME_DURATION_FAST);
   });
@@ -111,40 +109,31 @@ function signIn(event) {
 }
 
 /**
-* Serves site content if the user is auth'd
+* Load the main page if user is auth'd
 */
-function enterSite(event) {
-  document.getElementById('entersite-button').disabled = true;
-  loadMainPage();
-}
-
-
-// Load the main page
 function loadMainPage() {
+  $('#entersite-button').prop('disabled', true);
   if (checkAuthOrSignin()) {
-    // Go fullscreen if on mobile
+    // Go fullscreen if on mobile to avoid browser header jank
     if (window.mobilecheck() && screenfull.enabled) {
       screenfull.request();
     }
     if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent) && !window.MSStream) {
-      window.scrollTo(0,1);   // Tested, this doesn't seem to work, but detects iOS
+      window.scrollTo(0,1);   // TODO: detects iOS, but doesn't seem to work
     }
 
     // Fade out login page, load in data, and fade in main page
-    // console.log('fireflies fade out');
-    // $('#firefly-field').addClass('blur');
-    gravityAnimation.stop();         // Stop firefly animation in background
+    gravityAnimation.stop();              // Stop firefly animation
     $('#firefly-field').fadeOut(TIME_DURATION_FAST, function() {
       $('body').removeClass('gravity');
     });
     $('#login-page').fadeOut(TIME_DURATION_FAST, function() {
-      // console.log('login page fade out');
       firebase.database().ref('content').once('value').then(populateMainPage);
       setupParallaxIntro();
       $('#header').fadeIn(TIME_DURATION_FAST);
       $('#main-page').fadeIn(TIME_DURATION_FAST, function() {
         // console.log('main page fade in');
-        $(window).scroll(scrollHandler);  // Add scroll position listener for effects
+        $(window).scroll(scrollHandler);  // Add scroll position listener
         setTimeout(function() {
           $('#title').toggleClass('expanded', false);
         }, TIME_DURATION_XL);
@@ -162,10 +151,11 @@ function setupParallaxIntro() {
   if (rellax) {
     rellax.destroy();
   }
-  $('#parallax').css('visibility', 'visible').fadeTo(TIME_DURATION_LONG, 1, function() {
-    rellax = new Rellax('.parallax');
-    $('#main-page').addClass('light');
-  });
+  $('#parallax').css('visibility', 'visible')
+    .fadeTo(TIME_DURATION_LONG, 1, function() {
+      rellax = new Rellax('.parallax');
+      $('#main-page').addClass('light');
+    });
 
   /* Using parallax.js from Google Developers */
   // initializeParallax(document.querySelector('#main-page'));
@@ -195,6 +185,11 @@ function hideScrollIndicator(scrollPos) {
 // Update the text color of the navigation links based on scroll position to account for gradient background
 var BACKGROUND_GRADIENT_START_POS = 1420
   , BACKGROUND_GRADIENT_END_POS = 1820
+  , NAV_STATE_PRE_GRADIENT = 0
+  , NAV_STATE_DURING_GRADIENT = 1
+  , NAV_STATE_POST_GRADIENT = 2
+  , navStatePrevious = 0
+  , navStateChanged = false
 ;
 function updateNavColor(scrollPos) {
   var startColor = [255, 229, 187]
@@ -202,7 +197,8 @@ function updateNavColor(scrollPos) {
     , textColor = [0, 0, 0]
   switch (true) {
     case scrollPos <= BACKGROUND_GRADIENT_START_POS:
-      textColor =  startColor;
+      textColor = startColor;
+      checkNavState(NAV_STATE_PRE_GRADIENT);
       break;
     case scrollPos > BACKGROUND_GRADIENT_START_POS && scrollPos < BACKGROUND_GRADIENT_END_POS:
       $.each(textColor, function(i) {
@@ -214,16 +210,29 @@ function updateNavColor(scrollPos) {
           )
         ) + startColor[i]);
       });
+      checkNavState(NAV_STATE_DURING_GRADIENT);
       break;
     case scrollPos >= BACKGROUND_GRADIENT_END_POS:
-      textColor =  endColor;
+      textColor = endColor;
+      checkNavState(NAV_STATE_POS_GRADIENT);
       break;
   }
   // console.log(textColor);
-  $('#nav > a, #menu-button').css('color', 'rgb('
-    + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
-  $('.navicon').css('background-color', 'rgb('
-    + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
+  if (navStateChanged) {
+    $('#nav > a, #menu-button').css('color', 'rgb('
+      + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
+    $('.navicon').css('background-color', 'rgb('
+      + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
+    navStateChanged = false;
+  }
+}
+
+// Check nav state and mark as changed if needed
+function checkNavState(state) {
+  if (navStatePrevious != state) {
+    navStateChanged = true;
+  }
+  navStatePrevious = state;
 }
 
 // Update which parallax images to display, in an effort to conserve CPU and reduce performance lag
@@ -238,9 +247,7 @@ function updateParallaxDisplay(scrollPos) {
 // Populate main page data
 function populateMainPage(pagedata) {
   // console.log('populateMainPage:', pagedata.val());
-
-  // Sanity check
-  if (!pagedata.val()) {
+  if (!pagedata.val()) {  // Sanity check
     return alert('Could not load data! Please let us know if you see this error.');
   }
 
@@ -306,6 +313,26 @@ function populateMainPage(pagedata) {
       .appendTo(container);
   }
 
+  data = pagedata.val()['rsvp'];
+  if (data) {
+    container = $('#wedding-rsvp');
+    temp = new Date(data['datetime'] + (1000 * 60 * 60 * 24));  // Set to 1 day after deadline
+    console.log('rsvp date:', temp);
+    temp = (new Date() > temp);
+    console.log('today is after deadline:', temp);
+    $(document.createElement('button'))
+      .addClass('main-page__data')
+      .attr('id', 'rsvp-button')
+      .text(data['title'])
+      .prop('disabled', temp)
+      .click(showRSVPForm)
+      .appendTo(container);
+    $(document.createElement('p'))
+      .addClass('main-page__data')
+      .text((temp ? data['errorText'] : data['text']))
+      .appendTo(container);
+  }
+
   data = pagedata.val()['transportation'];
   if (data) {
     container = $('#transportation');
@@ -359,6 +386,16 @@ function populateMainPage(pagedata) {
 }
 
 /**
+* Shows form for RSVPing
+*/
+function showRSVPForm() {
+  var user = checkAuthOrSignin();
+  if (user) {
+
+  }
+}
+
+/**
 * Sends password reset/change email to email account
 */
 function sendPasswordReset() {
@@ -386,22 +423,22 @@ function sendPasswordReset() {
 }
 
 /**
-* Preloads parallax images
+* Preloads images
 */
-function preloadParallaxImages() {
-  // console.log('preloadParallaxImages');
-  $('.parallax').each(function(i) {
-    var path = 'parallax/' + i + '.png';
-    var $el = $(this);
-    getDownloadURL(path, function(url) {
-      // console.log('prefetch url:', url);
-      /* Preload image: https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded */
-      $('<img/>').attr('src', url).on('load', function() {
-        $(this).remove(); // prevent memory leaks
-        $el.css('background-image', 'url(' + url + ')');
-      });
-    });
-  });
+function preloadImages() {
+  // console.log('preloadImages');
+  // $('.parallax').each(function(i) {
+  //   var path = 'parallax/' + i + '.png';
+  //   var $el = $(this);
+  //   getDownloadURL(path, function(url) {
+  //     // console.log('prefetch url:', url);
+  //     /* Preload image: https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded */
+  //     $('<img/>').attr('src', url).on('load', function() {
+  //       $(this).remove(); // prevent memory leaks
+  //       $el.css('background-image', 'url(' + url + ')');
+  //     });
+  //   });
+  // });
 }
 
 // Get download URL from cloud storage
@@ -412,20 +449,19 @@ function getDownloadURL(path, callback) {
     return;
   }
   // Create a reference to the file we want to download
-  firebase.storage().ref(path).getDownloadURL().then(callback
-    // Insert url into an <img> tag to "download"
-    // jQuery.get(url);   // Preload/cache images
-  ).catch(function(error) {
-    // https://firebase.google.com/docs/storage/web/handle-errors
-    switch (error.code) {
-      case 'storage/canceled': break;
-      case 'storage/object_not_found':  // DNE
-      case 'storage/unauthorized':      // Not auth'd
-      case 'storage/unknown':           // Unknown error
-      default:
-        console.log(error);
-    }
-  });
+  firebase.storage().ref(path).getDownloadURL()
+    .then(callback)
+    .catch(function(error) {
+      // https://firebase.google.com/docs/storage/web/handle-errors
+      switch (error.code) {
+        case 'storage/canceled': break;
+        case 'storage/object_not_found':  // DNE
+        case 'storage/unauthorized':      // Not auth'd
+        case 'storage/unknown':           // Unknown error
+        default:
+          console.log(error);
+      }
+    });
 }
 
 /**
@@ -437,28 +473,25 @@ function initApp() {
   // Listening for auth state changes.
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      // console.log(JSON.stringify(user, null, '  '));
+      console.log(JSON.stringify(user, null, '  '));
       var uid = user.uid;
 
       // Grab intended displayName and email from database
-      firebase.database().ref('users/' + uid) .once('value').then(function(userData) {
-        var displayName = userData.val().username;
-        var email = userData.val().email;
-        $('#login-page').addClass('logged-in');
-        $('#login-page .loginInfo').find('button').prop('disabled', true);
-        $('#login-page .welcomeInfo').find('button').prop('disabled', false);
-        $('#email-input').val(email);   // Populate email field
-        $('#password-input').val('');   // Clear password
-        if (displayName) {
-          $('#welcome-name').text(', ' + displayName + '!');
-        }
-
-        // Update login fields
-        document.querySelector('.mdl-textfield').MaterialTextfield.checkDirty();
-
-        // Preload the parallax images
-        // preloadParallaxImages();
-      });
+      firebase.database().ref('users/' + uid).once('value')
+        .then(function(userData) {
+          var displayName = userData.val().username;
+          $('#login-page').addClass('logged-in');
+          $('#login-page .loginInfo').find('button').prop('disabled', true);
+          $('#login-page .welcomeInfo').find('button').prop('disabled', false);
+          $('#email-input').val(userData.val().email);  // Populate email field
+          $('#password-input').val('');                 // Clear password
+          $('.mdl-textfield').each(function(i) {
+            this.MaterialTextfield.checkDirty();  // Update field styling
+          });
+          if (displayName) {
+            $('#welcome-name').text(', ' + displayName + '!');
+          }
+        });
     } else {
       // console.log('user signed out')
       $('#login-page').removeClass('logged-in');
@@ -468,8 +501,10 @@ function initApp() {
   });
 
   // Initialization
+  $('#navicon').click(function() {
+    $('#title').toggleClass('expanded');
+  });
   $('.nav-link').click(function(e) {
-    // console.log('nav clicked:', e.target);
     e.preventDefault();
     $('#title').toggleClass('expanded', false);
     $('html, body').animate({   // Need 'body' for Safari
@@ -477,13 +512,10 @@ function initApp() {
     }, TIME_DURATION_MEDIUM);
   });
   $('#signin-button').click(signIn);
-  $('#entersite-button').click(enterSite);
+  $('#entersite-button').click(loadMainPage);
   $('#login-form').submit(signIn);
   $('.changepassword-button').click(sendPasswordReset);
   $('.signout-button').click(signOut);
-  $('#navicon').click(function() {
-    $('#title').toggleClass('expanded');
-  });
 }
 
 window.onload = function() {
