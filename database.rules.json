@@ -6,7 +6,9 @@
     "guests": {
       "$uid": {
         ".read" : "$uid === auth.uid",
-        ".write": "$uid === auth.uid"
+        "rsvp": {
+          ".write": "$uid === auth.uid"
+        }
       }
     },
     "users": {
