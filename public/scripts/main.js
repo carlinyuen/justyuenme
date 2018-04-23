@@ -256,14 +256,14 @@ function updateParallaxDisplay(scrollPos) {
 }
 
 // Populate main page data
-function populateMainPage(pagedata) {
-  // console.log('populateMainPage:', pagedata.val());
-  if (!pagedata.val()) {  // Sanity check
+function populateMainPage(response) {
+  var pageData = response.val(), data, container, temp;
+  // console.log('populateMainPage:', pageData);
+  if (!pageData) {  // Sanity check
     return alert('Could not load data! Please let us know if you see this error.');
   }
 
-  var data, container, temp;
-  data = pagedata.val()['our-story'];
+  data = pageData['our-story'];
   if (data) {
     container = $('#our-story');
     data.forEach(function(section) {
@@ -283,7 +283,7 @@ function populateMainPage(pagedata) {
     });
   }
 
-  data = pagedata.val()['event-details'];
+  data = pageData['event-details'];
   if (data) {
     container = $('#location');
     $(document.createElement('h3'))
@@ -324,7 +324,7 @@ function populateMainPage(pagedata) {
       .appendTo(container);
   }
 
-  data = pagedata.val()['rsvp'];
+  data = pageData['rsvp'];
   if (data) {
     container = $('#wedding-rsvp');
     temp = new Date(data['datetime'] + (1000 * 60 * 60 * 24));  // Set to 1 day after deadline
@@ -344,7 +344,7 @@ function populateMainPage(pagedata) {
       .appendTo(container);
   }
 
-  data = pagedata.val()['transportation'];
+  data = pageData['transportation'];
   if (data) {
     container = $('#transportation');
     data.forEach(function(mode) {
@@ -361,7 +361,7 @@ function populateMainPage(pagedata) {
     });
   }
 
-  data = pagedata.val()['accommodations'];
+  data = pageData['accommodations'];
   if (data) {
     container = $('#accommodations');
     data.forEach(function(hotel) {
@@ -386,7 +386,7 @@ function populateMainPage(pagedata) {
     });
   }
 
-  data = pagedata.val()['gift-registry'];
+  data = pageData['gift-registry'];
   if (data) {
     container = $('#gift-registry');
     $(document.createElement('p'))
@@ -401,7 +401,8 @@ function populateMainPage(pagedata) {
 */
 function showRSVPForm() {
   var user = checkAuthOrSignin();
-  checkGuests(user.uid, function(guest) {
+  checkGuests(user.uid, function(response) {
+    var guest = response.val();
     console.log('checkGuests:', guest);
     if (guest) {
       // TODO: show form and account for invites
