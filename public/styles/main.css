@@ -165,6 +165,7 @@
 .parallax {
   width: 100%;
   height: 1055px;
+  background: transparent;
   background-repeat: no-repeat;
   background-position: center top;
   -webkit-background-size: auto;
@@ -179,37 +180,37 @@
   backface-visibility: hidden;
 }
 #sky {
-  background: transparent url('/images/0.png') no-repeat center top;
+  background-image: url('/images/0.png');
 }
 #stars {
-  background: transparent url('/images/1.png') no-repeat center top;
+  background-image: url('/images/1.png');
 }
 #moon {
-  background: transparent url('/images/2.png') no-repeat center top;
+  background-image: url('/images/2.png');
 }
 #bbg {
-  background: transparent url('/images/3.png') no-repeat center top;
+  background-image: url('/images/3.png');
 }
 #free {
-  background: transparent url('/images/4.png') no-repeat center top;
+  background-image: url('/images/4.png');
 }
 #empire {
-  background: transparent url('/images/5.png') no-repeat center top;
+  background-image: url('/images/5.png');
 }
 #gradient {
-  background: transparent url('/images/6.png') no-repeat center top;
+  background-image: url('/images/6.png');
   height: 2110px;
 }
 #cloud1 {
-  background: transparent url('/images/7.png') no-repeat center top;
+  background-image: url('/images/7.png');
   height: 3110px;
 }
 #cloud2 {
-  background: transparent url('/images/8.png') no-repeat center top;
+  background-image: url('/images/8.png');
   height: 5110px;
 }
 #cloud3 {
-  background: transparent url('/images/9.png') no-repeat center top;
+  background-image: url('/images/9.png');
   height: 8110px;
 }
 @media screen and (min-width: 2001px) {
@@ -337,8 +338,10 @@
 	border-radius: 10px;
 	font-size: 25px;
 	text-decoration: none;
+  color: #eed190;
   /* text-shadow: 0px -2px #D1B358; */
   background: transparent;
+  cursor: pointer;
 }
 
 .social-btn {

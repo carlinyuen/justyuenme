@@ -321,7 +321,7 @@ function populateMainPage(pagedata) {
     temp = (new Date() > temp);
     console.log('today is after deadline:', temp);
     $(document.createElement('button'))
-      .addClass('main-page__data')
+      .addClass('main-page__data mdl-button')
       .attr('id', 'rsvp-button')
       .text(data['title'])
       .prop('disabled', temp)
