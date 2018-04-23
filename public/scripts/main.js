@@ -487,6 +487,8 @@ function initApp() {
 }
 
 window.onload = function() {
-  gravityAnimation.start();
-  initApp();
+  setTimeout(function() {
+    gravityAnimation.start();
+    initApp();
+  }, TIME_DURATION_MEDIUM);
 };

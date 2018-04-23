@@ -276,12 +276,6 @@
   clear: both;
 }
 
-#intro {
-}
-#intro h1 {
-  font-family: 'Dancing Script';
-}
-
 .main-page__section h2 {
   width: 100%;
   text-align: center;
@@ -315,8 +309,33 @@
   margin-top: 36px;
 }
 
+/*******************************/
+/* Main Page Content Specifics */
+/*******************************/
+#intro h1 {
+  font-family: 'Dancing Script', cursive;
+}
+
+#our-story {
+  text-align: left;
+}
+
 #event-details .mdl-cell {
   margin: 0 auto;
+}
+
+#wedding-rsvp {
+  padding: 44px auto;
+}
+#rsvp-button {
+  font-family: 'Pacifico', cursive;
+  padding: 10px 40px;
+  margin: 0px 10px 10px 0px;
+	border-radius: 10px;
+	font-size: 25px;
+	text-decoration: none;
+  /* text-shadow: 0px -2px #D1B358; */
+  background: transparent;
 }
 
 .social-btn {
