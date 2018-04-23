@@ -401,9 +401,19 @@ function populateMainPage(pagedata) {
 */
 function showRSVPForm() {
   var user = checkAuthOrSignin();
-  if (user) {
+  checkGuests(user.uid, function(guest) {
+    console.log('checkGuests:', guest);
+    if (guest) {
+      // TODO: show form and account for invites
+    }
+  });
+}
 
-  }
+/**
+* Check if user is an allowed guest
+*/
+function checkGuests(uid, callback) {
+  firebase.database().ref('guests/' + uid).once('value').then(callback);
 }
 
 /**
