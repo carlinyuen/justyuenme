@@ -179,24 +179,12 @@
   -ms-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-#sky {
-  background-image: url('/images/0.png');
-}
-#stars {
-  background-image: url('/images/1.png');
-}
-#moon {
-  background-image: url('/images/2.png');
-}
-#bbg {
-  background-image: url('/images/3.png');
-}
-#free {
-  background-image: url('/images/4.png');
-}
-#empire {
-  background-image: url('/images/5.png');
-}
+#sky    { background-image: url('/images/0.png'); }
+#stars  { background-image: url('/images/1.png'); }
+#moon   { background-image: url('/images/2.png'); }
+#bbg    { background-image: url('/images/3.png'); }
+#free   { background-image: url('/images/4.png'); }
+#empire { background-image: url('/images/5.png'); }
 #gradient {
   background-image: url('/images/6.png');
   height: 2110px;
@@ -279,6 +267,9 @@
   display: table;
   clear: both;
 }
+#main-page.no-access .main-page__section {
+  visibility: hidden;
+}
 
 .main-page__section h2 {
   width: 100%;
@@ -313,6 +304,21 @@
   margin-top: 36px;
 }
 
+#no-access {
+  display: none;
+  position: fixed;
+  bottom: 50%;
+  right: 0;
+  left: 0;
+  text-align: center;
+}
+#main-page.no-access #no-access {
+  display: block;
+}
+#no-access h1 {
+  font-family: 'Dancing Script', cursive;
+}
+
 /*******************************/
 /* Main Page Content Specifics */
 /*******************************/
@@ -334,7 +340,6 @@
 #rsvp-button {
   font-family: 'Pacifico', cursive;
   padding: 10px 40px;
-  margin: 0px 10px 10px 0px;
 	border-radius: 10px;
 	font-size: 25px;
 	text-decoration: none;

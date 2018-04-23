@@ -128,17 +128,28 @@ function loadMainPage() {
       $('body').removeClass('gravity');
     });
     $('#login-page').fadeOut(TIME_DURATION_FAST, function() {
-      firebase.database().ref('content').once('value').then(populateMainPage);
+      firebase.database().ref('content').once('value')
+        .then(populateMainPage, contentErrorHandler);
       setupParallaxIntro();
       $('#header').fadeIn(TIME_DURATION_FAST);
-      $('#main-page').fadeIn(TIME_DURATION_FAST, function() {
-        // console.log('main page fade in');
-        $(window).scroll(scrollHandler);  // Add scroll position listener
-        setTimeout(function() {
-          $('#title').toggleClass('expanded', false);
-        }, TIME_DURATION_XL);
-      });
+      $('#main-page').removeClass('no-access')
+        .fadeIn(TIME_DURATION_FAST, function() {
+          // console.log('main page fade in');
+          $(window).scroll(scrollHandler);  // Add scroll position listener
+          setTimeout(function() {
+            $('#title').toggleClass('expanded', false);
+          }, TIME_DURATION_XL);
+        });
     });
+  }
+}
+
+// Handle errors in case someone is trying to access content they don't have access to
+function contentErrorHandler(error) {
+  console.log(error);
+  if (checkAuthOrSignin()) {  // If signed in, guest access
+    $('#main-page').addClass('no-access');
+    // TODO: show message to user that they don't have access
   }
 }
 
@@ -214,7 +225,7 @@ function updateNavColor(scrollPos) {
       break;
     case scrollPos >= BACKGROUND_GRADIENT_END_POS:
       textColor = endColor;
-      checkNavState(NAV_STATE_POS_GRADIENT);
+      checkNavState(NAV_STATE_POST_GRADIENT);
       break;
   }
   // console.log(textColor);
@@ -321,7 +332,7 @@ function populateMainPage(pagedata) {
     temp = (new Date() > temp);
     console.log('today is after deadline:', temp);
     $(document.createElement('button'))
-      .addClass('main-page__data mdl-button')
+      .addClass('main-page__data')
       .attr('id', 'rsvp-button')
       .text(data['title'])
       .prop('disabled', temp)
@@ -473,7 +484,7 @@ function initApp() {
   // Listening for auth state changes.
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      console.log(JSON.stringify(user, null, '  '));
+      // console.log(JSON.stringify(user, null, '  '));
       var uid = user.uid;
 
       // Grab intended displayName and email from database
