@@ -11,6 +11,9 @@
   display: none;
   position: fixed;
 }
+#content {
+  display: none;
+}
 
 #login-page {
   height: 100%;

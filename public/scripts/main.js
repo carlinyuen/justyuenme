@@ -468,7 +468,7 @@ function initApp() {
   });
 
   // Initialization
-  $('.nav .nav-link').on('click', function(e) {
+  $('.nav-link').click(function(e) {
     // console.log('nav clicked:', e.target);
     e.preventDefault();
     $('#title').toggleClass('expanded', false);
@@ -487,8 +487,9 @@ function initApp() {
 }
 
 window.onload = function() {
+  initApp();
   setTimeout(function() {
     gravityAnimation.start();
-    initApp();
+    $('#content').fadeIn();
   }, TIME_DURATION_MEDIUM);
 };
