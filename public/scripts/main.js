@@ -336,7 +336,7 @@ function populateMainPage(response) {
       .attr('id', 'rsvp-button')
       .text(data['title'])
       .prop('disabled', temp)
-      .click(showRSVPForm)
+      .click(loadRSVPForm)
       .appendTo(container);
     $(document.createElement('p'))
       .addClass('main-page__data')
@@ -397,15 +397,30 @@ function populateMainPage(response) {
 }
 
 /**
-* Shows form for RSVPing
+* Load form for RSVPing
 */
-function showRSVPForm() {
+function loadRSVPForm() {
   var user = checkAuthOrSignin();
   checkGuests(user.uid, function(response) {
     var guest = response.val();
     console.log('checkGuests:', guest);
     if (guest) {
-      // TODO: show form and account for invites
+      var linkedGuests = guest['linked-guests'];
+      if (linkedGuests && linkedGuests.length) {
+        var userRef = firebase.database().ref('users');
+        Promise.all(linkedGuests.map(function(guestID, i) {
+          console.log('request:', guestID);
+          return userRef.child(guestID).once('value').then(function(userData) {
+            console.log('response:', userData);
+            return userData;
+          })
+        })).then(function(response) {
+          // TODO: update guest data
+          populateRSVPForm(guest);
+        });
+      } else {
+        populateRSVPForm(guest);
+      }
     }
   });
 }
@@ -415,6 +430,14 @@ function showRSVPForm() {
 */
 function checkGuests(uid, callback) {
   firebase.database().ref('guests/' + uid).once('value').then(callback);
+}
+
+/**
+* Populate RSVP form
+*/
+function populateRSVPForm(data) {
+  console.log('populateRSVPForm:', data);
+  // TODO: show form and account for invites
 }
 
 /**
