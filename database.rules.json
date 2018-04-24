@@ -10,9 +10,9 @@
     },
     "guests": {
       "$uid": {
-        ".read": "$uid === auth.uid || root.child('groups').child(data.child('group').val()).hasChild(auth.uid)",
+        ".read": "$uid === auth.uid || root.child('groups').child(root.child('users').child($uid).child('group').val()).hasChild(auth.uid)",
         "coming": {
-          ".write": "$uid === auth.uid || root.child('groups').child(data.parent().child('group').val()).hasChild(auth.uid)"
+          ".write": "$uid === auth.uid || root.child('groups').child(root.child('users').child($uid).child('group').val()).hasChild(auth.uid)"
         },
         "rsvp": {
           ".write": "$uid === auth.uid"
@@ -20,10 +20,10 @@
         "additional-guests": {
           "$index": {
             "coming": {
-              ".write": "$uid === auth.uid || root.child('groups').child(data.parent().parent().parent().child('group').val()).hasChild(auth.uid)"
+              ".write": "$uid === auth.uid || root.child('groups').child(root.child('users').child($uid).child('group').val()).hasChild(auth.uid)"
             },
             "givenname": {
-              ".write": "$uid === auth.uid || root.child('groups').child(data.parent().parent().parent().child('group').val()).hasChild(auth.uid)",
+              ".write": "$uid === auth.uid || root.child('groups').child(root.child('users').child($uid).child('group').val()).hasChild(auth.uid)",
               ".validate": "newData.isString() && newData.val().length > 2"
             }
           }
@@ -32,7 +32,7 @@
     },
     "users": {
       "$uid": {
-        ".read": "$uid === auth.uid",
+        ".read": "$uid === auth.uid || root.child('groups').child(data.child('group').val()).hasChild(auth.uid)",
         ".write": "$uid === auth.uid"
       }
     }

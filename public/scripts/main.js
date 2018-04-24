@@ -401,34 +401,35 @@ function populateMainPage(response) {
 */
 function loadRSVPForm() {
   var user = checkAuthOrSignin();
-  checkGuests(user.uid, function(response) {
-    var guest = response.val();
-    console.log('checkGuests:', guest);
-    if (guest) {
-      var groupID = guest['group'];
-      if (groupID != null) {
-        var groupRef = firebase.database().ref('groups');
-        groupRef.child(groupID).once('value').then(function(groupMembers) {
-          var members = groupMembers.val();
-          if (members) {
-            var userRef = firebase.database().ref('users');
-            Promise.all(Object.keys(members).map(function(guestID, i) {
-              console.log('request:', guestID);
-              return userRef.child(guestID).once('value').then(function(userData) {
-                console.log('response:', userData);
-                return userData;
-              })
-            })).then(function(response) {
-              // TODO: update guest data
-              populateRSVPForm(guest);
-            });
-          }
-        });
-      } else {
-        populateRSVPForm(guest);
-      }
-    }
-  });
+  console.log('currentuser:', user);
+  // checkGuests(user.uid, function(response) {
+  //   var guest = response.val();
+  //   console.log('checkGuests:', guest);
+  //   if (guest) {
+  //     var groupID = guest['group'];
+  //     if (groupID != null) {
+  //       var groupRef = firebase.database().ref('groups');
+  //       groupRef.child(groupID).once('value').then(function(groupMembers) {
+  //         var members = groupMembers.val();
+  //         if (members) {
+  //           var userRef = firebase.database().ref('users');
+  //           Promise.all(Object.keys(members).map(function(guestID, i) {
+  //             console.log('request:', guestID);
+  //             return userRef.child(guestID).once('value').then(function(userData) {
+  //               console.log('response:', userData);
+  //               return userData;
+  //             })
+  //           })).then(function(response) {
+  //             // TODO: update guest data
+  //             populateRSVPForm(guest);
+  //           });
+  //         }
+  //       });
+  //     } else {
+  //       populateRSVPForm(guest);
+  //     }
+  //   }
+  // });
 }
 
 /**
