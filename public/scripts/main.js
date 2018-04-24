@@ -447,7 +447,8 @@ function getRSVPCandidates(uid, callback) {
     if (data) {
       candidates.push(data);
 
-      if (data['group']) {
+      if (data['group'] != null) {
+        console.log('group:', data['group']);
         groupRef.child(data['group']).once('value').then(function(members) {
           if (members.val()) {
             var guests = Object.keys(members.val());

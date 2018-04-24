@@ -32,7 +32,7 @@
     },
     "users": {
       "$uid": {
-        ".read": "$uid === auth.uid || root.child('groups').child(data.child('group').val()).hasChild(auth.uid)",
+        ".read": "$uid === auth.uid || root.child('groups').child(root.child('users').child($uid).child('group').val()).hasChild(auth.uid)",
         ".write": "$uid === auth.uid"
       }
     }
