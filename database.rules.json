@@ -3,6 +3,11 @@
     "content": {
       ".read": "auth != null && root.child('guests').hasChild(auth.uid)"
     },
+    "groups": {
+      "$gid": {
+        ".read": "data.hasChild(auth.uid)"
+      }
+    },
     "guests": {
       "$uid": {
         ".read": "$uid === auth.uid || root.child('groups').child(data.child('group').val()).hasChild(auth.uid)",
