@@ -401,7 +401,9 @@ function populateMainPage(response) {
 */
 function loadRSVPForm() {
   var user = checkAuthOrSignin();
-  console.log('currentuser:', user);
+  getRSVPCandidates(user.uid, function(candidates) {
+    console.log('candidates:', candidates);
+  });
   // checkGuests(user.uid, function(response) {
   //   var guest = response.val();
   //   console.log('checkGuests:', guest);
@@ -430,6 +432,42 @@ function loadRSVPForm() {
   //     }
   //   }
   // });
+}
+
+/**
+* Get list of people who the user can RSVP for
+*/
+function getRSVPCandidates(uid, callback) {
+  var db = firebase.database();
+  var userRef = db.ref('users');
+  var groupRef = db.ref('groups');
+  var candidates = [];
+  userRef.child(uid).once('value').then(function(user) {
+    var data = user.val();
+    if (data) {
+      candidates.push(data);
+
+      if (data['group']) {
+        groupRef.child(data['group']).once('value').then(function(members) {
+          if (members.val()) {
+            var guests = Object.keys(members.val());
+            Promise.all(guests.map(function(guestID, i) {
+              console.log('request:', guestID);
+              return userRef.child(guestID).once('value').then(function(guest) {
+                console.log('response:', guest.val());
+                return guest.val();
+              })
+            })).then(function(response) {
+              candidates.concat(guests);
+              callback(candidates);
+            });
+          }
+        });
+      } else {
+        callback(candidates);
+      }
+    }
+  });
 }
 
 /**
