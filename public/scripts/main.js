@@ -412,7 +412,7 @@ function loadRSVPForm() {
             candidates[i]['guests'] = additionalGuests[i];
           }
         }
-        populateRSVPForm(candidates);
+        populateRSVPForm(user, candidates);
       });
     }
   });
@@ -509,9 +509,18 @@ function getGuestInfo(uid, callback) {
 /**
 * Populate RSVP form
 */
-function populateRSVPForm(data) {
+function populateRSVPForm(user, data) {
   console.log('populateRSVPForm:', data);
-  // TODO: show form and account for invites
+
+  var you = data.find(function(u) {
+    return u.uid === user.uid;
+  });
+  console.log('you:', you);
+
+  // TODO: populate form with more information
+  $('#yourName').val(you.firstname + ' ' + you.lastname);
+
+  $('#rsvp-modal').modal();
 }
 
 /**

@@ -349,6 +349,35 @@
   cursor: pointer;
 }
 
+#rsvp-modal .modal-content {
+  background: #FDF6F3;
+}
+#rsvp-modal .btn-secondary {
+  background: transparent;
+  color: #555;
+}
+#rsvp-modal .btn-secondary:hover,
+#rsvp-modal .btn-secondary:focus {
+  box-shadow: 0 0 40px #BBB inset;
+}
+#rsvp-modal .btn-primary {
+  background-color: rgb(38, 166, 154);
+  border-color: rgb(33, 161, 149);
+}
+#rsvp-modal .btn-primary:hover,
+#rsvp-modal .btn-primary:focus {
+  box-shadow: 0 0 40px rgb(0,130,110) inset;
+}
+#rsvp-modal h3 {
+  font-family: 'Pacifico', cursive;
+  color: rgb(255, 155, 155);
+  text-align: center;
+}
+#rsvp-form .form-group > label {
+  font-style: italic;
+  color: lightcoral;
+}
+
 .social-btn {
   background-position: center;
   background-size: contain;
