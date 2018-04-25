@@ -334,7 +334,6 @@ function populateMainPage(response) {
     $(document.createElement('button'))
       .addClass('main-page__data')
       .attr('id', 'rsvp-button')
-      .attr('tabindex', '1')
       .text(data['title'])
       .prop('disabled', temp)
       .click(loadRSVPForm)
@@ -406,7 +405,14 @@ function loadRSVPForm() {
     console.log('candidates:', candidates);
     if (candidates && candidates.length) {
       getAdditionalGuests(candidates, function(additionalGuests) {
-
+        console.log('addlGuests:', additionalGuests);
+        // Add guest info into the candidate user profile info
+        if (additionalGuests && additionalGuests.length) {
+          for (var i = 0, l = candidates.length; i < l; i++) {
+            candidates[i]['guests'] = additionalGuests[i];
+          }
+        }
+        populateRSVPForm(candidates);
       });
     }
   });
@@ -490,11 +496,12 @@ var guestRef = db.ref('guests');
 function getGuestInfo(uid, callback) {
   console.log('getGuestInfo:', uid);
   return guestRef.child(uid).once('value').then(function(guest) {
-    console.log('guest:', guest.val());
+    var data = guest.val();
+    console.log('guest:', data);
     if (callback) {
-      callback(guest.val());
+      callback(data);
     } else {
-      return guest.val();
+      return data;
     }
   });
 }
