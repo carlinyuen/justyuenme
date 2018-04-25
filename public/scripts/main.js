@@ -4,6 +4,7 @@ var TIME_DURATION_XL = 2500
   , TIME_DURATION_MEDIUM = 1000
   , TIME_DURATION_FAST = 400
 ;
+var db = firebase.database();
 
 /**
 * Check for mobile browser, from https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
@@ -333,6 +334,7 @@ function populateMainPage(response) {
     $(document.createElement('button'))
       .addClass('main-page__data')
       .attr('id', 'rsvp-button')
+      .attr('tabindex', '1')
       .text(data['title'])
       .prop('disabled', temp)
       .click(loadRSVPForm)
@@ -427,6 +429,7 @@ function getRSVPCandidates(uid, callback) {
           }
         });
       } else {    // Otherwise just send with current user
+        user['uid'] = uid;
         callback([user]);
       }
     }
@@ -456,11 +459,15 @@ var userRef = db.ref('users');
 function getUserProfile(uid, callback) {
   console.log('getUserProfile:', uid);
   return userRef.child(uid).once('value').then(function(user) {
-    console.log('user:', user.val());
+    var data = user.val();
+    if (data) {
+      data['uid'] = uid;
+    }
+    console.log('user:', data);
     if (callback) {
-      callback(user.val());
+      callback(data);
     } else {
-      return user.val();
+      return data;
     }
   });
 }
@@ -468,10 +475,10 @@ function getUserProfile(uid, callback) {
 /**
 * Gather all additional guests that we need to account for
 */
-function getAdditionalGuests(uids, callback) {
-  if (uids && uids.length) {
-    Promise.all(uids.map(function(u, i) {
-      return getGuestInfo(u);
+function getAdditionalGuests(candidates, callback) {
+  if (candidates && candidates.length) {
+    Promise.all(candidates.map(function(user, i) {
+      return getGuestInfo(user.uid);
     })).then(callback);
   }
 }
@@ -574,7 +581,6 @@ function getDownloadURL(path, callback) {
 *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
 *    out, and that is where we update the UI.
 */
-var db;
 function initApp() {
   // Listening for auth state changes.
   firebase.auth().onAuthStateChanged(function(user) {
@@ -583,7 +589,6 @@ function initApp() {
       var uid = user.uid;
 
       // Grab intended displayName and email from database
-      db = firebase.database();
       db.ref('users/' + uid).once('value')
         .then(function(userData) {
           var displayName = userData.val().username;
