@@ -1,5 +1,5 @@
 'use strict';
-var TIME_DURATION_XL = 2000
+var TIME_DURATION_XL = 2500
   , TIME_DURATION_LONG = 1500
   , TIME_DURATION_MEDIUM = 1000
   , TIME_DURATION_FAST = 400
@@ -128,7 +128,7 @@ function loadMainPage() {
       $('body').removeClass('gravity');
     });
     $('#login-page').fadeOut(TIME_DURATION_FAST, function() {
-      firebase.database().ref('content').once('value')
+      db.ref('content').once('value')
         .then(populateMainPage, contentErrorHandler);
       setupParallaxIntro();
       $('#header').fadeIn(TIME_DURATION_FAST);
@@ -149,7 +149,6 @@ function contentErrorHandler(error) {
   console.log(error);
   if (checkAuthOrSignin()) {  // If signed in, guest access
     $('#main-page').addClass('no-access');
-    // TODO: show message to user that they don't have access
   }
 }
 
@@ -403,79 +402,94 @@ function loadRSVPForm() {
   var user = checkAuthOrSignin();
   getRSVPCandidates(user.uid, function(candidates) {
     console.log('candidates:', candidates);
+    if (candidates && candidates.length) {
+      getAdditionalGuests(candidates, function(additionalGuests) {
+
+      });
+    }
   });
-  // checkGuests(user.uid, function(response) {
-  //   var guest = response.val();
-  //   console.log('checkGuests:', guest);
-  //   if (guest) {
-  //     var groupID = guest['group'];
-  //     if (groupID != null) {
-  //       var groupRef = firebase.database().ref('groups');
-  //       groupRef.child(groupID).once('value').then(function(groupMembers) {
-  //         var members = groupMembers.val();
-  //         if (members) {
-  //           var userRef = firebase.database().ref('users');
-  //           Promise.all(Object.keys(members).map(function(guestID, i) {
-  //             console.log('request:', guestID);
-  //             return userRef.child(guestID).once('value').then(function(userData) {
-  //               console.log('response:', userData);
-  //               return userData;
-  //             })
-  //           })).then(function(response) {
-  //             // TODO: update guest data
-  //             populateRSVPForm(guest);
-  //           });
-  //         }
-  //       });
-  //     } else {
-  //       populateRSVPForm(guest);
-  //     }
-  //   }
-  // });
 }
 
 /**
 * Get list of people who the user can RSVP for
 */
 function getRSVPCandidates(uid, callback) {
-  var db = firebase.database();
-  var userRef = db.ref('users');
-  var groupRef = db.ref('groups');
-  var candidates = [];
-  userRef.child(uid).once('value').then(function(user) {
-    var data = user.val();
-    if (data) {
-      candidates.push(data);
-
-      if (data['group'] != null) {
-        console.log('group:', data['group']);
-        groupRef.child(data['group']).once('value').then(function(members) {
-          if (members.val()) {
-            var guests = Object.keys(members.val());
-            Promise.all(guests.map(function(guestID, i) {
-              console.log('request:', guestID);
-              return userRef.child(guestID).once('value').then(function(guest) {
-                console.log('response:', guest.val());
-                return guest.val();
-              })
-            })).then(function(response) {
-              candidates.concat(guests);
-              callback(candidates);
-            });
+  // Get the current user's information
+  getUserProfile(uid, function(user) {
+    if (user) {
+      // If they are part of a group, get all group members
+      if (user['group'] != null) {
+        getGroupMembers(user['group'], function(members) {
+          if (members) {
+            Promise.all(Object.keys(members).map(function(u, i) {
+              return getUserProfile(u);
+            })).then(callback);
           }
         });
-      } else {
-        callback(candidates);
+      } else {    // Otherwise just send with current user
+        callback([user]);
       }
     }
   });
 }
 
 /**
-* Check if user is an allowed guest
+* Get member UIDs of a group
 */
-function checkGuests(uid, callback) {
-  firebase.database().ref('guests/' + uid).once('value').then(callback);
+var groupRef = db.ref('groups');
+function getGroupMembers(gid, callback) {
+  console.log('getGroupMembers:', gid);
+  return groupRef.child(gid).once('value').then(function(members) {
+    console.log('members:', members.val());
+    if (callback) {
+      callback(members.val());
+    } else {
+      return members.val();
+    }
+  });
+}
+
+/**
+* Get user profile info of a uid
+*/
+var userRef = db.ref('users');
+function getUserProfile(uid, callback) {
+  console.log('getUserProfile:', uid);
+  return userRef.child(uid).once('value').then(function(user) {
+    console.log('user:', user.val());
+    if (callback) {
+      callback(user.val());
+    } else {
+      return user.val();
+    }
+  });
+}
+
+/**
+* Gather all additional guests that we need to account for
+*/
+function getAdditionalGuests(uids, callback) {
+  if (uids && uids.length) {
+    Promise.all(uids.map(function(u, i) {
+      return getGuestInfo(u);
+    })).then(callback);
+  }
+}
+
+/**
+* Check if a person is an allowed guest
+*/
+var guestRef = db.ref('guests');
+function getGuestInfo(uid, callback) {
+  console.log('getGuestInfo:', uid);
+  return guestRef.child(uid).once('value').then(function(guest) {
+    console.log('guest:', guest.val());
+    if (callback) {
+      callback(guest.val());
+    } else {
+      return guest.val();
+    }
+  });
 }
 
 /**
@@ -516,7 +530,7 @@ function sendPasswordReset() {
 /**
 * Preloads images
 */
-function preloadImages() {
+// function preloadImages() {
   // console.log('preloadImages');
   // $('.parallax').each(function(i) {
   //   var path = 'parallax/' + i + '.png';
@@ -530,7 +544,7 @@ function preloadImages() {
   //     });
   //   });
   // });
-}
+// }
 
 // Get download URL from cloud storage
 function getDownloadURL(path, callback) {
@@ -560,6 +574,7 @@ function getDownloadURL(path, callback) {
 *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
 *    out, and that is where we update the UI.
 */
+var db;
 function initApp() {
   // Listening for auth state changes.
   firebase.auth().onAuthStateChanged(function(user) {
@@ -568,7 +583,8 @@ function initApp() {
       var uid = user.uid;
 
       // Grab intended displayName and email from database
-      firebase.database().ref('users/' + uid).once('value')
+      db = firebase.database();
+      db.ref('users/' + uid).once('value')
         .then(function(userData) {
           var displayName = userData.val().username;
           $('#login-page').addClass('logged-in');
