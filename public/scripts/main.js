@@ -519,6 +519,7 @@ function populateRSVPForm(user, data) {
 
   // TODO: populate form with more information
   $('#yourName').val(you.firstname + ' ' + you.lastname);
+  $('#yourEmail').text(you.email);
 
   $('#rsvp-modal').modal();
 }
