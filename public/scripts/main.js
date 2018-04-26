@@ -117,7 +117,7 @@ function signIn(event) {
           break;
       }
       console.log(error);
-      document.getElementById('signin-button').disabled = false;
+      $('#signin-button').prop('disabled', false);
     });
   }
 
@@ -168,12 +168,17 @@ function loadMainPage() {
                 $(this).html('');
               });
             });
+          $('#submitRSVP-button').click(submitRSVP);
+          $('#rsvp-form').submit(submitRSVP);
         });
     });
   }
 }
 
-// Handle errors in case someone is trying to access content they don't have access to
+/**
+* Handle errors in case someone is trying to access
+* content they don't have access to
+*/
 function contentErrorHandler(error) {
   console.log(error);
   if (checkAuthOrSignin()) {  // If signed in, guest access
@@ -181,7 +186,9 @@ function contentErrorHandler(error) {
   }
 }
 
-// Setup parallax intro scene
+/**
+* Setup parallax intro scene
+*/
 var rellax;   // Reference to rellax object
 function setupParallaxIntro() {
   // console.log('setupParallaxIntro');
@@ -200,7 +207,9 @@ function setupParallaxIntro() {
   // initializeParallax(document.querySelector('#main-page'));
 }
 
-// Scroll handler
+/**
+* Scroll handler for parallax, etc.
+*/
 function scrollHandler(event) {
   var scrollPos = $(this).scrollTop();
   // console.log('scrollHandler:', scrollPos);
@@ -210,7 +219,9 @@ function scrollHandler(event) {
   updateParallaxDisplay(scrollPos); // Update which parallax images to display
 }
 
-// Hide scroll indicator after scrolling down
+/**
+* Hide scroll indicator after scrolling down
+*/
 var SCROLL_INDICATOR_HIDE_POS = 256
   , scrollIndicatorHidden = false
 ;
@@ -221,7 +232,10 @@ function hideScrollIndicator(scrollPos) {
   }
 }
 
-// Update the text color of the navigation links based on scroll position to account for gradient background
+/**
+* Update the text color of the navigation links based on
+* scroll position to account for gradient background
+*/
 var BACKGROUND_GRADIENT_START_POS = 1420
   , BACKGROUND_GRADIENT_END_POS = 1820
   , NAV_STATE_PRE_GRADIENT = 0
@@ -266,7 +280,9 @@ function updateNavColor(scrollPos) {
   }
 }
 
-// Check nav state and mark as changed if needed
+/**
+* Check nav state and mark as changed if needed
+*/
 function checkNavState(state) {
   if (navStatePrevious != state) {
     navStateChanged = true;
@@ -274,7 +290,10 @@ function checkNavState(state) {
   navStatePrevious = state;
 }
 
-// Update which parallax images to display, in an effort to conserve CPU and reduce performance lag
+/**
+* Update which parallax images to display, in an effort
+* to conserve CPU and reduce performance lag
+*/
 var PARALLAX_CLOUDS_SHOW_POS = 350
   , PARALLAX_BUILDINGS_HIDE_POS = 1000
 ;
@@ -283,7 +302,9 @@ function updateParallaxDisplay(scrollPos) {
   // $('.clouds').toggleClass('invisible', (scrollPos < PARALLAX_CLOUDS_SHOW_POS));
 }
 
-// Populate main page data
+/**
+* Populate main page data
+*/
 function populateMainPage(response) {
   var pageData = response.val(), data, container, temp;
   // console.log('populateMainPage:', pageData);
@@ -475,9 +496,9 @@ function getRSVPCandidates(uid, callback) {
 */
 var groupRef = db.ref('groups');
 function getGroupMembers(gid, callback) {
-  console.log('getGroupMembers:', gid);
+  // console.log('getGroupMembers:', gid);
   return groupRef.child(gid).once('value').then(function(members) {
-    console.log('members:', members.val());
+    // console.log('members:', members.val());
     if (callback) {
       callback(members.val());
     } else {
@@ -491,13 +512,13 @@ function getGroupMembers(gid, callback) {
 */
 var userRef = db.ref('users');
 function getUserProfile(uid, callback) {
-  console.log('getUserProfile:', uid);
+  // console.log('getUserProfile:', uid);
   return userRef.child(uid).once('value').then(function(user) {
     var data = user.val();
     if (data) {
       data['uid'] = uid;
     }
-    console.log('user:', data);
+    // console.log('user:', data);
     if (callback) {
       callback(data);
     } else {
@@ -522,10 +543,10 @@ function getAdditionalGuests(candidates, callback) {
 */
 var rsvpRef = db.ref('rsvps');
 function getRSVPInfo(uid, callback) {
-  console.log('getRSVPInfo:', uid);
+  // console.log('getRSVPInfo:', uid);
   return rsvpRef.child(uid).once('value').then(function(rsvp) {
     var data = rsvp.val();
-    console.log('rsvp:', data);
+    // console.log('rsvp:', data);
     if (callback) {
       callback(data);
     } else {
@@ -579,7 +600,7 @@ function populateRSVPForm(user, data) {
     }
   });
 
-  // Show the rsvp modal and slide down extra guests
+  // Show the rsvp modal
   $('#rsvp-modal').modal();
 }
 
@@ -648,6 +669,13 @@ function addRSVPRow(uid, name, attending) {
     radioNo.prop('checked', true);
   }
   $('#rsvp-form-extension').append(formRow);
+}
+
+/**
+* Submit RSVP form
+*/
+function submitRSVP(event) {
+  console.log('submitRSVP!');
 }
 
 /**
