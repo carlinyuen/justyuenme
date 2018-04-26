@@ -15,7 +15,7 @@
           ".write": "($uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)) && (newData.exists())"
         },
         "delegate": {
-          ".write": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)"
+          ".write": "($uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)) && (root.child('users').hasChild(newData.val()))"
         },
         "responded": {
           ".write": "$uid === auth.uid"
@@ -24,6 +24,9 @@
           "$index": {
             "attending": {
               ".write": "($uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)) && (newData.exists())"
+            },
+            "delegate": {
+              ".write": "($uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)) && (root.child('users').hasChild(newData.val()))"
             },
             "givenname": {
               ".write": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)",
