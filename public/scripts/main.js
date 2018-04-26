@@ -156,6 +156,18 @@ function loadMainPage() {
           setTimeout(function() {
             $('#title').toggleClass('expanded', false);
           }, TIME_DURATION_XL);
+
+          // Attach handlers to rsvp form
+          $('#rsvp-modal').off('shown.bs.modal')
+            .on('shown.bs.modal', function(event) {
+              $('#rsvp-form-extension').slideDown();
+            });
+          $('#rsvp-modal').off('hide.bs.modal')
+            .on('hide.bs.modal', function(event) {
+              $('#rsvp-form-extension').slideUp(function() {
+                $(this).html('');
+              });
+            });
         });
     });
   }
@@ -569,9 +581,6 @@ function populateRSVPForm(user, data) {
 
   // Show the rsvp modal and slide down extra guests
   $('#rsvp-modal').modal();
-  $('#rsvp-modal').on('shown.bs.modal', function(event) {
-    $('#rsvp-form-extension').slideDown();
-  });
 }
 
 /**
