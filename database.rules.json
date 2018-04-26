@@ -1,7 +1,7 @@
 {
   "rules": {
     "content": {
-      ".read": "auth != null && root.child('guests').hasChild(auth.uid)"
+      ".read": "auth != null && root.child('rsvps').hasChild(auth.uid)"
     },
     "groups": {
       "$gid": {
