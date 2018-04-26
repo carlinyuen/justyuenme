@@ -349,8 +349,14 @@
   cursor: pointer;
 }
 
+#rsvp-modal .modal-header {
+  border-bottom-color: rgb(255, 220, 220);
+}
 #rsvp-modal .modal-content {
   background: #FDF6F3;
+}
+#rsvp-modal .modal-footer {
+  border-top-color: rgb(255, 220, 220);
 }
 #rsvp-modal .btn-secondary {
   background: transparent;
