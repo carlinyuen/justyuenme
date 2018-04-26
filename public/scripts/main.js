@@ -586,7 +586,7 @@ function populateRSVPForm(user, data) {
     if (guests && guests.length) {
       $.each(guests, function(j, guest) {
         gid = pid + '/additional-guests/' + j;
-        addRSVPRow(gid, guest.fullname, guest.attending, guest.givenname);
+        addRSVPRow(gid, guest.fullname, guest.attending, guest.givenname, person.firstname);
       });
     }
   });
@@ -599,7 +599,7 @@ function populateRSVPForm(user, data) {
 /**
 * Adds a new row of RSVP inputs into rsvp form
 */
-function addRSVPRow(uid, name, attending, givenname) {
+function addRSVPRow(uid, name, attending, givenname, hostname) {
   var inputNameID = uid;
   var radioGroupID = uid+'-rsvp';
   var radioYesID = uid+'-yes';
@@ -664,7 +664,8 @@ function addRSVPRow(uid, name, attending, givenname) {
       .prop('readonly', true)
       .val(name);
   } else {
-    inputName.addClass('rsvp-guest-givenname')
+    inputName.addClass('form-control rsvp-guest-givenname')
+      .attr('placeholder', hostname + '\'s Guest\'s Full Name');
     if (givenname && givenname.length) {
       inputName.val(givenname);
     }
