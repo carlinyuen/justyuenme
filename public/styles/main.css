@@ -380,9 +380,14 @@
   text-align: center;
 }
 
-/* #rsvp-form .form-row:first-child {
+#rsvp-form .form-row {
   border-bottom: 1px dotted rgb(255, 220, 220);
-} */
+  margin-bottom: 16px;
+}
+#rsvp-form .form-row:last-child {
+  border-bottom: none;
+  margin-bottom: none;
+}
 #rsvp-form .form-group > label {
   font-style: italic;
   color: lightcoral;
