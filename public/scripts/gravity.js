@@ -466,11 +466,11 @@ var gravityAnimation = (function() {
 
   return {
     start: function() {
-      console.log('start gravity animation');
+      // console.log('start gravity animation');
       loop();
     },
     stop: function() {
-      console.log('stop gravity animation');
+      // console.log('stop gravity animation');
       cancelAnimationFrame(requestAnimationFrameID);
     },
   };

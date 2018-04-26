@@ -533,8 +533,13 @@ function populateRSVPForm(user, data) {
   });
   console.log('you:', you);
 
-  // TODO: populate form with more information
+  // Populate your info first
   $('#yourName').val(you.firstname + ' ' + you.lastname);
+  if (you.guests.attending) {
+    $('#yourRSVPYes').prop('checked', true);
+  } else {
+    $('#yourRSVPNo').prop('checked', true);
+  }
 
   $('#rsvp-modal').modal();
 }
