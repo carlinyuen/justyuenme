@@ -388,6 +388,10 @@
   color: lightcoral;
 }
 
+#rsvp-form-extension {
+  display: none;
+}
+
 .social-btn {
   background-position: center;
   background-size: contain;

@@ -8,18 +8,21 @@
         ".read": "data.hasChild(auth.uid)"
       }
     },
-    "guests": {
+    "rsvps": {
       "$uid": {
         ".read": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)",
-        "coming": {
+        "attending": {
           ".write": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)"
         },
-        "rsvp": {
+        "delegate": {
+          ".write": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)"
+        },
+        "responded": {
           ".write": "$uid === auth.uid"
         },
         "additional-guests": {
           "$index": {
-            "coming": {
+            "attending": {
               ".write": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)"
             },
             "givenname": {

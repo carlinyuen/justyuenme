@@ -425,7 +425,7 @@ function loadRSVPForm() {
         // Add guest info into the candidate user profile info
         if (additionalGuests && additionalGuests.length) {
           for (var i = 0, l = candidates.length; i < l; i++) {
-            candidates[i]['guests'] = additionalGuests[i];
+            candidates[i]['rsvp'] = additionalGuests[i];
           }
         }
         populateRSVPForm(user, candidates);
@@ -500,7 +500,7 @@ function getUserProfile(uid, callback) {
 function getAdditionalGuests(candidates, callback) {
   if (candidates && candidates.length) {
     Promise.all(candidates.map(function(user, i) {
-      return getGuestInfo(user.uid);
+      return getRSVPInfo(user.uid);
     })).then(callback);
   }
 }
@@ -508,12 +508,12 @@ function getAdditionalGuests(candidates, callback) {
 /**
 * Check if a person is an allowed guest
 */
-var guestRef = db.ref('guests');
-function getGuestInfo(uid, callback) {
-  console.log('getGuestInfo:', uid);
-  return guestRef.child(uid).once('value').then(function(guest) {
-    var data = guest.val();
-    console.log('guest:', data);
+var rsvpRef = db.ref('rsvps');
+function getRSVPInfo(uid, callback) {
+  console.log('getRSVPInfo:', uid);
+  return rsvpRef.child(uid).once('value').then(function(rsvp) {
+    var data = rsvp.val();
+    console.log('rsvp:', data);
     if (callback) {
       callback(data);
     } else {
@@ -525,6 +525,7 @@ function getGuestInfo(uid, callback) {
 /**
 * Populate RSVP form
 */
+var NUM_CHARS_SHORT_UID = 8;
 function populateRSVPForm(user, data) {
   console.log('populateRSVPForm:', data);
 
@@ -535,20 +536,101 @@ function populateRSVPForm(user, data) {
     if (a.firstname > b.firstname) { return 1; }
     return 0;
   });
-  console.log('sorted data:', data);
+  // console.log('sorted data:', data);
 
-  var you = data[0];
-  console.log('you:', you);
-
-  // Populate your info first
+  // Populate current user's rsvp info first
   $('#yourName').val(you.firstname + ' ' + you.lastname);
-  if (you.guests.attending) {
+  if (you.rsvp.attending === true) {
     $('#yourRSVPYes').prop('checked', true);
-  } else {
+  } else if (you.rsvp.attending === false) {
     $('#yourRSVPNo').prop('checked', true);
   }
 
+  // Create additional fields for additional guests
+  //  and populate with existing rsvp data if any
+  var pid, guests, gid;
+  $.each(data, function(i, person) {
+    if (i === 0) {
+      return true;  // Skip "self"
+    }
+    pid = person.uid.substr(0, NUM_CHARS_SHORT_UID);
+    addRSVPRow(pid
+      , (person.firstname + ' ' + person.lastname)
+      , person.rsvp.attending);
+    guests = person.rsvp['additional-guests'];
+    if (guests && guests.length) {
+      $.each(guests, function(j, guest) {
+        gid = pid + '|' + j;
+        addRSVPRow(gid, guest.fullname, guest.attending);
+      });
+    }
+  });
+
+  // Show the rsvp modal
   $('#rsvp-modal').modal();
+}
+
+/**
+* Adds a new row of RSVP inputs into rsvp form
+*/
+function addRSVPRow(uid, name, attending) {
+  var inputName = $(document.createElement('input'))
+    .addClass('form-control-lg')
+    .attr('placeholder', 'Full Name')
+    .attr('name', 'fullname')
+    .attr('id', uid+'-name');
+  var radioYes = $(document.createElement('input'))
+    .addClass('form-check-input')
+    .attr('type', 'radio')
+    .attr('name', 'rsvp')
+    .attr('id', uid+'-yes')
+    .attr('value', 'true')
+  ;
+  var radioNo = $(document.createElement('input'))
+    .addClass('form-check-input')
+    .attr('type', 'radio')
+    .attr('name', 'rsvp')
+    .attr('id', uid+'-no')
+    .attr('value', 'false')
+  ;
+  var formRow = $(document.createElement('div'))
+    .addClass('form-row')
+    .appendChild($(document.createElement('div'))
+      .addClass('form-group col-md-6')
+      .appendChild(inputName)
+    ).appendChild($(document.createElement('div'))
+      .addClass('form-group col-md-6')
+      .appendChild($(document.createElement('div'))
+        .addClass('form-check')
+        .appendChild(radioYes)
+        .appendChild($(document.createElement('label'))
+          .addClass('form-check-label')
+          .attr('for', uid+'-Yes')
+          .text('I\'ll be there!')
+        )
+      )
+      .appendChild($(document.createElement('div'))
+        .addClass('form-check')
+        .appendChild(radioYes)
+        .appendChild($(document.createElement('label'))
+          .addClass('form-check-label')
+          .attr('for', uid+'-No')
+          .text('Can\'t make it. :(')
+        )
+      )
+    )
+  ;
+  if (name && name.length) {
+    inputName.addClass('form-control-plaintext')
+      .prop('readonly', true)
+      .val(name);
+  }
+  if (attending === true) {
+    radioYes.prop('checked', true);
+  } else if (attending === false) {
+    radioNo.prop('checked', true);
+  }
+  $('#rsvp-form-extension').appendChild(row);
 }
 
 /**
