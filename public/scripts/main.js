@@ -154,23 +154,10 @@ function loadMainPage() {
         .fadeIn(TIME_DURATION_FAST, function() {
           // console.log('main page fade in');
           $(window).scroll(scrollHandler);  // Add scroll position listener
+          $('#submitRSVP-button, #rsvp-button').prop('disabled', false);  // Enable RSVP
           setTimeout(function() {
             $('#title').toggleClass('expanded', false);
           }, TIME_DURATION_XL);
-
-          // Attach handlers to rsvp form
-          $('#rsvp-modal').off('shown.bs.modal')
-            .on('shown.bs.modal', function(event) {
-              $('#rsvp-form-extension').slideDown();
-            });
-          $('#rsvp-modal').off('hide.bs.modal')
-            .on('hide.bs.modal', function(event) {
-              $('#rsvp-form-extension').slideUp(function() {
-                $(this).html('');
-              });
-            });
-          $('#submitRSVP-button').click(submitRSVP);
-          $('#rsvp-form').submit(submitRSVP);
         });
     });
   }
@@ -450,6 +437,8 @@ function populateMainPage(response) {
 * Load form for RSVPing
 */
 function loadRSVPForm() {
+  // console.log('loadRSVPForm');
+  $('#rsvp-button').prop('disabled', true);
   var user = checkAuthOrSignin();
   if (user) {
     getRSVPCandidates(user.uid, function(candidates) {
@@ -604,6 +593,7 @@ function populateRSVPForm(user, data) {
 
   // Show the rsvp modal
   $('#rsvp-modal').modal();
+  $('#submitRSVP-button').prop('disabled', false);
 }
 
 /**
@@ -693,6 +683,7 @@ var MIN_NAME_LENGTH = 3;
 function submitRSVP(event) {
   console.log('submitRSVP!');
   event.preventDefault();   // Prevent default form submit
+  $('#submitRSVP-button').prop('disabled', true);
 
   var user = checkAuthOrSignin();
   if (user) {
@@ -762,6 +753,7 @@ function submitRSVP(event) {
 
     // Check if there were any blocking errors, show them
     if (!$.isEmptyObject(errors)) {
+      console.log('have errors :(');
       $.each(errors, function(eID, message) {
         $(eID).text(message);
       });
@@ -771,9 +763,30 @@ function submitRSVP(event) {
 
     // Save to database
     if (!$.isEmptyObject(updates)) {
-      return db.ref().update(updates);
+      console.log('saving to database!');
+      db.ref().update(updates).then(rsvpSuccess, rsvpFailure);
     }
   }
+}
+
+/**
+* Failure / error handler for rsvp form
+*/
+function rsvpFailure(response) {
+  console.log('rsvpFailure:', response);
+  alert('Saving RSVP failed. :( \n Please try again.');
+}
+
+/**
+* Success handler for rsvp form
+*/
+function rsvpSuccess(response) {
+  console.log('rsvpSuccess:', response);
+
+  alert('RSVP saved!');
+  // TODO: animate success?
+
+  $('#rsvp-modal').modal('hide');
 }
 
 /**
@@ -881,7 +894,14 @@ function initApp() {
     }
   });
 
-  // Initialization
+  // Initialization of all the handlers
+  $('#signin-button').click(signIn);
+  $('#entersite-button').click(loadMainPage);
+  $('#login-form').submit(signIn);
+  $('.changepassword-button').click(sendPasswordReset);
+  $('.signout-button').click(signOut);
+
+  // Navigation
   $('#navicon').click(function() {
     $('#title').toggleClass('expanded');
   });
@@ -892,11 +912,19 @@ function initApp() {
       scrollTop: $($(e.target).attr('href')).offset().top
     }, TIME_DURATION_MEDIUM);
   });
-  $('#signin-button').click(signIn);
-  $('#entersite-button').click(loadMainPage);
-  $('#login-form').submit(signIn);
-  $('.changepassword-button').click(sendPasswordReset);
-  $('.signout-button').click(signOut);
+
+  // RSVP form
+  $('#rsvp-modal').on('shown.bs.modal', function(event) {
+    $('#rsvp-form-extension').slideDown();
+  });
+  $('#rsvp-modal').on('hide.bs.modal', function(event) {
+    $('#rsvp-form-extension').slideUp(function() {
+      $('#rsvp-button').prop('disabled', false);
+      $(this).html('');
+    });
+  });
+  $('#submitRSVP-button').click(submitRSVP);
+  $('#rsvp-form').submit(submitRSVP);
 }
 
 window.onload = function() {
