@@ -539,11 +539,12 @@ function populateRSVPForm(user, data) {
   // console.log('sorted data:', data);
 
   // Populate current user's rsvp info first
-  $('#yourName').val(you.firstname + ' ' + you.lastname);
+  var you = data[0];
+  $('#your-name').val(you.firstname + ' ' + you.lastname);
   if (you.rsvp.attending === true) {
-    $('#yourRSVPYes').prop('checked', true);
+    $('#your-yes').prop('checked', true);
   } else if (you.rsvp.attending === false) {
-    $('#yourRSVPNo').prop('checked', true);
+    $('#your-no').prop('checked', true);
   }
 
   // Create additional fields for additional guests
@@ -568,53 +569,58 @@ function populateRSVPForm(user, data) {
 
   // Show the rsvp modal
   $('#rsvp-modal').modal();
+  $('#rsvp-form-extension').slideDown();
 }
 
 /**
 * Adds a new row of RSVP inputs into rsvp form
 */
 function addRSVPRow(uid, name, attending) {
+  var inputNameID = uid+'-name';
+  var radioGroupID = uid+'-rsvp';
+  var radioYesID = uid+'-yes';
+  var radioNoID = uid+'-no';
   var inputName = $(document.createElement('input'))
     .addClass('form-control-lg')
     .attr('placeholder', 'Full Name')
     .attr('name', 'fullname')
-    .attr('id', uid+'-name');
+    .attr('id', inputNameID);
   var radioYes = $(document.createElement('input'))
     .addClass('form-check-input')
     .attr('type', 'radio')
-    .attr('name', 'rsvp')
-    .attr('id', uid+'-yes')
+    .attr('name', radioGroupID)
+    .attr('id', radioYesID)
     .attr('value', 'true')
   ;
   var radioNo = $(document.createElement('input'))
     .addClass('form-check-input')
     .attr('type', 'radio')
-    .attr('name', 'rsvp')
-    .attr('id', uid+'-no')
+    .attr('name', radioGroupID)
+    .attr('id', radioNoID)
     .attr('value', 'false')
   ;
   var formRow = $(document.createElement('div'))
     .addClass('form-row')
-    .appendChild($(document.createElement('div'))
+    .append($(document.createElement('div'))
       .addClass('form-group col-md-6')
-      .appendChild(inputName)
-    ).appendChild($(document.createElement('div'))
+      .append(inputName)
+    ).append($(document.createElement('div'))
       .addClass('form-group col-md-6')
-      .appendChild($(document.createElement('div'))
+      .append($(document.createElement('div'))
         .addClass('form-check')
-        .appendChild(radioYes)
-        .appendChild($(document.createElement('label'))
+        .append(radioYes)
+        .append($(document.createElement('label'))
           .addClass('form-check-label')
-          .attr('for', uid+'-Yes')
+          .attr('for', radioYesID)
           .text('I\'ll be there!')
         )
       )
-      .appendChild($(document.createElement('div'))
+      .append($(document.createElement('div'))
         .addClass('form-check')
-        .appendChild(radioYes)
-        .appendChild($(document.createElement('label'))
+        .append(radioNo)
+        .append($(document.createElement('label'))
           .addClass('form-check-label')
-          .attr('for', uid+'-No')
+          .attr('for', radioNoID)
           .text('Can\'t make it. :(')
         )
       )
@@ -630,7 +636,7 @@ function addRSVPRow(uid, name, attending) {
   } else if (attending === false) {
     radioNo.prop('checked', true);
   }
-  $('#rsvp-form-extension').appendChild(row);
+  $('#rsvp-form-extension').append(formRow);
 }
 
 /**
