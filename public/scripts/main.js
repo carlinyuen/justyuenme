@@ -727,7 +727,6 @@ function submitRSVP(event) {
       input = $('#rsvp-form input:radio[name="' + gid + '"]:checked').val();
       if (input === false || input === true) {
         data['attending'] = input;
-        data['delegate'] = user.uid;
       } else if (input !== undefined) {
         errors['#' + gid + '-rsvp-feedback'] = 'Invalid selection.';
       }
@@ -735,13 +734,22 @@ function submitRSVP(event) {
       // Check for case of givenname (not fixed guest)
       if ($el.hasClass('rsvp-guest-givenname')) {
         input = $el.val().trim();
-        if (input.length < MIN_NAME_LENGTH) {
-          errors['#' + gid + '-feedback'] = 'Name must be at least 3 letters';
-        } else if (input.length > MIN_NAME_LENGTH && input.indexOf(' ') < 0) {
-          errors['#' + gid + '-feedback'] = 'Please provide full name.';
+        if (gid.indexOf('/') < 0) {
+          errors['#' + gid + '-feedback'] = 'Name shouldn\'t be editable.';
         } else {
-          data['givenname'] = input;
+          if (input.length < MIN_NAME_LENGTH) {
+            errors['#' + gid + '-feedback'] = 'Name must be at least 3 letters.';
+          } else if (input.length > MIN_NAME_LENGTH && input.indexOf(' ') < 0) {
+            errors['#' + gid + '-feedback'] = 'Please provide full name.';
+          } else {
+            data['givenname'] = input;
+          }
         }
+      }
+
+      // Record delegate if relevant
+      if (gid.indexOf(user.uid) < 0) {
+        data['delegate'] = user.uid;
       }
 
       // Add to updates object if actual value
