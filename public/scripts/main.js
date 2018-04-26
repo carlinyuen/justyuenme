@@ -705,8 +705,8 @@ function submitRSVP(event) {
     } else if (input != "false" && input != "true") {
       errors['#your-feedback'] = 'Invalid selection.';
     } else {
-      updates[escape('rsvps/' + user.uid + '/attending')] = (input == "true");
-      updates[escape('rsvps/' + user.uid + '/responded')] = true;
+      updates['rsvps/' + user.uid + '/attending'] = (input == "true");
+      updates['rsvps/' + user.uid + '/responded'] = true;
     }
     console.log('errors:', errors);
     console.log('updates:', updates);
@@ -722,30 +722,30 @@ function submitRSVP(event) {
       // Get RSVP status, add if actual value
       input = $('#rsvp-form input:radio[name="' + gid + '-rsvp"]:checked').val();
       if (input == "false" || input == "true") {
-        updates[escape('rsvps/' + gid + '/attending')] = (input == "true");
+        updates['rsvps/' + gid + '/attending'] = (input == "true");
       } else if (input !== undefined) {
-        errors['#' + gid + '-rsvp-feedback'] = 'Invalid selection.';
+        errors[escape('#' + gid + '-rsvp-feedback')] = 'Invalid selection.';
       }
 
       // Check for case of givenname (not fixed guest)
       if ($el.hasClass('rsvp-guest-givenname')) {
         input = $el.val().trim();
         if (gid.indexOf('/') < 0) {
-          errors['#' + gid + '-feedback'] = 'Name shouldn\'t be editable.';
+          errors[escape('#' + gid + '-feedback')] = 'Name shouldn\'t be editable.';
         } else {
           if (input.length < MIN_NAME_LENGTH) {
-            errors['#' + gid + '-feedback'] = 'Name must be at least 3 letters.';
+            errors[escape('#' + gid + '-feedback')] = 'Name must be at least 3 letters.';
           } else if (input.length > MIN_NAME_LENGTH && input.indexOf(' ') < 0) {
-            errors['#' + gid + '-feedback'] = 'Please provide full name.';
+            errors[escape('#' + gid + '-feedback')] = 'Please provide full name.';
           } else {
-            updates[escape('rsvps/' + gid + '/givenname')] = input;
+            updates['rsvps/' + gid + '/givenname'] = input;
           }
         }
       }
 
       // Record delegate if relevant
       if (gid.indexOf(user.uid) < 0) {
-        updates[escape('rsvps/' + gid + '/delegate')] = user.uid;
+        updates['rsvps/' + gid + '/delegate'] = user.uid;
       }
       console.log('errors:', errors);
       console.log('updates:', updates);
