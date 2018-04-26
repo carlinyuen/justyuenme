@@ -451,21 +451,23 @@ function populateMainPage(response) {
 */
 function loadRSVPForm() {
   var user = checkAuthOrSignin();
-  getRSVPCandidates(user.uid, function(candidates) {
-    console.log('candidates:', candidates);
-    if (candidates && candidates.length) {
-      getAdditionalGuests(candidates, function(additionalGuests) {
-        console.log('addlGuests:', additionalGuests);
-        // Add guest info into the candidate user profile info
-        if (additionalGuests && additionalGuests.length) {
-          for (var i = 0, l = candidates.length; i < l; i++) {
-            candidates[i]['rsvp'] = additionalGuests[i];
+  if (user) {
+    getRSVPCandidates(user.uid, function(candidates) {
+      console.log('candidates:', candidates);
+      if (candidates && candidates.length) {
+        getAdditionalGuests(candidates, function(additionalGuests) {
+          console.log('addlGuests:', additionalGuests);
+          // Add guest info into the candidate user profile info
+          if (additionalGuests && additionalGuests.length) {
+            for (var i = 0, l = candidates.length; i < l; i++) {
+              candidates[i]['rsvp'] = additionalGuests[i];
+            }
           }
-        }
-        populateRSVPForm(user, candidates);
-      });
-    }
-  });
+          populateRSVPForm(user, candidates);
+        });
+      }
+    });
+  }
 }
 
 /**
@@ -559,7 +561,6 @@ function getRSVPInfo(uid, callback) {
 /**
 * Populate RSVP form
 */
-var NUM_CHARS_SHORT_UID = 8;
 function populateRSVPForm(user, data) {
   console.log('populateRSVPForm:', data);
 
@@ -588,14 +589,14 @@ function populateRSVPForm(user, data) {
     if (i === 0) {
       return true;  // Skip "self"
     }
-    pid = person.uid.substr(0, NUM_CHARS_SHORT_UID);
+    pid = person.uid;
     addRSVPRow(pid
       , (person.firstname + ' ' + person.lastname)
       , person.rsvp.attending);
     guests = person.rsvp['additional-guests'];
     if (guests && guests.length) {
       $.each(guests, function(j, guest) {
-        gid = pid + '|' + j;
+        gid = pid + '/additional-guests/' + j;
         addRSVPRow(gid, guest.fullname, guest.attending, guest.givenname);
       });
     }
@@ -609,10 +610,12 @@ function populateRSVPForm(user, data) {
 * Adds a new row of RSVP inputs into rsvp form
 */
 function addRSVPRow(uid, name, attending, givenname) {
-  var inputNameID = uid+'-name';
+  var inputNameID = uid;
   var radioGroupID = uid+'-rsvp';
   var radioYesID = uid+'-yes';
   var radioNoID = uid+'-no';
+  var nameFeedbackID = uid+'-feedback';
+  var radioFeedbackID = uid+'-rsvp-feedback';
   var inputName = $(document.createElement('input'))
     .addClass('form-control-lg')
     .attr('placeholder', 'Full Name')
@@ -637,6 +640,10 @@ function addRSVPRow(uid, name, attending, givenname) {
     .append($(document.createElement('div'))
       .addClass('form-group col-md-6')
       .append(inputName)
+      .append($(document.createElement('div'))
+        .addClass('invalid-feedback')
+        .attr('id', nameFeedbackID)
+      )
     ).append($(document.createElement('div'))
       .addClass('form-group col-md-6')
       .append($(document.createElement('div'))
@@ -656,6 +663,10 @@ function addRSVPRow(uid, name, attending, givenname) {
           .attr('for', radioNoID)
           .text('Can\'t make it. :(')
         )
+        .append($(document.createElement('div'))
+          .addClass('invalid-feedback')
+          .attr('id', radioFeedbackID)
+        )
       )
     )
   ;
@@ -664,7 +675,8 @@ function addRSVPRow(uid, name, attending, givenname) {
       .prop('readonly', true)
       .val(name);
   } else if (givenname && givenname.length) {
-    inputName.val(givenname);
+    inputName.addClass('rsvp-guest-givenname')
+      .val(givenname);
   }
   if (attending === true) {
     radioYes.prop('checked', true);
@@ -677,13 +689,83 @@ function addRSVPRow(uid, name, attending, givenname) {
 /**
 * Submit RSVP form
 */
+var MIN_NAME_LENGTH = 3;
 function submitRSVP(event) {
   console.log('submitRSVP!');
   event.preventDefault();   // Prevent default form submit
 
-  // Sanity check form inputs
+  var user = checkAuthOrSignin();
+  if (user) {
+    // Gather update for current user's RSVP
+    var updates = {}, errors = {}, data = {}, input;
+    input = $('#rsvp-form input:radio[name="your-rsvp"]:checked').val();
+    // Sanity check
+    if (input === undefined) {
+      errors['#your-feedback'] = 'Please let us know if you\'re coming!';
+    } else if (input !== false && input !== true)) {
+      errors['#your-feedback'] = 'Invalid selection.';
+    } else {
+      data['attending'] = input;
+      data['responded'] = true;
+    }
+    if (!$.isEmptyObject(data)) {
+      updates['rsvps/' + user.uid] = data;
+    }
+    console.log('errors:', errors);
+    console.log('updates:', updates);
 
-  // Save to database
+    // Gather updates for additional guests
+    var $el, gid;
+    $('#rsvp-form input[name="fullname"]').each(function(i, el)
+    {
+      console.log(el);
+      $el = $(el);
+      gid = $el.attr('id');
+      data = {};
+
+      // Get RSVP status, add if actual value
+      input = $('#rsvp-form input:radio[name="' + gid + '"]:checked').val();
+      if (input === false || input === true) {
+        data['attending'] = input;
+        data['delegate'] = user.uid;
+      } else if (input !== undefined) {
+        errors['#' + gid + '-rsvp-feedback'] = 'Invalid selection.';
+      }
+
+      // Check for case of givenname (not fixed guest)
+      if ($el.hasClass('rsvp-guest-givenname')) {
+        input = $el.val().trim();
+        if (input.length < MIN_NAME_LENGTH) {
+          errors['#' + gid + '-feedback'] = 'Name must be at least 3 letters';
+        } else if (input.length > MIN_NAME_LENGTH && input.indexOf(' ') < 0) {
+          errors['#' + gid + '-feedback'] = 'Please provide full name.';
+        } else {
+          data['givenname'] = input;
+        }
+      }
+
+      // Add to updates object if actual value
+      if (!$.isEmptyObject(data)) {
+        updates['rsvps/' + gid] = data;
+      }
+      console.log('errors:', errors);
+      console.log('updates:', updates);
+    });
+
+    // Check if there were any blocking errors, show them
+    if (!$.isEmptyObject(errors)) {
+      $.each(errors, function(eID, message) {
+        $(eID).text(message);
+      });
+      $('#rsvp-form').addClass('was-validated');
+      return;
+    }
+
+    // Save to database
+    if (!$.isEmptyObject(updates)) {
+      return db.ref().update(updates);
+    }
+  }
 }
 
 /**
