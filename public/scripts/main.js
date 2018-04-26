@@ -75,6 +75,7 @@ function checkAuthOrSignin() {
 * Handles the sign in button press.
 */
 function signIn(event) {
+  // console.log('signIn');
   event.preventDefault();   // Prevent default form submit
 
   // Try to sign in user
@@ -595,7 +596,7 @@ function populateRSVPForm(user, data) {
     if (guests && guests.length) {
       $.each(guests, function(j, guest) {
         gid = pid + '|' + j;
-        addRSVPRow(gid, guest.fullname, guest.attending);
+        addRSVPRow(gid, guest.fullname, guest.attending, guest.givenname);
       });
     }
   });
@@ -607,7 +608,7 @@ function populateRSVPForm(user, data) {
 /**
 * Adds a new row of RSVP inputs into rsvp form
 */
-function addRSVPRow(uid, name, attending) {
+function addRSVPRow(uid, name, attending, givenname) {
   var inputNameID = uid+'-name';
   var radioGroupID = uid+'-rsvp';
   var radioYesID = uid+'-yes';
@@ -662,6 +663,8 @@ function addRSVPRow(uid, name, attending) {
     inputName.addClass('form-control-plaintext')
       .prop('readonly', true)
       .val(name);
+  } else if (givenname && givenname.length) {
+    inputName.val(givenname);
   }
   if (attending === true) {
     radioYes.prop('checked', true);
@@ -676,6 +679,11 @@ function addRSVPRow(uid, name, attending) {
 */
 function submitRSVP(event) {
   console.log('submitRSVP!');
+  event.preventDefault();   // Prevent default form submit
+
+  // Sanity check form inputs
+
+  // Save to database
 }
 
 /**

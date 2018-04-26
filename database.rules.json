@@ -12,7 +12,7 @@
       "$uid": {
         ".read": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)",
         "attending": {
-          ".write": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)"
+          ".write": "($uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)) && (newData.exists())"
         },
         "delegate": {
           ".write": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)"
@@ -23,7 +23,7 @@
         "additional-guests": {
           "$index": {
             "attending": {
-              ".write": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)"
+              ".write": "($uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)) && (newData.exists())"
             },
             "givenname": {
               ".write": "$uid === auth.uid || root.child('groups/' + root.child('users/' + auth.uid + '/group').val()).hasChild($uid)",
