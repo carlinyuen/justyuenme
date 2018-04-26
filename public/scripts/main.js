@@ -665,10 +665,16 @@ function addRSVPRow(uid, name, attending, givenname, hostname) {
       .val(name);
   } else {
     inputName.addClass('form-control rsvp-guest-givenname')
-      .attr('placeholder', hostname + '\'s Guest\'s Full Name');
+      .attr('placeholder', 'Guest\'s Full Name');
     if (givenname && givenname.length) {
       inputName.val(givenname);
     }
+  }
+  if (hostname && hostname.length) {
+    inputName.parent().append($(document.createElement('small'))
+      .addClass('form-text text-muted')
+      .text(hostname + '\'s additional guest')
+    )
   }
   if (attending === true) {
     radioYes.prop('checked', true);

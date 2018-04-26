@@ -396,6 +396,13 @@
   font-style: italic;
   color: lightcoral;
 }
+#rsvp-form input.form-control-plaintext {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+#rsvp-form input.form-control-plaintext ~ small {
+  margin-top: 0;
+}
 
 #rsvp-form-extension {
   display: none;
