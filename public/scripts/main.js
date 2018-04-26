@@ -678,13 +678,6 @@ function addRSVPRow(uid, name, attending, givenname) {
 }
 
 /**
-* Escape forward slashes in paths
-*/
-function escape(text) {
-  return text.replace('/', '\\/');
-}
-
-/**
 * Submit RSVP form
 */
 var MIN_NAME_LENGTH = 3;
@@ -701,9 +694,9 @@ function submitRSVP(event) {
     input = $('#rsvp-form input:radio[name="your-rsvp"]:checked').val();
     // Sanity check
     if (input === undefined) {
-      errors['#your-feedback'] = 'Please let us know if you\'re coming!';
+      errors['your-feedback'] = 'Please let us know if you\'re coming!';
     } else if (input != "false" && input != "true") {
-      errors['#your-feedback'] = 'Invalid selection.';
+      errors['your-feedback'] = 'Invalid selection.';
     } else {
       updates['rsvps/' + user.uid + '/attending'] = (input == "true");
       updates['rsvps/' + user.uid + '/responded'] = true;
@@ -724,19 +717,19 @@ function submitRSVP(event) {
       if (input == "false" || input == "true") {
         updates['rsvps/' + gid + '/attending'] = (input == "true");
       } else if (input !== undefined) {
-        errors[escape('#' + gid + '-rsvp-feedback')] = 'Invalid selection.';
+        errors[gid + '-rsvp-feedback'] = 'Invalid selection.';
       }
 
       // Check for case of givenname (not fixed guest)
       if ($el.hasClass('rsvp-guest-givenname')) {
         input = $el.val().trim();
         if (gid.indexOf('/') < 0) {
-          errors[escape('#' + gid + '-feedback')] = 'Name shouldn\'t be editable.';
+          errors[gid + '-feedback'] = 'Name shouldn\'t be editable.';
         } else {
           if (input.length < MIN_NAME_LENGTH) {
-            errors[escape('#' + gid + '-feedback')] = 'Name must be at least 3 letters.';
+            errors[gid + '-feedback'] = 'Name must be at least 3 letters.';
           } else if (input.length > MIN_NAME_LENGTH && input.indexOf(' ') < 0) {
-            errors[escape('#' + gid + '-feedback')] = 'Please provide full name.';
+            errors[gid + '-feedback'] = 'Please provide full name.';
           } else {
             updates['rsvps/' + gid + '/givenname'] = input;
           }
@@ -755,7 +748,7 @@ function submitRSVP(event) {
     if (!$.isEmptyObject(errors)) {
       console.log('have errors :(');
       $.each(errors, function(eID, message) {
-        $(eID).text(message);
+        $('#' + $.escapeSelector(eID)).text(message);
       });
       $('#rsvp-form').addClass('error');
       $('#submitRSVP-button').prop('disabled', false);
