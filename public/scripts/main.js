@@ -607,7 +607,7 @@ function addRSVPRow(uid, name, attending, givenname) {
   var nameFeedbackID = uid+'-feedback';
   var radioFeedbackID = uid+'-rsvp-feedback';
   var inputName = $(document.createElement('input'))
-    .attr('placeholder', 'Full Name')
+    .attr('placeholder', 'Guest\'s Full Name')
     .attr('name', 'fullname')
     .attr('id', inputNameID);
   var radioYes = $(document.createElement('input'))
@@ -678,6 +678,13 @@ function addRSVPRow(uid, name, attending, givenname) {
 }
 
 /**
+* Escape forward slashes in paths
+*/
+function escape(text) {
+  return text.replace('/', '\\/');
+}
+
+/**
 * Submit RSVP form
 */
 var MIN_NAME_LENGTH = 3;
@@ -698,8 +705,8 @@ function submitRSVP(event) {
     } else if (input != "false" && input != "true") {
       errors['#your-feedback'] = 'Invalid selection.';
     } else {
-      updates['rsvps/' + user.uid + '/attending'] = (input == "true");
-      updates['rsvps/' + user.uid + '/responded'] = true;
+      updates[escape('rsvps/' + user.uid + '/attending')] = (input == "true");
+      updates[escape('rsvps/' + user.uid + '/responded')] = true;
     }
     console.log('errors:', errors);
     console.log('updates:', updates);
@@ -715,7 +722,7 @@ function submitRSVP(event) {
       // Get RSVP status, add if actual value
       input = $('#rsvp-form input:radio[name="' + gid + '-rsvp"]:checked').val();
       if (input == "false" || input == "true") {
-        updates['rsvps/' + gid + '/attending'] = (input == "true");
+        updates[escape('rsvps/' + gid + '/attending')] = (input == "true");
       } else if (input !== undefined) {
         errors['#' + gid + '-rsvp-feedback'] = 'Invalid selection.';
       }
@@ -731,14 +738,14 @@ function submitRSVP(event) {
           } else if (input.length > MIN_NAME_LENGTH && input.indexOf(' ') < 0) {
             errors['#' + gid + '-feedback'] = 'Please provide full name.';
           } else {
-            updates['rsvps/' + gid + '/givenname'] = input;
+            updates[escape('rsvps/' + gid + '/givenname')] = input;
           }
         }
       }
 
       // Record delegate if relevant
       if (gid.indexOf(user.uid) < 0) {
-        updates['rsvps/' + gid + '/delegate'] = user.uid;
+        updates[escape('rsvps/' + gid + '/delegate')] = user.uid;
       }
       console.log('errors:', errors);
       console.log('updates:', updates);
