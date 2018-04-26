@@ -386,7 +386,7 @@
 }
 #rsvp-form .form-row:last-child {
   border-bottom: none;
-  margin-bottom: none;
+  margin-bottom: 0;
 }
 #rsvp-form .form-group > label {
   font-style: italic;

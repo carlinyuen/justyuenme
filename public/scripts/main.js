@@ -567,9 +567,11 @@ function populateRSVPForm(user, data) {
     }
   });
 
-  // Show the rsvp modal
+  // Show the rsvp modal and slide down extra guests
   $('#rsvp-modal').modal();
-  $('#rsvp-form-extension').slideDown();
+  $('#rsvp-modal').on('shown.bs.modal', function(event) {
+    $('#rsvp-form-extension').slideDown();
+  });
 }
 
 /**
