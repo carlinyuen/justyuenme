@@ -683,6 +683,7 @@ var MIN_NAME_LENGTH = 3;
 function submitRSVP(event) {
   console.log('submitRSVP!');
   event.preventDefault();   // Prevent default form submit
+  $('#rsvp-form').removeClass('was-validated');
   $('#submitRSVP-button').prop('disabled', true);
 
   var user = checkAuthOrSignin();
@@ -691,12 +692,13 @@ function submitRSVP(event) {
     var updates = {}, errors = {}, data = {}, input;
     input = $('#rsvp-form input:radio[name="your-rsvp"]:checked').val();
     // Sanity check
-    if (input === undefined) {
+    if (true) {
+    // if (input === undefined) {
       errors['#your-feedback'] = 'Please let us know if you\'re coming!';
-    } else if (input !== false && input !== true) {
+    } else if (input != "false" && input != "true") {
       errors['#your-feedback'] = 'Invalid selection.';
     } else {
-      data['attending'] = input;
+      data['attending'] = (input == "true");
       data['responded'] = true;
     }
     if (!$.isEmptyObject(data)) {
@@ -716,8 +718,8 @@ function submitRSVP(event) {
 
       // Get RSVP status, add if actual value
       input = $('#rsvp-form input:radio[name="' + gid + '"]:checked').val();
-      if (input === false || input === true) {
-        data['attending'] = input;
+      if (input == "false" || input == "true") {
+        data['attending'] = (input == "true");
       } else if (input !== undefined) {
         errors['#' + gid + '-rsvp-feedback'] = 'Invalid selection.';
       }
@@ -758,6 +760,7 @@ function submitRSVP(event) {
         $(eID).text(message);
       });
       $('#rsvp-form').addClass('was-validated');
+      $('#submitRSVP-button').prop('disabled', false);
       return;
     }
 
