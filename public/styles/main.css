@@ -380,6 +380,10 @@
   text-align: center;
 }
 
+#rsvp-form.error .invalid-feedback {
+  display: block !important;
+}
+
 #rsvp-form .form-row {
   border-bottom: 1px dotted rgb(255, 220, 220);
   margin-bottom: 16px;
