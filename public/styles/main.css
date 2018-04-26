@@ -379,6 +379,10 @@
   color: rgb(255, 155, 155);
   text-align: center;
 }
+
+/* #rsvp-form .form-row:first-child {
+  border-bottom: 1px dotted rgb(255, 220, 220);
+} */
 #rsvp-form .form-group > label {
   font-style: italic;
   color: lightcoral;

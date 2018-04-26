@@ -528,9 +528,16 @@ function getGuestInfo(uid, callback) {
 function populateRSVPForm(user, data) {
   console.log('populateRSVPForm:', data);
 
-  var you = data.find(function(u) {
-    return u.uid === user.uid;
+  data.sort(function(a, b) {
+    if (a.uid === user.uid) { return -1; }
+    if (b.uid === user.uid) { return 1; }
+    if (a.firstname < b.firstname) { return -1; }
+    if (a.firstname > b.firstname) { return 1; }
+    return 0;
   });
+  console.log('sorted data:', data);
+
+  var you = data[0];
   console.log('you:', you);
 
   // Populate your info first
