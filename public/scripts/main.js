@@ -716,7 +716,7 @@ function submitRSVP(event) {
       data = {};
 
       // Get RSVP status, add if actual value
-      input = $('#rsvp-form input:radio[name="' + gid + '"]:checked').val();
+      input = $('#rsvp-form input:radio[name="' + gid + '-rsvp"]:checked').val();
       if (input == "false" || input == "true") {
         data['attending'] = (input == "true");
       } else if (input !== undefined) {
@@ -776,7 +776,7 @@ function submitRSVP(event) {
 */
 function rsvpFailure(response) {
   console.log('rsvpFailure:', response);
-  alert('Saving RSVP failed. :( \n Please try again.');
+  alert('Saving RSVP failed. :(\nPlease try again.');
   $('#submitRSVP-button').prop('disabled', false);
 }
 
