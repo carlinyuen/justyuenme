@@ -702,7 +702,7 @@ function submitRSVP(event) {
     // Sanity check
     if (input === undefined) {
       errors['#your-feedback'] = 'Please let us know if you\'re coming!';
-    } else if (input !== false && input !== true)) {
+    } else if (input !== false && input !== true) {
       errors['#your-feedback'] = 'Invalid selection.';
     } else {
       data['attending'] = input;
