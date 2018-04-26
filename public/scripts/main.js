@@ -775,6 +775,7 @@ function submitRSVP(event) {
 function rsvpFailure(response) {
   console.log('rsvpFailure:', response);
   alert('Saving RSVP failed. :( \n Please try again.');
+  $('#submitRSVP-button').prop('disabled', false);
 }
 
 /**
