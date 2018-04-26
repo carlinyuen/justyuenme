@@ -7,6 +7,22 @@ var TIME_DURATION_XL = 2500
 var db = firebase.database();
 
 /**
+* Get URL param, from https://stackoverflow.com/questions/19491336/get-url-parameter-jquery-or-how-to-get-query-string-values-in-js
+*/
+function getURLParam(sParam) {
+  var sPageURL = decodeURIComponent(window.location.search.substring(1))
+    , sURLVariables = sPageURL.split('&')
+    , sParameterName
+    , i;
+  for (i = 0; i < sURLVariables.length; i++) {
+    sParameterName = sURLVariables[i].split('=');
+    if (sParameterName[0] === sParam) {
+      return sParameterName[1] === undefined ? true : sParameterName[1];
+    }
+  }
+};
+
+/**
 * Check for mobile browser, from https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
 */
 window.mobilecheck = function() {
@@ -649,6 +665,11 @@ function initApp() {
 window.onload = function() {
   initApp();
   setTimeout(function() {
+    var email = getURLParam('email');
+    if (email) {
+      $('#email-input').val(email);
+      $('#email-container')[0].MaterialTextfield.checkDirty();
+    }
     gravityAnimation.start();
     $('#content').fadeIn();
   }, TIME_DURATION_MEDIUM);
