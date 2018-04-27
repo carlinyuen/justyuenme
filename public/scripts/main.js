@@ -7,6 +7,23 @@ var TIME_DURATION_XL = 2500
 var db = firebase.database();
 
 /**
+* Throttle event handlers that may be called many times, from http://sampsonblog.com/simple-throttle-function/
+*/
+var THROTTLE_60FPS = 1000 / 60;
+function throttle(callback, limit) {
+  var wait = false;                 // Initially, we're not waiting
+  return function () {              // We return a throttled function
+    if (!wait) {                    // If we're not waiting
+      callback.call();              // Execute users function
+      wait = true;                  // Prevent future invocations
+      setTimeout(function () {      // After a period of time
+        wait = false;               // And allow future invocations
+      }, limit);
+    }
+  }
+}
+
+/**
 * Get URL param, from https://stackoverflow.com/questions/19491336/get-url-parameter-jquery-or-how-to-get-query-string-values-in-js
 */
 function getURLParam(sParam) {
