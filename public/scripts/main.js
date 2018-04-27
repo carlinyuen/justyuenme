@@ -241,7 +241,7 @@ function hideScrollIndicator(scrollPos) {
 * scroll position to account for gradient background
 */
 var BACKGROUND_GRADIENT_START_POS = 1420
-  , BACKGROUND_GRADIENT_END_POS = 1820
+  , BACKGROUND_GRADIENT_END_POS = 1980
   , NAV_STATE_PRE_GRADIENT = 0
   , NAV_STATE_DURING_GRADIENT = 1
   , NAV_STATE_POST_GRADIENT = 2
@@ -275,12 +275,16 @@ function updateNavColor(scrollPos) {
       break;
   }
   // console.log(textColor);
-  if (navStateChanged) {
-    $('#nav > a, #menu-button').css('color', 'rgb('
-      + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
-    $('.navicon').css('background-color', 'rgb('
-      + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
-    navStateChanged = false;
+  switch (true) {
+    case navStateChanged:
+      $('#nav').toggleClass('light', (navStatePrevious === NAV_STATE_POST_GRADIENT));
+    case (navStatePrevious === NAV_STATE_DURING_GRADIENT):
+      $('#nav > a, #menu-button').css('color', 'rgb('
+        + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
+      $('.navicon').css('background-color', 'rgb('
+        + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
+    default:
+      navStateChanged = false;
   }
 }
 
@@ -929,6 +933,7 @@ function initApp() {
   // Navigation
   $('#navicon').click(function() {
     $('#title').toggleClass('expanded');
+    this.blur();
   });
   $('.nav-link').click(function(e) {
     e.preventDefault();
