@@ -674,12 +674,12 @@ function addRSVPRow(uid, name, attending, givenname, hostname) {
     if (givenname && givenname.length) {
       inputName.val(givenname);
     }
-  }
-  if (hostname && hostname.length) {
-    inputName.parent().append($(document.createElement('small'))
-      .addClass('form-text text-muted')
-      .text(hostname + '\'s additional guest')
-    )
+    if (hostname && hostname.length) {
+      inputName.parent().append($(document.createElement('small'))
+        .addClass('form-text text-muted')
+        .text(hostname + '\'s additional guest')
+      )
+    }
   }
   if (attending === true) {
     radioYes.prop('checked', true);
