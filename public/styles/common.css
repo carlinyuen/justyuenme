@@ -4,6 +4,34 @@ body {
   background-color: rgb(5, 11, 33);
 }
 
+body.gravity {
+  background-color: #222;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+body.gravity main.mdl-layout__content {
+  margin-top: 0;
+}
+
+#firefly-field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+#firefly-field.blur {
+  -webkit-filter: blur(5px);
+	filter: blur(5px);
+  -webkit-transition: 500ms -webkit-filter linear;
+  -o-transition: 500ms -o-filter linear;
+}
+
 .textcolor-gold {
   color: rgb(255, 229, 187);
 }
