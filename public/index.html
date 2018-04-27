@@ -57,12 +57,43 @@
       right: 0;
       bottom: 0;
     }
-    #firefly-field.blur {
-      -webkit-filter: blur(5px);
-    	filter: blur(5px);
-      -webkit-transition: 500ms -webkit-filter linear;
-      -o-transition: 500ms -o-filter linear;
+    #header { display: none; }
+    #content { display: none; }
+    #login-page {
+      height: 100%;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      -webkit-align-items: stretch;
+          -ms-flex-align: stretch;
+              align-items: stretch;
+      flex-wrap: wrap;
+      justify-content: center;
     }
+    .login-page__content {
+      max-width: 450px;
+      padding: 0;
+      width: 100%;
+      margin: 0 auto;
+      -webkit-flex-shrink: 0;
+          -ms-flex-negative: 0;
+              flex-shrink: 0;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 16px 0;
+    }
+    .mdl-textfield__input {
+      border-bottom: 1px solid rgba(38, 166, 154, 0.33);
+    }
+    .mdl-textfield .mdl-textfield__label {
+      color: rgba(38, 166, 154, 0.50) !important;
+      margin-bottom: 0 !important;
+    }
+    .welcomeInfo { display: none; }
+    #parallax { visibility: hidden; }
+    #main-page { display: none; }
   </style>
   <link rel="stylesheet" href="styles/main.css">
   <link rel="preload" href="https://fonts.googleapis.com/css?family=Pacifico" as="style" onload="this.onload=null; this.rel='stylesheet'">
