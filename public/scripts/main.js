@@ -848,21 +848,21 @@ function sendPasswordReset() {
 /**
 * Preloads images
 */
-// function preloadImages() {
-  // console.log('preloadImages');
-  // $('.parallax').each(function(i) {
-  //   var path = 'parallax/' + i + '.png';
-  //   var $el = $(this);
-  //   getDownloadURL(path, function(url) {
-  //     // console.log('prefetch url:', url);
-  //     /* Preload image: https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded */
-  //     $('<img/>').attr('src', url).on('load', function() {
-  //       $(this).remove(); // prevent memory leaks
-  //       $el.css('background-image', 'url(' + url + ')');
-  //     });
-  //   });
-  // });
-// }
+function preloadImages(paths, callback) {
+  console.log('preloadImages:', paths);
+  $.each(paths, function(i, path) {
+    getDownloadURL(path, function(url) {
+      // console.log('prefetch url:', url);
+      /* Preload image: https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded */
+      $('<img/>').attr('src', url).on('load', function() {
+        $(this).remove(); // prevent memory leaks
+        if (callback) {
+          callback(url);
+        }
+      });
+    });
+  });
+}
 
 // Get download URL from cloud storage
 function getDownloadURL(path, callback) {
