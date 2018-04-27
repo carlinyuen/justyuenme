@@ -780,7 +780,7 @@ function submitRSVP(event) {
 */
 function rsvpFailure(response) {
   console.log('rsvpFailure:', response);
-  alert('Saving RSVP failed. :(\nPlease try again.');
+  alert('Saving response failed. :(\nPlease try again.');
   $('#submitRSVP-button').prop('disabled', false);
 }
 
@@ -790,7 +790,7 @@ function rsvpFailure(response) {
 function rsvpSuccess(response) {
   console.log('rsvpSuccess:', response);
 
-  alert('RSVP saved!');
+  alert('Response saved!');
   // TODO: animate success?
 
   $('#rsvp-modal').modal('hide');
