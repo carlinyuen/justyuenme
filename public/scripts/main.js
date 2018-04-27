@@ -77,6 +77,8 @@ function checkAuthOrSignin() {
 function signIn(event) {
   // console.log('signIn');
   event.preventDefault();   // Prevent default form submit
+  // Disable buttons for now to prevent multiple calls
+  $('.signout-button, #signin-button').prop('disabled', true);
 
   // Try to sign in user
   if (firebase.auth().currentUser) {
@@ -121,9 +123,6 @@ function signIn(event) {
       $('#signin-button').prop('disabled', false);
     });
   }
-
-  // Disable buttons for now to prevent multiple calls
-  $('.signout-button, #signin-button').prop('disabled', true);
 }
 
 /**
@@ -287,7 +286,7 @@ var PARALLAX_CLOUDS_SHOW_POS = 350
 ;
 function updateParallaxDisplay(scrollPos) {
   $('.scenery, .buildings').toggleClass('invisible', (scrollPos >= PARALLAX_BUILDINGS_HIDE_POS));
-  // $('.clouds').toggleClass('invisible', (scrollPos < PARALLAX_CLOUDS_SHOW_POS));
+  $('.clouds').toggleClass('invisible', (scrollPos < PARALLAX_CLOUDS_SHOW_POS));
 }
 
 /**
@@ -563,17 +562,23 @@ function populateRSVPForm(user, data) {
   // console.log('sorted data:', data);
 
   // Populate current user's rsvp info first
-  var you = data[0];
+  var you = data[0], pid, guests, gid;
   $('#your-name').val(you.firstname + ' ' + you.lastname);
   if (you.rsvp.attending === true) {
     $('#your-yes').prop('checked', true);
   } else if (you.rsvp.attending === false) {
     $('#your-no').prop('checked', true);
   }
+  guests = you.rsvp['additional-guests'];
+  if (guests && guests.length) {
+    $.each(guests, function(j, guest) {
+      gid = you.uid + '/additional-guests/' + j;
+      addRSVPRow(gid, guest.fullname, guest.attending, guest.givenname, you.firstname);
+    });
+  }
 
   // Create additional fields for additional guests
   //  and populate with existing rsvp data if any
-  var pid, guests, gid;
   $.each(data, function(i, person) {
     if (i === 0) {
       return true;  // Skip "self"
@@ -650,7 +655,7 @@ function addRSVPRow(uid, name, attending, givenname, hostname) {
         .append($(document.createElement('label'))
           .addClass('form-check-label')
           .attr('for', radioNoID)
-          .text('Won\'t make it. :(')
+          .text('Can\'t make it. :(')
         )
         .append($(document.createElement('div'))
           .addClass('invalid-feedback')
