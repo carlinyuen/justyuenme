@@ -388,7 +388,7 @@
   border-bottom: 1px dotted rgb(255, 220, 220);
   margin-bottom: 16px;
 }
-#rsvp-form div.form-row:last-child {
+#rsvp-form .form-row.no-border {
   border-bottom: none;
   margin-bottom: 0;
 }

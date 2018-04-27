@@ -597,6 +597,7 @@ function populateRSVPForm(user, data) {
   });
 
   // Show the rsvp modal
+  $('#rsvp-form .form-row').last().addClass('no-border');
   $('#rsvp-modal').modal();
   $('#submitRSVP-button').prop('disabled', false);
 }
