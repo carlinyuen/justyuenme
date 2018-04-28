@@ -163,7 +163,7 @@ function loadMainPage() {
     });
     $('#login-page').fadeOut(TIME_DURATION_FAST, function() {
       db.ref('content').once('value')
-        .then(populateMainPage, contentErrorHandler);
+        .then(populateMainPage, contentErrorHandler); // TODO: consider moving this to before the button click for optimization
       setupParallaxIntro();
       $('#header').fadeIn(TIME_DURATION_FAST);
       $('#main-page').removeClass('no-access')
@@ -313,6 +313,10 @@ function updateParallaxDisplay(scrollPos) {
 /**
 * Populate main page data
 */
+const DEFAULT_PHOTO_EXTENSION = '.jpg'
+  , GALLERY_THUMBNAIL_PATH = '/images/gallery/'
+  , FEATURED_THUMBNAIL_PATH = '/images/featured/'
+;
 function populateMainPage(response) {
   var pageData = response.val(), data, container, temp;
   // console.log('populateMainPage:', pageData);
@@ -323,62 +327,82 @@ function populateMainPage(response) {
   data = pageData['our-story'];
   if (data) {
     container = $('#our-story');
-    data.forEach(function(section) {
+
+    // Load text copy first
+    data['text'].forEach(function(section) {
       $.each(section, function(key, value) {
-        $(document.createElement('h3'))
+        container.append($(document.createElement('h3'))
           .addClass('main-page__data')
           .text(key)
-          .appendTo(container);
+        );
         temp = value.split('\n');
         temp.forEach(function(text) {
-          $(document.createElement('p'))
+          container.append($(document.createElement('p'))
             .addClass('main-page__data')
             .text(text)
-            .appendTo(container);
+          );
         });
       });
+    });
+
+    // Create featured photos
+    $.each(data['photos'], function(i, item) {
+      item['photoURL'] = i + DEFAULT_PHOTO_EXTENSION;
+      item['thumbnailURL'] = FEATURED_THUMBNAIL_PATH + item.photoURL;
+      temp = generatePhotoHTML(item);
+      temp.addClass('featured');
+      container.append(temp);
+    });
+  }
+
+  data = pageData['gallery'];
+  if (data) {
+    container = $('#carousel');
+
+    // Generate thumbnails and containers for photos
+    $.each(data, function(i, item) {
+      item['photoURL'] = i + DEFAULT_PHOTO_EXTENSION;
+      item['thumbnailURL'] = GALLERY_THUMBNAIL_PATH + item.photoURL;
+      temp = generatePhotoHTML(item);
+      temp.addClass('gallery');
+      container.append(temp);
     });
   }
 
   data = pageData['event-details'];
   if (data) {
     container = $('#location');
-    $(document.createElement('h3'))
+    container.append($(document.createElement('h3'))
       .addClass('main-page__data')
       .text(data.location['title'])
-      .appendTo(container);
-    $(document.createElement('p'))
+    ).append($(document.createElement('p'))
       .addClass('main-page__data')
       .text(data.location['venue-name'])
-      .appendTo(container);
-    $(document.createElement('p'))
+    ).append($(document.createElement('p'))
       .addClass('main-page__data')
       .text(data.location['address'])
-      .appendTo(container);
+    );
 
     container = $('#schedule');
-    $(document.createElement('h3'))
+    container.append($(document.createElement('h3'))
       .addClass('main-page__data')
       .text(data.schedule['title'])
-      .appendTo(container);
-    $(document.createElement('p'))
+    ).append($(document.createElement('p'))
       .addClass('main-page__data')
       .text(data.schedule['date'])
-      .appendTo(container);
-    $(document.createElement('p'))
+    ).append($(document.createElement('p'))
       .addClass('main-page__data')
       .text(data.schedule['time'])
-      .appendTo(container);
+    );
 
     container = $('#dresscode');
-    $(document.createElement('h3'))
+    container.append($(document.createElement('h3'))
       .addClass('main-page__data')
       .text(data.dresscode['title'])
-      .appendTo(container);
-    $(document.createElement('p'))
+    ).append($(document.createElement('p'))
       .addClass('main-page__data')
       .text(data.dresscode['text'])
-      .appendTo(container);
+    );
   }
 
   data = pageData['rsvp'];
@@ -388,17 +412,16 @@ function populateMainPage(response) {
     console.log('rsvp date:', temp);
     temp = (new Date() > temp);
     console.log('today is after deadline:', temp);
-    $(document.createElement('button'))
+    container.append($(document.createElement('button'))
       .addClass('main-page__data')
       .attr('id', 'rsvp-button')
       .text(data['title'])
       .prop('disabled', temp)
       .click(loadRSVPForm)
-      .appendTo(container);
-    $(document.createElement('p'))
+    ).append($(document.createElement('p'))
       .addClass('main-page__data')
       .text((temp ? data['errorText'] : data['text']))
-      .appendTo(container);
+    );
   }
 
   data = pageData['transportation'];
@@ -406,14 +429,13 @@ function populateMainPage(response) {
     container = $('#transportation');
     data.forEach(function(mode) {
       $.each(mode, function(key, value) {
-        $(document.createElement('h3'))
+        container.append($(document.createElement('h3'))
           .addClass('main-page__data')
           .text(key)
-          .appendTo(container);
-        $(document.createElement('p'))
+        ).append($(document.createElement('p'))
           .addClass('main-page__data')
           .text(value)
-          .appendTo(container);
+        );
       });
     });
   }
@@ -422,35 +444,70 @@ function populateMainPage(response) {
   if (data) {
     container = $('#accommodations');
     data.forEach(function(hotel) {
-      $(document.createElement('h3'))
+      container.append($(document.createElement('h3'))
         .addClass('main-page__data')
         .text(hotel.name)
-        .appendTo(container);
-      $(document.createElement('p'))
+      ).append($(document.createElement('p'))
         .addClass('main-page__data')
         .text(hotel.address)
-        .appendTo(container);
-      $(document.createElement('p'))
+      ).append($(document.createElement('p'))
         .addClass('main-page__data')
         .text(hotel.description)
-        .appendTo(container);
-      $(document.createElement('a'))
+      ).append($(document.createElement('a'))
         .addClass('main-page__data')
         .text(hotel.url)
         .attr('href', hotel.url)
         .attr('target', '_blank')
-        .appendTo(container);
+      );
     });
   }
 
   data = pageData['gift-registry'];
   if (data) {
     container = $('#gift-registry');
-    $(document.createElement('p'))
+    container.append($(document.createElement('p'))
       .addClass('main-page__data')
       .html(data.split('\n').join('<br>'))
-      .appendTo(container);
+    );
   }
+}
+
+/**
+* Generate photo image template HTML
+*  returns a jquery object
+*/
+const DEFAULT_PHOTO_SIZE = '1600x1200';
+function generatePhotoHTML(metadata) {
+  var html = $(document.createElement('figure'))
+    .addClass('photo')
+    .prop('itemscope', true)
+    .prop('itemprop', 'associatedMedia')
+    .prop('itemtype', 'http://schema.org/ImageObject');
+  html.append($(document.createElement('a'))
+    .attr('href', metadata.photoURL)                 // Needs to be replaced
+    .prop('data-size', DEFAULT_PHOTO_SIZE)  // Needs to be replaced
+    .prop('itemprop', 'contentUrl')
+    .append($(document.createElement('img'))
+      .attr('src', metadata.thumbnailURL)
+      .prop('itemprop', 'thumbnail')
+      .attr('alt', (metadata.alt || metadata.caption))
+    )
+  );
+  var copyright = '';
+  if (metadata.copyright) {
+    copyright = $(document.createElement('span'))
+      .prop('itemprop', 'copyrightHolder')
+      .text(metadata.copyright)
+    ;
+  }
+  if (metadata.caption) {
+    html.append($(document.createElement('figcaption'))
+      .prop('itemprop', 'caption description')
+      .text(metadata.caption)
+      .append(copyright)
+    );
+  }
+  return html;
 }
 
 /**

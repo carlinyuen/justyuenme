@@ -99,6 +99,10 @@
   <link rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons"  as="style" onload="this.onload=null; this.rel='stylesheet'">
   <link rel="preload" href="styles/photoswipe/photoswipe.css" as="style" onload="this.onload=null; this.rel='stylesheet'">
   <link rel="preload" href="styles/photoswipe/default-skin.css" as="style" onload="this.onload=null; this.rel='stylesheet'">
+  <link rel="preload" href="styles/flickity.min.css" as="style" onload="this.onload=null; this.rel='stylesheet'">
+  <!--[if lt IE 9]>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <![endif]-->
 
 </head>
 <body id="home" class="gravity">
@@ -210,6 +214,9 @@
           <article id="our-story" class="main-page__section">
             <h2>Our Story</h2>
           </article>
+          <section id="gallery" class="main-page__section mdl-grid">
+            <div id="carousel" itemscope itemtype="http://schema.org/ImageGallery"></div>
+          </section>
           <section id="event-details" class="main-page__section mdl-grid">
             <h2>Ceremony &amp; Reception</h2>
             <address id="location" class="mdl-cell mdl-cell--6-col"></address>
@@ -319,20 +326,21 @@
   </div>
   <!-- END: photo gallery -->
 
-  <script async src="https://code.getmdl.io/1.1.3/material.min.js"></script>
   <script defer src="/__/firebase/4.13.0/firebase-app.js"></script>
   <script defer src="/__/firebase/4.13.0/firebase-auth.js"></script>
   <script defer src="/__/firebase/4.13.0/firebase-database.js"></script>
   <script defer src="/__/firebase/init.js"></script>
   <!-- <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
   <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script async src="scripts/rellax.min.js"></script>
-  <script async src="scripts/screenfull.min.js"></script>
   <script defer src="scripts/gravity.js"></script>
   <script defer src="scripts/main.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
   <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
   <script defer src="scripts/photoswipe.min.js"></script>
   <script defer src="scripts/photoswipe-ui-default.min.js"></script>
+  <script defer src="scripts/flickity.pkgd.min.js"></script>
+  <script defer src="scripts/rellax.min.js"></script>
+  <script defer src="scripts/screenfull.min.js"></script>
 </body>
 </html>
