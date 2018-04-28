@@ -177,7 +177,7 @@ function loadMainPage() {
             prevNextButtons: false,
             pageDots: false,
           });
-          preloadPhotos();
+          setupPhotoSwipe();
           setTimeout(function() {
             $('#title').toggleClass('expanded', false);
           }, TIME_DURATION_XL);
@@ -318,7 +318,9 @@ function updateParallaxDisplay(scrollPos) {
 */
 const DEFAULT_PHOTO_EXTENSION = '.jpg'
   , DEFAULT_THUMBNAIL_EXTENSION = '.thumbnail.jpg'
+  , GALLERY_FIREBASE_PATH = 'gallery/'
   , GALLERY_THUMBNAIL_PATH = '/images/gallery/'
+  , FEATURED_FIREBASE_PATH = 'featured/'
   , FEATURED_THUMBNAIL_PATH = '/images/featured/'
 ;
 function populateMainPage(response) {
@@ -351,7 +353,7 @@ function populateMainPage(response) {
 
     // Create featured photos
     $.each(data['photos'], function(i, item) {
-      item['photoURL'] = i + DEFAULT_PHOTO_EXTENSION;
+      item['photoURL'] = FEATURED_FIREBASE_PATH + i + DEFAULT_PHOTO_EXTENSION;
       item['thumbnailURL'] = FEATURED_THUMBNAIL_PATH + i + DEFAULT_THUMBNAIL_EXTENSION;
       temp = generatePhotoHTML(item);
       temp.addClass('featured');
@@ -365,7 +367,7 @@ function populateMainPage(response) {
 
     // Generate thumbnails and containers for photos
     $.each(data, function(i, item) {
-      item['photoURL'] = i + DEFAULT_PHOTO_EXTENSION;
+      item['photoURL'] = GALLERY_FIREBASE_PATH + i + DEFAULT_PHOTO_EXTENSION;
       item['thumbnailURL'] = GALLERY_THUMBNAIL_PATH + i + DEFAULT_THUMBNAIL_EXTENSION;
       temp = generatePhotoHTML(item);
       temp.addClass('gallery');
@@ -424,7 +426,7 @@ function populateMainPage(response) {
       .prop('disabled', temp)
       .click(loadRSVPForm)
     ).append($(document.createElement('p'))
-      .addClass('main-page__data')
+      .addClass('main-page__data' + (temp ? ' errorText' : ''))
       .text((temp ? data['errorText'] : data['text']))
     );
   }
@@ -908,11 +910,33 @@ function sendPasswordReset() {
 }
 
 /**
-* Preload featured photos and gallery images
+* Setup PhotoSwipe for the featured & gallery photos, we need to:
+*  0) Get the list of all the images we need to load
+*  1) Get the storage bucket URLs from Firebase
+*  2) Preload the photos and get their naturalHeight/naturalWidth
+*  3) Update link href and data-size properties with URL & size
+*  4) initialize photoswipe library
+* http://photoswipe.com/documentation/getting-started.html#creating-slide-objects-array
 */
-function preloadPhotos() {
+function setupPhotoSwipe(callback) {
   console.log('preloadPhotos');
-  $('.photo');
+
+  // Get list of all images we need to load
+  var slides = [];
+  $('.photo').each(function() {
+    slides.push({
+      src: $(this).find('a').attr('href'),
+      msrc: $(this).find('img').attr('src'),
+      title: $(this).find('figcaption').html(),
+    });
+  });
+
+  // Preload images
+  Promise.all(slides.map(function(slide, i) {
+    return getDownloadURL(slide.src);
+  })).then(function(urls) {
+    console.log('urls:', urls);
+  });
 }
 
 /**
@@ -937,13 +961,15 @@ function preloadImages(paths, callback) {
 // Get download URL from cloud storage
 function getDownloadURL(path, callback) {
   // console.log('getDownloadURL:', path);
-  if (!callback) {
-    console.log('Error! Callback DNE');
-    return;
-  }
   // Create a reference to the file we want to download
-  firebase.storage().ref(path).getDownloadURL()
-    .then(callback)
+  return firebase.storage().ref(path).getDownloadURL()
+    .then(function(url) {
+      if (callback) {
+        callback(url);
+      } else {
+        return url;
+      }
+    })
     .catch(function(error) {
       // https://firebase.google.com/docs/storage/web/handle-errors
       switch (error.code) {

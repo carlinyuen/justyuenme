@@ -5,6 +5,9 @@
 .backgroundcolor-gold {
   background-color: rgb(255, 229, 187);
 }
+.errorText {
+  color: red;
+}
 
 .transparent {
   opacity: 0 !important;
