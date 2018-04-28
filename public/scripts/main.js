@@ -356,7 +356,7 @@ function populateMainPage(response) {
       item['photoURL'] = FEATURED_FIREBASE_PATH + i + DEFAULT_PHOTO_EXTENSION;
       item['thumbnailURL'] = FEATURED_THUMBNAIL_PATH + i + DEFAULT_THUMBNAIL_EXTENSION;
       temp = generatePhotoHTML(item);
-      temp.addClass('featured');
+      temp.addClass('featured main-page__data')
       container.append(temp);
     });
   }
@@ -370,7 +370,7 @@ function populateMainPage(response) {
       item['photoURL'] = GALLERY_FIREBASE_PATH + i + DEFAULT_PHOTO_EXTENSION;
       item['thumbnailURL'] = GALLERY_THUMBNAIL_PATH + i + DEFAULT_THUMBNAIL_EXTENSION;
       temp = generatePhotoHTML(item);
-      temp.addClass('gallery');
+      temp.addClass('gallery main-page__data');
       container.append(temp);
     });
   }
@@ -483,7 +483,6 @@ function populateMainPage(response) {
 * Generate photo image template HTML
 *  returns a jquery object
 */
-const DEFAULT_PHOTO_SIZE = '1600x1200';
 function generatePhotoHTML(metadata) {
   var html = $(document.createElement('figure'))
     .addClass('photo')
@@ -492,7 +491,6 @@ function generatePhotoHTML(metadata) {
     .prop('itemtype', 'http://schema.org/ImageObject');
   html.append($(document.createElement('a'))
     .attr('href', metadata.photoURL)                 // Needs to be replaced
-    .prop('data-size', DEFAULT_PHOTO_SIZE)  // Needs to be replaced
     .prop('itemprop', 'contentUrl')
     .append($(document.createElement('img'))
       .attr('src', metadata.thumbnailURL)
@@ -921,21 +919,38 @@ function sendPasswordReset() {
 function setupPhotoSwipe(callback) {
   console.log('preloadPhotos');
 
-  // Get list of all images we need to load
-  var slides = [];
+  // 0) Get list of all images we need to load
+  var slides = [], $photo;
   $('.photo').each(function() {
+    $photo = $(this);
     slides.push({
-      src: $(this).find('a').attr('href'),
-      msrc: $(this).find('img').attr('src'),
-      title: $(this).find('figcaption').html(),
+      src: $photo.find('a').attr('href'),
+      msrc: $photo.find('img').attr('src'),
+      title: $photo.find('figcaption').html(),
     });
   });
 
-  // Preload images
-  Promise.all(slides.map(function(slide, i) {
+  // 1) Get storage bucket URLs from Firebase Cloud Storage
+  Promise.all(slides.map(function(slide) {
     return getDownloadURL(slide.src);
   })).then(function(urls) {
-    console.log('urls:', urls);
+    // console.log('urls:', urls);
+
+    // 2) Preload images <https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded> and get image dimensions
+    Promise.all(urls.map(function(url) {
+      $(document.createElement('img'))
+        .attr('src', url)
+        .on('load', function() {
+          var size = {
+            w: this.naturalWidth,
+            h: this.naturalHeight,
+          };
+          $(this).remove();   // prevent memory leaks
+          return size;
+        });
+    })).then(function(sizes) {
+      console.log('sizes:', sizes);
+    });
   });
 }
 
@@ -947,7 +962,6 @@ function preloadImages(paths, callback) {
   $.each(paths, function(i, path) {
     getDownloadURL(path, function(url) {
       // console.log('prefetch url:', url);
-      /* Preload image: https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded */
       $('<img/>').attr('src', url).on('load', function() {
         $(this).remove(); // prevent memory leaks
         if (callback) {
@@ -958,10 +972,11 @@ function preloadImages(paths, callback) {
   });
 }
 
-// Get download URL from cloud storage
+/**
+* Get download URL from cloud storage
+*/
 function getDownloadURL(path, callback) {
   // console.log('getDownloadURL:', path);
-  // Create a reference to the file we want to download
   return firebase.storage().ref(path).getDownloadURL()
     .then(function(url) {
       if (callback) {
@@ -970,8 +985,8 @@ function getDownloadURL(path, callback) {
         return url;
       }
     })
+    // https://firebase.google.com/docs/storage/web/handle-errors
     .catch(function(error) {
-      // https://firebase.google.com/docs/storage/web/handle-errors
       switch (error.code) {
         case 'storage/canceled': break;
         case 'storage/object_not_found':  // DNE
