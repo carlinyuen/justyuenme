@@ -170,7 +170,6 @@ function loadMainPage() {
         .fadeIn(TIME_DURATION_FAST, function() {
           // console.log('main page fade in');
           $(window).scroll(scrollHandler);  // Add scroll position listener
-          $('#submitRSVP-button, #rsvp-button').prop('disabled', false);
           $('#carousel').flickity({
             wrapAround: true,
             freeScroll: true,
@@ -414,8 +413,9 @@ function populateMainPage(response) {
   if (data) {
     container = $('#wedding-rsvp');
     temp = new Date(data['datetime'] + (1000 * 60 * 60 * 24));  // Set to 1 day after deadline
-    console.log('rsvp date:', temp);
-    temp = (new Date() > temp);
+    // console.log('rsvp date:', temp);
+    temp = true;
+    // temp = (new Date() > temp);
     console.log('today is after deadline:', temp);
     container.append($(document.createElement('button'))
       .addClass('main-page__data')
@@ -911,6 +911,7 @@ function sendPasswordReset() {
 * Preload featured photos and gallery images
 */
 function preloadPhotos() {
+  console.log('preloadPhotos');
   $('.photo');
 }
 
