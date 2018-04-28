@@ -171,6 +171,13 @@ function loadMainPage() {
           // console.log('main page fade in');
           $(window).scroll(scrollHandler);  // Add scroll position listener
           $('#submitRSVP-button, #rsvp-button').prop('disabled', false);
+          $('#carousel').flickity({
+            wrapAround: true,
+            freeScroll: true,
+            autoPlay: true,
+            prevNextButtons: false,
+            pageDots: false,
+          });
           preloadPhotos();
           setTimeout(function() {
             $('#title').toggleClass('expanded', false);

@@ -567,6 +567,17 @@ mdl-layout {
   text-align: left;
 }
 
+.photo figcaption {
+  display: none;
+}
+#carousel {
+  width: 100%;
+  height: auto;
+}
+.gallery {
+  margin-right: 10px;
+}
+
 #event-details .mdl-cell {
   margin: 0 auto;
 }
