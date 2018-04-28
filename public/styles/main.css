@@ -416,26 +416,26 @@ mdl-layout {
   -ms-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-#sky    { background-image: url('/images/0.png'); }
-#stars  { background-image: url('/images/1.png'); }
-#moon   { background-image: url('/images/2.png'); }
-#bbg    { background-image: url('/images/3.png'); }
-#free   { background-image: url('/images/4.png'); }
-#empire { background-image: url('/images/5.png'); }
+#sky    { background-image: url('/images/parallax/0.png'); }
+#stars  { background-image: url('/images/parallax/1.png'); }
+#moon   { background-image: url('/images/parallax/2.png'); }
+#bbg    { background-image: url('/images/parallax/3.png'); }
+#free   { background-image: url('/images/parallax/4.png'); }
+#empire { background-image: url('/images/parallax/5.png'); }
 #gradient {
-  background-image: url('/images/6.png');
+  background-image: url('/images/parallax/6.png');
   height: 2110px;
 }
 #cloud1 {
-  background-image: url('/images/7.png');
+  background-image: url('/images/parallax/7.png');
   height: 3110px;
 }
 #cloud2 {
-  background-image: url('/images/8.png');
+  background-image: url('/images/parallax/8.png');
   height: 5110px;
 }
 #cloud3 {
-  background-image: url('/images/9.png');
+  background-image: url('/images/parallax/9.png');
   height: 8110px;
 }
 @media screen and (min-width: 2001px) {
