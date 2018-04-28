@@ -1,5 +1,5 @@
 'use strict';
-var TIME_DURATION_XL = 2500
+const TIME_DURATION_XL = 2500
   , TIME_DURATION_LONG = 1500
   , TIME_DURATION_MEDIUM = 1000
   , TIME_DURATION_FAST = 400
@@ -9,7 +9,7 @@ var db = firebase.database();
 /**
 * Throttle event handlers that may be called many times, from http://sampsonblog.com/simple-throttle-function/
 */
-var THROTTLE_60FPS = 1000 / 60;
+const THROTTLE_60FPS = 1000 / 60;
 function throttle(callback, limit) {
   var wait = false;                 // Initially, we're not waiting
   return function () {              // We return a throttled function
@@ -226,9 +226,8 @@ function scrollHandler(event) {
 /**
 * Hide scroll indicator after scrolling down
 */
-var SCROLL_INDICATOR_HIDE_POS = 256
-  , scrollIndicatorHidden = false
-;
+const SCROLL_INDICATOR_HIDE_POS = 256;
+var scrollIndicatorHidden = false;
 function hideScrollIndicator(scrollPos) {
   if (!scrollIndicatorHidden && scrollPos >= SCROLL_INDICATOR_HIDE_POS) {
     $('#scroll-indicator').addClass('transparent');
@@ -240,12 +239,13 @@ function hideScrollIndicator(scrollPos) {
 * Update the text color of the navigation links based on
 * scroll position to account for gradient background
 */
-var BACKGROUND_GRADIENT_START_POS = 1420
+const BACKGROUND_GRADIENT_START_POS = 1420
   , BACKGROUND_GRADIENT_END_POS = 1980
   , NAV_STATE_PRE_GRADIENT = 0
   , NAV_STATE_DURING_GRADIENT = 1
   , NAV_STATE_POST_GRADIENT = 2
-  , navStatePrevious = 0
+;
+var navStatePrevious = 0
   , navStateChanged = false
 ;
 function updateNavColor(scrollPos) {
@@ -302,7 +302,7 @@ function checkNavState(state) {
 * Update which parallax images to display, in an effort
 * to conserve CPU and reduce performance lag
 */
-var PARALLAX_CLOUDS_SHOW_POS = 350
+const PARALLAX_CLOUDS_SHOW_POS = 350
   , PARALLAX_BUILDINGS_HIDE_POS = 1000
 ;
 function updateParallaxDisplay(scrollPos) {
@@ -506,7 +506,7 @@ function getRSVPCandidates(uid, callback) {
 /**
 * Get member UIDs of a group
 */
-var groupRef = db.ref('groups');
+const groupRef = db.ref('groups');
 function getGroupMembers(gid, callback) {
   // console.log('getGroupMembers:', gid);
   return groupRef.child(gid).once('value').then(function(members) {
@@ -522,7 +522,7 @@ function getGroupMembers(gid, callback) {
 /**
 * Get user profile info of a uid
 */
-var userRef = db.ref('users');
+const userRef = db.ref('users');
 function getUserProfile(uid, callback) {
   // console.log('getUserProfile:', uid);
   return userRef.child(uid).once('value').then(function(user) {
@@ -553,7 +553,7 @@ function getAdditionalGuests(candidates, callback) {
 /**
 * Check if a person is an allowed guest
 */
-var rsvpRef = db.ref('rsvps');
+const rsvpRef = db.ref('rsvps');
 function getRSVPInfo(uid, callback) {
   // console.log('getRSVPInfo:', uid);
   return rsvpRef.child(uid).once('value').then(function(rsvp) {
@@ -714,7 +714,7 @@ function addRSVPRow(uid, name, attending, givenname, hostname) {
 /**
 * Submit RSVP form
 */
-var MIN_NAME_LENGTH = 3;
+const MIN_NAME_LENGTH = 3;
 function submitRSVP(event) {
   console.log('submitRSVP!');
   event.preventDefault();   // Prevent default form submit

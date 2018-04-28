@@ -35,64 +35,36 @@ const mailTransport = nodemailer.createTransport({
 
 // Your company name to include in the emails
 // TODO: Change this to your app or company name to customize the email sent.
-const APP_NAME = 'Cloud Storage for Firebase quickstart';
+const APP_NAME = 'Justine & Carlin';
 
 // [START sendWelcomeEmail]
 /**
  * Sends a welcome email to new user.
  */
 // [START onCreateTrigger]
-exports.sendWelcomeEmail = functions.auth.user().onCreate((user) => {
-// [END onCreateTrigger]
-  // [START eventAttributes]
-  const email = user.email; // The email of the user.
-  const displayName = user.displayName; // The display name of the user.
-  // [END eventAttributes]
-
-  return sendWelcomeEmail(email, displayName);
-});
+// exports.sendWelcomeEmail = functions.auth.user().onCreate((user) => {
+// // [END onCreateTrigger]
+//   // [START eventAttributes]
+//   const email = user.email; // The email of the user.
+//   const displayName = user.displayName; // The display name of the user.
+//   // [END eventAttributes]
+//
+//   return sendWelcomeEmail(email, displayName);
+// });
 // [END sendWelcomeEmail]
 
-// [START sendByeEmail]
-/**
- * Send an account deleted email confirmation to users who delete their accounts.
- */
-// [START onDeleteTrigger]
-exports.sendByeEmail = functions.auth.user().onDelete((user) => {
-// [END onDeleteTrigger]
-  const email = user.email;
-  const displayName = user.displayName;
-
-  return sendGoodbyEmail(email, displayName);
-});
-// [END sendByeEmail]
-
-// Sends a welcome email to the given user.
-function sendWelcomeEmail(email, displayName) {
+// Sends a RSVP confirmation email to the given user.
+function sendRSVPConfirmationEmail(email, displayName, attending) {
   const mailOptions = {
-    from: `${APP_NAME} <noreply@firebase.com>`,
+    from: `${APP_NAME} <justineandcarlin@gmail.com>`,
     to: email,
   };
+
 
   // The user subscribed to the newsletter.
-  mailOptions.subject = `Welcome to ${APP_NAME}!`;
-  mailOptions.text = `Hey ${displayName || ''}! Welcome to ${APP_NAME}. I hope you will enjoy our service.`;
+  mailOptions.subject = `Response confirmation for ${APP_NAME}'s wedding`;
+  mailOptions.text = `Hey ${displayName || 'there'}! Thanks so much for responding to our wedding invitation.`;
   return mailTransport.sendMail(mailOptions).then(() => {
     return console.log('New welcome email sent to:', email);
-  });
-}
-
-// Sends a goodbye email to the given user.
-function sendGoodbyEmail(email, displayName) {
-  const mailOptions = {
-    from: `${APP_NAME} <noreply@firebase.com>`,
-    to: email,
-  };
-
-  // The user unsubscribed to the newsletter.
-  mailOptions.subject = `Bye!`;
-  mailOptions.text = `Hey ${displayName || ''}!, We confirm that we have deleted your ${APP_NAME} account.`;
-  return mailTransport.sendMail(mailOptions).then(() => {
-    return console.log('Account deletion confirmation email sent to:', email);
   });
 }
