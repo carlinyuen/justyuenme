@@ -414,8 +414,8 @@ function populateMainPage(response) {
     container = $('#wedding-rsvp');
     temp = new Date(data['datetime'] + (1000 * 60 * 60 * 24));  // Set to 1 day after deadline
     // console.log('rsvp date:', temp);
-    temp = true;
-    // temp = (new Date() > temp);
+    // temp = true;   // For debugging / testing
+    temp = (new Date() > temp);
     console.log('today is after deadline:', temp);
     container.append($(document.createElement('button'))
       .addClass('main-page__data')
