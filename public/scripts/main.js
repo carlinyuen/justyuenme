@@ -170,7 +170,8 @@ function loadMainPage() {
         .fadeIn(TIME_DURATION_FAST, function() {
           // console.log('main page fade in');
           $(window).scroll(scrollHandler);  // Add scroll position listener
-          $('#submitRSVP-button, #rsvp-button').prop('disabled', false);  // Enable RSVP
+          $('#submitRSVP-button, #rsvp-button').prop('disabled', false);
+          preloadPhotos();
           setTimeout(function() {
             $('#title').toggleClass('expanded', false);
           }, TIME_DURATION_XL);
@@ -197,7 +198,6 @@ var rellax;   // Reference to rellax object
 function setupParallaxIntro() {
   // console.log('setupParallaxIntro');
 
-  /* Using rellax.min.js from Open Source */
   if (rellax) {
     rellax.destroy();
   }
@@ -206,9 +206,6 @@ function setupParallaxIntro() {
       rellax = new Rellax('.parallax');
       $('#main-page').addClass('light');
     });
-
-  /* Using parallax.js from Google Developers */
-  // initializeParallax(document.querySelector('#main-page'));
 }
 
 /**
@@ -314,6 +311,7 @@ function updateParallaxDisplay(scrollPos) {
 * Populate main page data
 */
 const DEFAULT_PHOTO_EXTENSION = '.jpg'
+  , DEFAULT_THUMBNAIL_EXTENSION = '.thumbnail.jpg'
   , GALLERY_THUMBNAIL_PATH = '/images/gallery/'
   , FEATURED_THUMBNAIL_PATH = '/images/featured/'
 ;
@@ -348,7 +346,7 @@ function populateMainPage(response) {
     // Create featured photos
     $.each(data['photos'], function(i, item) {
       item['photoURL'] = i + DEFAULT_PHOTO_EXTENSION;
-      item['thumbnailURL'] = FEATURED_THUMBNAIL_PATH + item.photoURL;
+      item['thumbnailURL'] = FEATURED_THUMBNAIL_PATH + i + DEFAULT_THUMBNAIL_EXTENSION;
       temp = generatePhotoHTML(item);
       temp.addClass('featured');
       container.append(temp);
@@ -362,7 +360,7 @@ function populateMainPage(response) {
     // Generate thumbnails and containers for photos
     $.each(data, function(i, item) {
       item['photoURL'] = i + DEFAULT_PHOTO_EXTENSION;
-      item['thumbnailURL'] = GALLERY_THUMBNAIL_PATH + item.photoURL;
+      item['thumbnailURL'] = GALLERY_THUMBNAIL_PATH + i + DEFAULT_THUMBNAIL_EXTENSION;
       temp = generatePhotoHTML(item);
       temp.addClass('gallery');
       container.append(temp);
@@ -900,6 +898,13 @@ function sendPasswordReset() {
         console.log(error);
     }
   });
+}
+
+/**
+* Preload featured photos and gallery images
+*/
+function preloadPhotos() {
+  $('.photo');
 }
 
 /**
