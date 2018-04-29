@@ -916,6 +916,7 @@ function sendPasswordReset() {
 *  4) initialize photoswipe library
 * http://photoswipe.com/documentation/getting-started.html#creating-slide-objects-array
 */
+const DEFAULT_PHOTO_SIZE = { w: 1600, h: 1200 };
 function setupPhotoSwipe(callback) {
   console.log('preloadPhotos');
 
@@ -933,21 +934,31 @@ function setupPhotoSwipe(callback) {
   // 1) Get storage bucket URLs from Firebase Cloud Storage
   Promise.all(slides.map(function(slide) {
     return getDownloadURL(slide.src);
-  })).then(function(urls) {
-    // console.log('urls:', urls);
-
-    // 2) Preload images <https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded> and get image dimensions
+  }))
+  // 2) Preload images <https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded> and get image dimensions
+  .then(function(urls) {
+    console.log('urls:', urls);
     Promise.all(urls.map(function(url) {
-      $(document.createElement('img'))
-        .attr('src', url)
-        .on('load', function() {
-          var size = {
-            w: this.naturalWidth,
-            h: this.naturalHeight,
-          };
-          $(this).remove();   // prevent memory leaks
-          return size;
-        });
+      return new Promise(function(resolve, reject) {
+        const img = new Image();
+        img.onload = function() {
+          resolve({ w: this.naturalWidth, h: this.naturalHeight });
+        };
+        img.onerror = function() { resolve(DEFAULT_PHOTO_SIZE); };
+        img.src = url;
+      });
+
+      // $(document.createElement('img'))
+      //   .attr('src', url)
+      //   .on('load', function() {
+      //     console.log('img loaded:', this);
+      //     var size = {
+      //       w: this.naturalWidth,
+      //       h: this.naturalHeight,
+      //     };
+      //     $(this).remove();   // prevent memory leaks
+      //     return size;
+      //   });
     })).then(function(sizes) {
       console.log('sizes:', sizes);
     });
