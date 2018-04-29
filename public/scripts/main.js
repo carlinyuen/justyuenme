@@ -332,31 +332,31 @@ function populateMainPage(response) {
   if (data) {
     container = $('#our-story');
 
-    // Load text copy first
-    data['text'].forEach(function(section) {
-      $.each(section, function(key, value) {
-        container.append($(document.createElement('h3'))
-          .addClass('main-page__data')
-          .text(key)
-        );
-        temp = value.split('\n');
-        temp.forEach(function(text) {
+    temp = 0;   // Reusing for counting # of featured photos
+    $.each(data, function(i, item) {
+      switch (item.type) {
+        case 'title':
+          container.append($(document.createElement('h3'))
+            .addClass('main-page__data')
+            .text(item.text)
+          );
+          break;
+        case 'paragraph':
           container.append($(document.createElement('p'))
             .addClass('main-page__data')
-            .text(text)
+            .text(item.text)
           );
-        });
-      });
-    });
-
-    // Create featured photos
-    $.each(data['photos'], function(i, item) {
-      item['photoURL'] = FEATURED_FIREBASE_PATH + i + DEFAULT_PHOTO_EXTENSION;
-      item['thumbnailURL'] = FEATURED_THUMBNAIL_PATH + i + DEFAULT_THUMBNAIL_EXTENSION;
-      item['id'] = 'featured' + i;
-      temp = generatePhotoHTML(item);
-      temp.addClass('featured main-page__data')
-      container.append(temp);
+          break;
+        case 'photo':
+          item['photoURL'] = FEATURED_FIREBASE_PATH + item.filename + DEFAULT_PHOTO_EXTENSION;
+          item['thumbnailURL'] = FEATURED_THUMBNAIL_PATH + item.filename + DEFAULT_THUMBNAIL_EXTENSION;
+          item['id'] = 'featured' + (temp++);
+          item['classes'] = 'featured main-page__data';
+          container.append(generatePhotoHTML(item));
+          break;
+        default:
+          console.log('Warning! Invalid data type:', item.type);
+      }
     });
   }
 
@@ -369,8 +369,8 @@ function populateMainPage(response) {
       item['photoURL'] = GALLERY_FIREBASE_PATH + i + DEFAULT_PHOTO_EXTENSION;
       item['thumbnailURL'] = GALLERY_THUMBNAIL_PATH + i + DEFAULT_THUMBNAIL_EXTENSION;
       item['id'] = 'gallery' + i;
+      item['classes'] = 'gallery main-page__data';
       temp = generatePhotoHTML(item);
-      temp.addClass('gallery main-page__data');
       container.append(temp);
     });
   }
@@ -485,7 +485,7 @@ function populateMainPage(response) {
 */
 function generatePhotoHTML(metadata) {
   var html = $(document.createElement('figure'))
-    .addClass('photo')
+    .addClass('photo ' + (metadata.classes || ''))
     .prop('itemscope', true)
     .prop('itemprop', 'associatedMedia')
     .prop('itemtype', 'http://schema.org/ImageObject');
