@@ -420,7 +420,7 @@ function populateMainPage(response) {
     // console.log('rsvp date:', temp);
     // temp = true;   // For debugging / testing
     temp = (new Date() > temp);
-    console.log('today is after deadline:', temp);
+    // console.log('today is after deadline:', temp);
     container.append($(document.createElement('button'))
       .addClass('main-page__data')
       .attr('id', 'rsvp-button')
@@ -496,7 +496,7 @@ function generatePhotoHTML(metadata) {
   }
   html.append($(document.createElement('a'))
     .attr('href', metadata.photoURL)         // Needs to be updated
-    .data('size', DEFAULT_PHOTO_SIZE)        // Needs to be updated
+    .prop('data-size', DEFAULT_PHOTO_SIZE)        // Needs to be updated
     .prop('itemprop', 'contentUrl')
     .append($(document.createElement('img'))
       .attr('src', metadata.thumbnailURL)
@@ -923,41 +923,47 @@ function sendPasswordReset() {
 */
 const DEFAULT_PHOTO_SIZE = { w: 1600, h: 1200 };
 function setupPhotoSwipe(callback) {
-  console.log('preloadPhotos');
+  // console.log('preloadPhotos');
 
   // 0) Get list of all images we need to load
   var items = getGalleryMetadata();
+  console.log('items:', items);
 
   // 1) Get storage bucket URLs from Firebase Cloud Storage
   Promise.all(items.map(function(item, i) {
-    items[i].src = getDownloadURL(item.src);
-    return items;
+    return getDownloadURL(item.src);
   }))
   // 2) Preload images and get image dimensions <https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded> <https://codereview.stackexchange.com/questions/128587/check-if-images-are-loaded-es6-promises>
-  .then(function(items) {
-    console.log('items:', items);
-    return Promise.all(items.map(function(item, i) {
-      var size = new Promise(function(resolve, reject) {
+  .then(function(urls) {
+    // console.log('urls:', urls);
+    return Promise.all(urls.map(function(url, i) {
+      items[i].src = url;
+      return new Promise(function(resolve, reject) {
         const img = new Image();
         img.onload = function() {
-          resolve({ w: this.naturalWidth, h: this.naturalHeight });
+          resolve({index:i, w: this.naturalWidth, h: this.naturalHeight });
         };
-        img.onerror = function() { resolve(DEFAULT_PHOTO_SIZE); };
-        img.src = item.src;
+        img.onerror = function() {
+          resolve({index:i, w: DEFAULT_PHOTO_SIZE.w, h: DEFAULT_PHOTO_SIZE.h});
+        };
+        img.src = url;
       });
-      items[i]['w'] = size.w;
-      items[i]['h'] = size.h;
     }));
   })
   // 3) Updates html/DOM and initialize PhotoSwipe
-  .then(function(items) {
-    console.log('items:', items);
+  .then(function(sizes) {
+    // console.log('sizes:', sizes);
+    $.each(sizes, function(i, size) {
+      items[size.index]['w'] = size.w;
+      items[size.index]['h'] = size.h;
+    });
     $.each(items, function(i, item) {
       var thumbnail = $('#' + item.photoID);
-      thumbnail.data('index', i)
+      thumbnail.prop('data-index', i)
+        .addClass('photo' + i)
         .find('a')
           .attr('href', item.src)
-          .data('size', { w: item.w, h: item.h });
+          .prop('data-size', { w: item.w, h: item.h });
       thumbnail.click(viewPhoto);
     });
   });
@@ -973,12 +979,12 @@ function getGalleryMetadata() {
     $el = $photo.find('a');
     items.push({
       src: $el.attr('href'),
-      msrc: $photo.find('img').attr('src'),
+      // msrc: $photo.find('img').attr('src'),  // Thumb size stretches, weird
       title: $photo.find('figcaption').html(),
       photoID: $photo.attr('id'),
-      index: $photo.data('index'),
-      w: $el.data('size')['w'],
-      h: $el.data('size')['h'],
+      index: $photo.prop('data-index'),
+      w: $el.prop('data-size')['w'],
+      h: $el.prop('data-size')['h'],
     });
   });
   return items;
@@ -1015,8 +1021,7 @@ function getDownloadURL(path, callback) {
 */
 function viewPhoto(event) {
   event.preventDefault();
-
-  openGallery($(this).data('index'));
+  openGallery($(this).prop('data-index'));
 }
 
 /**
@@ -1028,16 +1033,28 @@ function openGallery(index) {
   var container, items, options, gallery;
   container = $('.pswp')[0];
   items = getGalleryMetadata();
+  console.log('items:', items);
   options = {
     mainClass: 'pswp--minimal--dark',
     barsSize: { top:0, bottom:0 },
     captionEl: false,
     fullscreenEl: false,
     shareEl: false,
-    // bgOpacity: 0.85,
     tapToClose: true,
     tapToToggleControls: false,
-    index: index + 1,   // Because apparently indexed at 1
+    // bgOpacity: 0.85,
+    index: index,
+    showHideOpacity:true,   // To help with thumbnail being diff aspect ratio
+    getThumbBoundsFn: function(index) {
+      var thumbnail = $('.photo' + index).find('img')[0];
+      var pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+      var rect = thumbnail.getBoundingClientRect();
+      return {
+        x:rect.left,
+        y:rect.top + pageYScroll,
+        w:rect.width,
+      };
+    }
   };
   var gallery = new PhotoSwipe(container, PhotoSwipeUI_Default, items, options);
   gallery.init();
