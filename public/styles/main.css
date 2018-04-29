@@ -570,9 +570,13 @@ mdl-layout {
   text-align: left;
   position: relative;
 }
+#our-story p {
+  font-size: 16px;
+}
 
 .featured {
   border: 16px solid white;
+  box-shadow: 0px 8px 8px #00000044;
 }
 #featured0 { transform: rotate(-4deg); }
 #featured1 { transform: rotate(-1deg); }
@@ -592,15 +596,15 @@ mdl-layout {
   }
   #featured1 {
     position: absolute;
-    top: 485px;
-    right: -345px;
+    top: 350px;
+    right: -340px;
     transform: rotate(8deg);
   }
   #featured2 {
     position: absolute;
-    top: 700px;
-    left: -350px;
-    transform: rotate(4deg);
+    top: 560px;
+    left: -340px;
+    transform: rotate(-3deg);
   }
 }
 .photo figcaption {
