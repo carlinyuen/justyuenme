@@ -176,6 +176,7 @@ function loadMainPage() {
             autoPlay: true,
             prevNextButtons: false,
             pageDots: false,
+            setGallerySize: false,
           });
           $('#carousel').on('staticClick.flickity', viewCarouselPhoto);
           setupPhotoSwipe();
