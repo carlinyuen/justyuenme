@@ -970,7 +970,7 @@ function getGalleryMetadata() {
   var items = [], $photo, $el;
   $('.photo').each(function() {
     $photo = $(this);
-    $el = $photos.find('a');
+    $el = $photo.find('a');
     items.push({
       src: $el.attr('href'),
       msrc: $photo.find('img').attr('src'),
