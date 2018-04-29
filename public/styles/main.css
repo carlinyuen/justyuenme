@@ -575,10 +575,15 @@ mdl-layout {
   color: darkslategray;
 }
 
+.photo {
+  text-align: center;
+}
+.photo figcaption {
+  display: none;
+}
 .featured {
   border: 16px solid white;
   box-shadow: 0px 8px 8px #00000044;
-  text-align: center;
 }
 #featured0 { transform: rotate(-1deg); }
 #featured1 { transform: rotate(1deg); }
@@ -608,9 +613,6 @@ mdl-layout {
     left: -340px;
     transform: rotate(-3deg);
   }
-}
-.photo figcaption {
-  display: none;
 }
 .pswp .pswp__caption small:before {
   content:" \00a9  ";
@@ -702,6 +704,13 @@ mdl-layout {
   display: none;
 }
 
+#accommodations address {
+  font-family: Courier, monospace;
+  text-transform: uppercase;
+}
+#accommodations p {
+  font-weight: bold;
+}
 #accommodations a {
   color: rgb(38, 166, 154);
 }

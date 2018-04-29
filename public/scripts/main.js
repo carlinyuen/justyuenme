@@ -463,16 +463,25 @@ function populateMainPage(response) {
         .addClass('main-page__data')
         .text(hotel.address)
       );
-      $.each(hotel.description.split('\n'), function(i, text) {
-        container.append($(document.createElement('p'))
-          .addClass('main-page__data')
-          .text(text)
-        );
-      });
+      if (hotel.description && hotel.description.length) {
+        $.each(hotel.description.split('\n'), function(i, text) {
+          container.append($(document.createElement('p'))
+            .addClass('main-page__data')
+            .text(text)
+          );
+        });
+      }
       container.append($(document.createElement('a'))
         .addClass('main-page__data')
-        .text('Hotel Reservations Link')
-        .attr('href', hotel.url)
+        .text('Reservations')
+        .attr('href', hotel.reservationURL)
+        .attr('target', '_blank')
+      );
+      container.append(' | ');
+      container.append($(document.createElement('a'))
+        .addClass('main-page__data')
+        .text('Maps')
+        .attr('href', hotel.mapURL)
         .attr('target', '_blank')
       );
     });
