@@ -568,8 +568,37 @@ mdl-layout {
 
 #our-story {
   text-align: left;
+  position: relative;
 }
 
+.featured {
+  border: 6px solid white;
+}
+#featured0 { transform: rotate(20deg); }
+#featured1 { transform: rotate(-20deg); }
+#featured2 { transform: rotate(10deg); }
+@media screen and (max-width: 1000px) {
+  .featured {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 1001px) {
+  #featured0 {
+    position: absolute;
+    top: 25px;
+    left: -200px;
+  }
+  #featured1 {
+    position: absolute;
+    top: 125px;
+    right: -200px;
+  }
+  #featured2 {
+    position: absolute;
+    top: 325px;
+    left: -200px;
+  }
+}
 .photo figcaption {
   display: none;
 }
