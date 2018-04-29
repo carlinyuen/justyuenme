@@ -504,7 +504,7 @@ function generatePhotoHTML(metadata) {
   );
   var copyright = '';
   if (metadata.copyright) {
-    copyright = $(document.createElement('span'))
+    copyright = $(document.createElement('small'))
       .prop('itemprop', 'copyrightHolder')
       .text(metadata.copyright)
     ;
@@ -1066,7 +1066,8 @@ function openGallery(index) {
   // console.log('items:', items);
   options = {
     mainClass: 'pswp--minimal--dark',
-    barsSize: { top:0, bottom:0 },
+    // barsSize: { top:0, bottom:0 },
+    // captionEl: false,
     fullscreenEl: false,
     shareEl: false,
     tapToClose: true,

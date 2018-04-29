@@ -611,6 +611,9 @@ mdl-layout {
 .photo figcaption {
   display: none;
 }
+.pswp .pswp__caption small:before {
+  content:" \00a9  ";
+}
 #carousel {
   margin-top: 8px;
   width: 100%;
