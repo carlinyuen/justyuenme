@@ -177,7 +177,7 @@ function loadMainPage() {
             prevNextButtons: false,
             pageDots: false,
           });
-          $('#carousel').on('staticClick.flickity', viewPhoto);
+          $('#carousel').on('staticClick.flickity', viewCarouselPhoto);
           setupPhotoSwipe();
           setTimeout(function() {
             $('#title').toggleClass('expanded', false);
@@ -928,7 +928,7 @@ function setupPhotoSwipe(callback) {
 
   // 0) Get list of all images we need to load
   var items = getGalleryMetadata();
-  console.log('items:', items);
+  // console.log('items:', items);
 
   // 1) Get storage bucket URLs from Firebase Cloud Storage
   Promise.all(items.map(function(item, i) {
@@ -966,7 +966,11 @@ function setupPhotoSwipe(callback) {
           .attr('href', item.src)
           .prop('data-size', { w: item.w, h: item.h });
       if (thumbnail.hasClass('featured')) {
-        thumbnail.click(viewPhoto);
+        thumbnail.click(viewFeaturedPhoto);
+      } else {
+        thumbnail.click(function(event) {
+          event.preventDefault();   // Fix bug with flickity's staticClick
+        });
       }
     });
   });
@@ -1020,23 +1024,33 @@ function getDownloadURL(path, callback) {
 }
 
 /**
-* Click handler for viewing a photo in more detail
+* Click handler for viewing a featured photo in more detail
 */
-function viewPhoto(event) {
+function viewFeaturedPhoto(event) {
   event.preventDefault();
   openGallery($(this).prop('data-index'));
+}
+
+/**
+* Click handler for viewing a carousel photo in more detail
+*/
+function viewCarouselPhoto(event, pointer, element, index) {
+  console.log('viewCarouselPhoto:', element, index);
+  event.preventDefault();
+  event.stopPropagation();
+  openGallery($(element).prop('data-index'));
 }
 
 /**
 * Open high res photo gallery, includes both featured photos and carousel
 */
 function openGallery(index) {
-  console.log('openGallery:', index);
+  // console.log('openGallery:', index);
 
   var container, items, options, gallery;
   container = $('.pswp')[0];
   items = getGalleryMetadata();
-  console.log('items:', items);
+  // console.log('items:', items);
   options = {
     mainClass: 'pswp--minimal--dark',
     barsSize: { top:0, bottom:0 },
