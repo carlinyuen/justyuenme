@@ -464,12 +464,10 @@ function populateMainPage(response) {
         .text(hotel.address)
       );
       if (hotel.description && hotel.description.length) {
-        $.each(hotel.description.split('\n'), function(i, text) {
-          container.append($(document.createElement('p'))
-            .addClass('main-page__data')
-            .text(text)
-          );
-        });
+        container.append($(document.createElement('p'))
+          .addClass('main-page__data')
+          .html(hotel.description.split('\n').join('<br>'))
+        );
       }
       container.append($(document.createElement('a'))
         .addClass('main-page__data')

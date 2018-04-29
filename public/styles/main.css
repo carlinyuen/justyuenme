@@ -705,14 +705,17 @@ mdl-layout {
 }
 
 #accommodations address {
-  font-family: Courier, monospace;
-  text-transform: uppercase;
+  font-size: 14px;
 }
 #accommodations p {
   font-weight: bold;
 }
 #accommodations a {
   color: rgb(38, 166, 154);
+}
+
+#gift-registry p {
+  margin-top: 16px;
 }
 
 .social-btn {
