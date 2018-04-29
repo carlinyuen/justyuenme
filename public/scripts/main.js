@@ -355,6 +355,7 @@ function populateMainPage(response) {
     $.each(data['photos'], function(i, item) {
       item['photoURL'] = FEATURED_FIREBASE_PATH + i + DEFAULT_PHOTO_EXTENSION;
       item['thumbnailURL'] = FEATURED_THUMBNAIL_PATH + i + DEFAULT_THUMBNAIL_EXTENSION;
+      item['id'] = 'featured' + i;
       temp = generatePhotoHTML(item);
       temp.addClass('featured main-page__data')
       container.append(temp);
@@ -369,6 +370,7 @@ function populateMainPage(response) {
     $.each(data, function(i, item) {
       item['photoURL'] = GALLERY_FIREBASE_PATH + i + DEFAULT_PHOTO_EXTENSION;
       item['thumbnailURL'] = GALLERY_THUMBNAIL_PATH + i + DEFAULT_THUMBNAIL_EXTENSION;
+      item['id'] = 'gallery' + i;
       temp = generatePhotoHTML(item);
       temp.addClass('gallery main-page__data');
       container.append(temp);
@@ -489,8 +491,12 @@ function generatePhotoHTML(metadata) {
     .prop('itemscope', true)
     .prop('itemprop', 'associatedMedia')
     .prop('itemtype', 'http://schema.org/ImageObject');
+  if (metadata.id) {
+    html.attr('id', metadata.id);
+  }
   html.append($(document.createElement('a'))
-    .attr('href', metadata.photoURL)                 // Needs to be replaced
+    .attr('href', metadata.photoURL)         // Needs to be updated
+    .data('size', DEFAULT_PHOTO_SIZE)        // Needs to be updated
     .prop('itemprop', 'contentUrl')
     .append($(document.createElement('img'))
       .attr('src', metadata.thumbnailURL)
@@ -912,8 +918,7 @@ function sendPasswordReset() {
 *  0) Get the list of all the images we need to load
 *  1) Get the storage bucket URLs from Firebase
 *  2) Preload the photos and get their naturalHeight/naturalWidth
-*  3) Update link href and data-size properties with URL & size
-*  4) initialize photoswipe library
+*  3) Update photo DOM properties, and initialize photoswipe library
 * http://photoswipe.com/documentation/getting-started.html#creating-slide-objects-array
 */
 const DEFAULT_PHOTO_SIZE = { w: 1600, h: 1200 };
@@ -921,66 +926,62 @@ function setupPhotoSwipe(callback) {
   console.log('preloadPhotos');
 
   // 0) Get list of all images we need to load
-  var slides = [], $photo;
-  $('.photo').each(function() {
-    $photo = $(this);
-    slides.push({
-      src: $photo.find('a').attr('href'),
-      msrc: $photo.find('img').attr('src'),
-      title: $photo.find('figcaption').html(),
-    });
-  });
+  var items = getGalleryMetadata();
 
   // 1) Get storage bucket URLs from Firebase Cloud Storage
-  Promise.all(slides.map(function(slide) {
-    return getDownloadURL(slide.src);
+  Promise.all(items.map(function(item, i) {
+    items[i].src = getDownloadURL(item.src);
+    return items;
   }))
-  // 2) Preload images <https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded> and get image dimensions
-  .then(function(urls) {
-    console.log('urls:', urls);
-    Promise.all(urls.map(function(url) {
-      return new Promise(function(resolve, reject) {
+  // 2) Preload images and get image dimensions <https://stackoverflow.com/questions/5057990/how-can-i-check-if-a-background-image-is-loaded> <https://codereview.stackexchange.com/questions/128587/check-if-images-are-loaded-es6-promises>
+  .then(function(items) {
+    console.log('items:', items);
+    return Promise.all(items.map(function(item, i) {
+      var size = new Promise(function(resolve, reject) {
         const img = new Image();
         img.onload = function() {
           resolve({ w: this.naturalWidth, h: this.naturalHeight });
         };
         img.onerror = function() { resolve(DEFAULT_PHOTO_SIZE); };
-        img.src = url;
+        img.src = item.src;
       });
-
-      // $(document.createElement('img'))
-      //   .attr('src', url)
-      //   .on('load', function() {
-      //     console.log('img loaded:', this);
-      //     var size = {
-      //       w: this.naturalWidth,
-      //       h: this.naturalHeight,
-      //     };
-      //     $(this).remove();   // prevent memory leaks
-      //     return size;
-      //   });
-    })).then(function(sizes) {
-      console.log('sizes:', sizes);
+      items[i]['w'] = size.w;
+      items[i]['h'] = size.h;
+    }));
+  })
+  // 3) Updates html/DOM and initialize PhotoSwipe
+  .then(function(items) {
+    console.log('items:', items);
+    $.each(items, function(i, item) {
+      var thumbnail = $('#' + item.photoID);
+      thumbnail.data('index', i)
+        .find('a')
+          .attr('href', item.src)
+          .data('size', { w: item.w, h: item.h });
+      thumbnail.click(viewPhoto);
     });
   });
 }
 
 /**
-* Preloads images
+* Gather all the gallery metadata needed for PhotoSwipe from DOM
 */
-function preloadImages(paths, callback) {
-  console.log('preloadImages:', paths);
-  $.each(paths, function(i, path) {
-    getDownloadURL(path, function(url) {
-      // console.log('prefetch url:', url);
-      $('<img/>').attr('src', url).on('load', function() {
-        $(this).remove(); // prevent memory leaks
-        if (callback) {
-          callback(url);
-        }
-      });
+function getGalleryMetadata() {
+  var items = [], $photo, $el;
+  $('.photo').each(function() {
+    $photo = $(this);
+    $el = $photos.find('a');
+    items.push({
+      src: $el.attr('href'),
+      msrc: $photo.find('img').attr('src'),
+      title: $photo.find('figcaption').html(),
+      photoID: $photo.attr('id'),
+      index: $photo.data('index'),
+      w: $el.data('size')['w'],
+      h: $el.data('size')['h'],
     });
   });
+  return items;
 }
 
 /**
@@ -1007,6 +1008,39 @@ function getDownloadURL(path, callback) {
           console.log(error);
       }
     });
+}
+
+/**
+* Click handler for viewing a photo in more detail
+*/
+function viewPhoto(event) {
+  event.preventDefault();
+
+  openGallery($(this).data('index'));
+}
+
+/**
+* Open high res photo gallery, includes both featured photos and carousel
+*/
+function openGallery(index) {
+  console.log('openGallery:', index);
+
+  var container, items, options, gallery;
+  container = $('.pswp')[0];
+  items = getGalleryMetadata();
+  options = {
+    mainClass: 'pswp--minimal--dark',
+    barsSize: { top:0, bottom:0 },
+    captionEl: false,
+    fullscreenEl: false,
+    shareEl: false,
+    // bgOpacity: 0.85,
+    tapToClose: true,
+    tapToToggleControls: false,
+    index: index + 1,   // Because apparently indexed at 1
+  };
+  var gallery = new PhotoSwipe(container, PhotoSwipeUI_Default, items, options);
+  gallery.init();
 }
 
 /**
