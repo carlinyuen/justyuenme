@@ -462,7 +462,7 @@ function populateMainPage(response) {
         .text(hotel.description)
       ).append($(document.createElement('a'))
         .addClass('main-page__data')
-        .text(hotel.url)
+        .text('Hotel Reservations Link')
         .attr('href', hotel.url)
         .attr('target', '_blank')
       );
@@ -1067,7 +1067,6 @@ function openGallery(index) {
   options = {
     mainClass: 'pswp--minimal--dark',
     barsSize: { top:0, bottom:0 },
-    captionEl: false,
     fullscreenEl: false,
     shareEl: false,
     tapToClose: true,
