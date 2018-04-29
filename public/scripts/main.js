@@ -342,10 +342,12 @@ function populateMainPage(response) {
           );
           break;
         case 'paragraph':
-          container.append($(document.createElement('p'))
-            .addClass('main-page__data')
-            .text(item.text.replace(/(?:\r\n|\r|\n)/g, '<br>'))
-          );
+          $.each(item.text.split('\n'), function(i, text) {
+            container.append($(document.createElement('p'))
+              .addClass('main-page__data')
+              .text(text)
+            );
+          });
           break;
         case 'photo':
           item['photoURL'] = FEATURED_FIREBASE_PATH + item.filename + DEFAULT_PHOTO_EXTENSION;
@@ -439,10 +441,13 @@ function populateMainPage(response) {
         container.append($(document.createElement('h3'))
           .addClass('main-page__data')
           .text(key)
-        ).append($(document.createElement('p'))
-          .addClass('main-page__data')
-          .text(value)
         );
+        $.each(value.split('\n'), function(i, text) {
+          container.append($(document.createElement('p'))
+            .addClass('main-page__data')
+            .text(text)
+          );
+        });
       });
     });
   }
@@ -457,10 +462,14 @@ function populateMainPage(response) {
       ).append($(document.createElement('address'))
         .addClass('main-page__data')
         .text(hotel.address)
-      ).append($(document.createElement('p'))
-        .addClass('main-page__data')
-        .text(hotel.description.replace(/(?:\r\n|\r|\n)/g, '<br>'))
-      ).append($(document.createElement('a'))
+      );
+      $.each(hotel.description.split('\n'), function(i, text) {
+        container.append($(document.createElement('p'))
+          .addClass('main-page__data')
+          .text(text)
+        );
+      });
+      container.append($(document.createElement('a'))
         .addClass('main-page__data')
         .text('Hotel Reservations Link')
         .attr('href', hotel.url)

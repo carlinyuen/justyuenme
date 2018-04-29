@@ -580,9 +580,9 @@ mdl-layout {
   box-shadow: 0px 8px 8px #00000044;
   text-align: center;
 }
-#featured0 { transform: rotate(-4deg); }
-#featured1 { transform: rotate(-1deg); }
-#featured2 { transform: rotate(1deg); }
+#featured0 { transform: rotate(-1deg); }
+#featured1 { transform: rotate(1deg); }
+#featured2 { transform: rotate(-1deg); }
 #featured3 img { width: 100%; }
 @media screen and (max-width: 1349px) {
   .featured img {
