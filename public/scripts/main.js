@@ -69,6 +69,9 @@ function signOut(event) {
     if (rellax) {                       // Remove parallax
       rellax.destroy();
     }
+    if ($flickity) {
+      $flickity.flickity('destroy');
+    }
     $('#parallax').css('visibility', 'hidden');
     $('body').addClass('gravity');
     $('#firefly-field').fadeIn(TIME_DURATION_FAST);
@@ -170,18 +173,11 @@ function loadMainPage() {
         .fadeIn(TIME_DURATION_FAST, function() {
           // console.log('main page fade in');
           $(window).scroll(scrollHandler);  // Add scroll position listener
-          $('#carousel').flickity({
-            wrapAround: true,
-            freeScroll: true,
-            autoPlay: true,
-            prevNextButtons: false,
-            pageDots: false,
-            setGallerySize: false,
-          });
-          $('#carousel').on('staticClick.flickity', viewCarouselPhoto);
+          setupFlickityCarousel();
           setupPhotoSwipe();
           setTimeout(function() {
             $('#title').toggleClass('expanded', false);
+            $flickity.flickity('resize');
           }, TIME_DURATION_XL);
         });
     });
@@ -913,6 +909,22 @@ function sendPasswordReset() {
         console.log(error);
     }
   });
+}
+
+/**
+* Setup Photo Carousel using Flickity
+*/
+var $flickity;
+function setupFlickityCarousel() {
+  $flickity = $('#carousel').flickity({
+    wrapAround: true,
+    freeScroll: true,
+    autoPlay: true,
+    prevNextButtons: false,
+    pageDots: false,
+    setGallerySize: false,
+  });
+  $flickity.on('staticClick.flickity', viewCarouselPhoto);
 }
 
 /**
