@@ -177,6 +177,7 @@ function loadMainPage() {
             prevNextButtons: false,
             pageDots: false,
           });
+          $('#carousel').on('staticClick.flickity', viewPhoto);
           setupPhotoSwipe();
           setTimeout(function() {
             $('#title').toggleClass('expanded', false);
@@ -964,7 +965,9 @@ function setupPhotoSwipe(callback) {
         .find('a')
           .attr('href', item.src)
           .prop('data-size', { w: item.w, h: item.h });
-      thumbnail.click(viewPhoto);
+      if (thumbnail.hasClass('featured')) {
+        thumbnail.click(viewPhoto);
+      }
     });
   });
 }
