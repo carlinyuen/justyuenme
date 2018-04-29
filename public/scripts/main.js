@@ -344,7 +344,7 @@ function populateMainPage(response) {
         case 'paragraph':
           container.append($(document.createElement('p'))
             .addClass('main-page__data')
-            .text(item.text)
+            .text(item.text.replace(/(?:\r\n|\r|\n)/g, '<br>'))
           );
           break;
         case 'photo':
@@ -454,12 +454,12 @@ function populateMainPage(response) {
       container.append($(document.createElement('h3'))
         .addClass('main-page__data')
         .text(hotel.name)
-      ).append($(document.createElement('p'))
+      ).append($(document.createElement('address'))
         .addClass('main-page__data')
         .text(hotel.address)
       ).append($(document.createElement('p'))
         .addClass('main-page__data')
-        .text(hotel.description)
+        .text(hotel.description.replace(/(?:\r\n|\r|\n)/g, '<br>'))
       ).append($(document.createElement('a'))
         .addClass('main-page__data')
         .text('Hotel Reservations Link')
