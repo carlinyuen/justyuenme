@@ -572,6 +572,7 @@ mdl-layout {
 }
 #our-story p {
   font-size: 16px;
+  color: darkslategray;
 }
 
 .featured {
@@ -580,7 +581,7 @@ mdl-layout {
 }
 #featured0 { transform: rotate(-4deg); }
 #featured1 { transform: rotate(-1deg); }
-#featured2 { transform: rotate(4deg); }
+#featured2 { transform: rotate(1deg); }
 #featured3 img { width: 100%; }
 @media screen and (max-width: 1349px) {
   .featured img {
