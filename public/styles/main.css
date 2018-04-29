@@ -698,6 +698,10 @@ mdl-layout {
   display: none;
 }
 
+#accommodations a {
+  color: lightseagreen;
+}
+
 .social-btn {
   background-position: center;
   background-size: contain;
