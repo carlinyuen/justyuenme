@@ -109,11 +109,13 @@ function signIn(event) {
     if (email.length < 4) {
       $('#email-error').text('Please enter a valid email address.');
       $('#email-container').addClass('is-invalid');
+      $('#signin-button').prop('disabled', false);
       return;
     }
     if (password.length < 6) {
       $('#password-error').text('Wrong password. Check invite email.');
       $('#password-container').addClass('is-invalid');
+      $('#signin-button').prop('disabled', false);
       return;
     }
     // Sign in with email and pass.
@@ -1121,7 +1123,7 @@ function initApp() {
       // Grab intended displayName and email from database
       db.ref('users/' + uid).once('value')
         .then(function(userData) {
-          var displayName = userData.val().username;
+          var displayName = userData.val().nickname;
           $('#login-page').addClass('logged-in');
           $('#login-page .loginInfo').find('button').prop('disabled', true);
           $('#login-page .welcomeInfo').find('button').prop('disabled', false);
