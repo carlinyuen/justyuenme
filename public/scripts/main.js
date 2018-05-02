@@ -170,6 +170,7 @@ function loadMainPage() {
       db.ref('content').once('value')
         .then(populateMainPage, contentErrorHandler); // TODO: consider moving this to before the button click for optimization
       setupParallaxIntro();
+      $('#title').toggleClass('expanded', true);
       $('#header').fadeIn(TIME_DURATION_FAST);
       $('#main-page').removeClass('no-access')
         .fadeIn(TIME_DURATION_FAST, function() {
@@ -702,7 +703,9 @@ function populateRSVPForm(user, data) {
   });
 
   // Show the rsvp modal
-  $('#rsvp-form .form-row').last().addClass('no-border');
+  if ($('#rsvp-form-extension .form-row').length == 0) {
+    $('#rsvp-form .form-row').last().addClass('no-border');
+  }
   $('#rsvp-modal').modal();
   $('#submitRSVP-button').prop('disabled', false);
 }
