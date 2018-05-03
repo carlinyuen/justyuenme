@@ -472,19 +472,20 @@ function populateMainPage(response) {
           .html(hotel.description.split('\n').join('<br>'))
         );
       }
-      container.append($(document.createElement('a'))
-        .addClass('main-page__data')
-        .text('Reservations')
-        .attr('href', hotel.reservationURL)
-        .attr('target', '_blank')
-      );
-      container.append(' | ');
-      container.append($(document.createElement('a'))
-        .addClass('main-page__data')
-        .text('Maps')
-        .attr('href', hotel.mapURL)
-        .attr('target', '_blank')
-      );
+      if (hotel.reservationURL) {
+        container.append($(document.createElement('a'))
+          .addClass('main-page__data')
+          .text('Reservations')
+          .attr('href', hotel.reservationURL)
+          .attr('target', '_blank')
+        ).append(' | '
+        ).append($(document.createElement('a'))
+          .addClass('main-page__data')
+          .text('Maps')
+          .attr('href', hotel.mapURL)
+          .attr('target', '_blank')
+        );
+      }
     });
   }
 
@@ -1139,6 +1140,8 @@ function initApp() {
             var displayName = data.nickname;
             if (displayName) {
               $('#welcome-name').text(', ' + displayName + '!');
+            } else {
+              $('#welcome-name').text('');
             }
           }
         });
@@ -1154,7 +1157,7 @@ function initApp() {
   $('#signin-button').click(signIn);
   $('#entersite-button').click(loadMainPage);
   $('#login-form').submit(signIn);
-  $('.changepassword-button').click(sendPasswordReset);
+  // $('.changepassword-button').click(sendPasswordReset);
   $('.signout-button').click(signOut);
 
   // Navigation
