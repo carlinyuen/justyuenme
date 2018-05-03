@@ -1126,17 +1126,20 @@ function initApp() {
       // Grab intended displayName and email from database
       db.ref('users/' + uid).once('value')
         .then(function(userData) {
-          var displayName = userData.val().nickname;
-          $('#login-page').addClass('logged-in');
-          $('#login-page .loginInfo').find('button').prop('disabled', true);
-          $('#login-page .welcomeInfo').find('button').prop('disabled', false);
-          $('#email-input').val(userData.val().email);  // Populate email field
-          $('#password-input').val('');                 // Clear password
-          $('.mdl-textfield').each(function(i) {
-            this.MaterialTextfield.checkDirty();  // Update field styling
-          });
-          if (displayName) {
-            $('#welcome-name').text(', ' + displayName + '!');
+          var data = userData.val();
+          if (data) {
+            $('#login-page').addClass('logged-in');
+            $('#login-page .loginInfo').find('button').prop('disabled', true);
+            $('#login-page .welcomeInfo').find('button').prop('disabled', false);
+            $('#email-input').val(data.email);  // Populate email field
+            $('#password-input').val('');                 // Clear password
+            $('.mdl-textfield').each(function(i) {
+              this.MaterialTextfield.checkDirty();  // Update field styling
+            });
+            var displayName = data.nickname;
+            if (displayName) {
+              $('#welcome-name').text(', ' + displayName + '!');
+            }
           }
         });
     } else {
