@@ -290,6 +290,8 @@ function updateContentColor(scrollPos) {
         + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
       $('#intro-animation path').css('stroke', 'rgb('
         + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
+      $('#intro-animation path').css('fill', 'rgb('
+        + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
     default:
       scrollStateChanged = false;
   }
@@ -320,10 +322,11 @@ function updateParallaxDisplay(scrollPos) {
 /**
 * Triggers the intro svg animation after a certain position
 */
-const INTRO_ANIMATION_START_POS = 750
-  , INTRO_ANIMATION_END_POS = 1550
+const INTRO_ANIMATION_START_POS = 600
+  , INTRO_ELEMENT_UNSTICKING_OFFSET = 60;
+var introAnimationTriggered = false
+  , introElementUnstickingPoint       // We need to unstick the element later
 ;
-var introAnimationTriggered = false;
 function triggerIntroAnimation(scrollPos) {
   $('#intro').toggleClass('animate', (scrollPos >= INTRO_ANIMATION_START_POS));
 
@@ -331,12 +334,13 @@ function triggerIntroAnimation(scrollPos) {
     // Animate text if we haven't yet
     if (!introAnimationTriggered) {
       introAnimationTriggered = true;
-      new Vivus('intro-animation', {duration: 250}, function() {
+      new Vivus('intro-animation', {duration: 200}, function() {
         $('#intro-animation').addClass('light');
       });
     }
 
-    $('#intro-animation').toggleClass('fixed', (scrollPos <= INTRO_ANIMATION_END_POS));
+    introElementUnstickingPoint = $('#intro').offset().top - ($(window).height() / 2) + INTRO_ELEMENT_UNSTICKING_OFFSET;
+    $('#intro-animation').toggleClass('fixed', (scrollPos <= introElementUnstickingPoint));
   }
 }
 

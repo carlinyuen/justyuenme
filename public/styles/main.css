@@ -562,39 +562,51 @@ mdl-layout {
 /*******************************/
 /* Main Page Content Specifics */
 /*******************************/
+#intro {
+  position: relative;
+}
 #intro h1 {
   font-family: 'Dancing Script', cursive;
 }
 #intro.animate h1 {
-  visibility: hidden;
+  display: none;
 }
 #intro-animation {
-  display: none;
+  display: block;
+  opacity: 0;
+  transition: opacity .5s ease;
+  position: absolute;
+  width: 512px;
+  height: auto;
+  top: 0;
 }
 #intro-animation path {
   stroke: #ffe5bb;
-  transition: fill-opacity 0.4s ease, stroke-opacity 0.4s ease;
+  fill: #ffe5bb;
+  fill-opacity: 0;
+  stroke-opacity: 1;
+  transition: fill-opacity .5s ease, stroke-opacity .5s ease;
 }
 #intro-animation.light path.fill {
-  fill: #ffe5bb;
   fill-opacity: 1;
   stroke-opacity: 0;
 }
 #intro.animate #intro-animation {
-  display: block;
-  width: 100%;
-  height: auto;
+  opacity: 1;
 }
 #intro.animate #intro-animation.fixed {
   position: fixed;
   left: 50%;
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
-  width: 512px;
 }
 @media screen and (max-width: 688px) {
-  #intro.animate #intro-animation.fixed {
+  #intro-animation {
     width: 100%;
+    padding: 0 44px;
+    left: 0;
+  }
+  #intro.animate #intro-animation.fixed {
     padding: 0 44px;
   }
 }
