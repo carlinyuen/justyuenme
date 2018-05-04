@@ -322,8 +322,7 @@ function updateParallaxDisplay(scrollPos) {
 /**
 * Triggers the intro svg animation after a certain position
 */
-const INTRO_ANIMATION_START_POS = 600
-  , INTRO_ELEMENT_UNSTICKING_OFFSET = 60;
+const INTRO_ANIMATION_START_POS = 600;
 var introAnimationTriggered = false
   , introElementUnstickingPoint       // We need to unstick the element later
 ;
@@ -339,7 +338,8 @@ function triggerIntroAnimation(scrollPos) {
       });
     }
 
-    introElementUnstickingPoint = $('#intro').offset().top - ($(window).height() / 2) + INTRO_ELEMENT_UNSTICKING_OFFSET;
+    // Calculate where to match up with the absolute positioning
+    introElementUnstickingPoint = $('#intro').offset().top - ($(window).height() / 2) + ($('#intro-animation').height() / 2);
     $('#intro-animation').toggleClass('fixed', (scrollPos <= introElementUnstickingPoint));
   }
 }

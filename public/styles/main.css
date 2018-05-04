@@ -569,7 +569,7 @@ mdl-layout {
   font-family: 'Dancing Script', cursive;
 }
 #intro.animate h1 {
-  display: none;
+  visibility: hidden;
 }
 #intro-animation {
   display: block;
