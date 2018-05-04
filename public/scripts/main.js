@@ -223,8 +223,9 @@ function scrollHandler(event) {
   // console.log('scrollHandler:', scrollPos);
 
   hideScrollIndicator(scrollPos);   // Hide scroll indicator
-  updateNavColor(scrollPos);        // Update navigation text color
+  updateContentColor(scrollPos);    // Update content colors based on bg
   updateParallaxDisplay(scrollPos); // Update which parallax images to display
+  triggerIntroAnimation(scrollPos); // Trigger intro svg animation
 }
 
 /**
@@ -245,21 +246,21 @@ function hideScrollIndicator(scrollPos) {
 */
 const BACKGROUND_GRADIENT_START_POS = 1420
   , BACKGROUND_GRADIENT_END_POS = 1980
-  , NAV_STATE_PRE_GRADIENT = 0
-  , NAV_STATE_DURING_GRADIENT = 1
-  , NAV_STATE_POST_GRADIENT = 2
+  , SCROLL_STATE_PRE_GRADIENT = 0
+  , SCROLL_STATE_DURING_GRADIENT = 1
+  , SCROLL_STATE_POST_GRADIENT = 2
 ;
-var navStatePrevious = 0
-  , navStateChanged = false
+var scrollStatePrevious = 0
+  , scrollStateChanged = false
 ;
-function updateNavColor(scrollPos) {
+function updateContentColor(scrollPos) {
   var startColor = [255, 229, 187]
     , endColor = [5, 11, 33]
     , textColor = [0, 0, 0]
   switch (true) {
     case scrollPos <= BACKGROUND_GRADIENT_START_POS:
       textColor = startColor;
-      checkNavState(NAV_STATE_PRE_GRADIENT);
+      checkScrollState(SCROLL_STATE_PRE_GRADIENT);
       break;
     case scrollPos > BACKGROUND_GRADIENT_START_POS && scrollPos < BACKGROUND_GRADIENT_END_POS:
       $.each(textColor, function(i) {
@@ -271,35 +272,37 @@ function updateNavColor(scrollPos) {
           )
         ) + startColor[i]);
       });
-      checkNavState(NAV_STATE_DURING_GRADIENT);
+      checkScrollState(SCROLL_STATE_DURING_GRADIENT);
       break;
     case scrollPos >= BACKGROUND_GRADIENT_END_POS:
       textColor = endColor;
-      checkNavState(NAV_STATE_POST_GRADIENT);
+      checkScrollState(SCROLL_STATE_POST_GRADIENT);
       break;
   }
   // console.log(textColor);
   switch (true) {
-    case navStateChanged:
-      $('#nav').toggleClass('light', (navStatePrevious === NAV_STATE_POST_GRADIENT));
-    case (navStatePrevious === NAV_STATE_DURING_GRADIENT):
+    case scrollStateChanged:
+      $('#nav').toggleClass('light', (scrollStatePrevious === SCROLL_STATE_POST_GRADIENT));
+    case (scrollStatePrevious === SCROLL_STATE_DURING_GRADIENT):
       $('#nav > a, #menu-button').css('color', 'rgb('
         + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
       $('.navicon').css('background-color', 'rgb('
         + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
+      $('#intro-animation path').css('stroke', 'rgb('
+        + textColor[0] + ', ' + textColor[1] + ', ' + textColor[2] + ')');
     default:
-      navStateChanged = false;
+      scrollStateChanged = false;
   }
 }
 
 /**
-* Check nav state and mark as changed if needed
+* Check scroll state and mark as changed if needed
 */
-function checkNavState(state) {
-  if (navStatePrevious != state) {
-    navStateChanged = true;
+function checkScrollState(state) {
+  if (scrollStatePrevious != state) {
+    scrollStateChanged = true;
   }
-  navStatePrevious = state;
+  scrollStatePrevious = state;
 }
 
 /**
@@ -312,6 +315,27 @@ const PARALLAX_CLOUDS_SHOW_POS = 350
 function updateParallaxDisplay(scrollPos) {
   $('.scenery, .buildings').toggleClass('invisible', (scrollPos >= PARALLAX_BUILDINGS_HIDE_POS));
   $('.clouds').toggleClass('invisible', (scrollPos < PARALLAX_CLOUDS_SHOW_POS));
+}
+
+/**
+* Triggers the intro svg animation after a certain position
+*/
+const INTRO_ANIMATION_START_POS = 1400
+  , INTRO_ANIMATION_END_POS = 2000
+;
+var introAnimationTriggered = false;
+function triggerIntroAnimation(scrollPos) {
+  $('#intro').toggleClass('animate', (scrollPos >= INTRO_ANIMATION_START_POS));
+
+  if (scrollPos >= INTRO_ANIMATION_START_POS) {
+    // Animate text if we haven't yet
+    if (!introAnimationTriggered) {
+      introAnimationTriggered = true;
+      new Vivus('intro-animation', {duration: 3000});
+    }
+
+    $('#intro-animation').toggleClass('fixed', (scrollPos <= INTRO_ANIMATION_END_POS));
+  }
 }
 
 /**

@@ -565,6 +565,26 @@ mdl-layout {
 #intro h1 {
   font-family: 'Dancing Script', cursive;
 }
+#intro.animate h1 {
+  visibility: hidden;
+}
+#intro-animation {
+  display: none;
+}
+#intro-animation path {
+  stroke: #ffe5bb;
+}
+#intro.animate #intro-animation {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+#intro.animate #intro-animation.fixed {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%);
+}
 
 #our-story {
   text-align: left;
