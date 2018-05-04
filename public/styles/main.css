@@ -596,18 +596,14 @@ mdl-layout {
 }
 #intro.animate #intro-animation.fixed {
   position: fixed;
-  left: 50%;
   top: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  transform: translateY(-50%);
 }
 @media screen and (max-width: 688px) {
   #intro-animation {
     width: 100%;
     padding: 0 44px;
     left: 0;
-  }
-  #intro.animate #intro-animation.fixed {
-    padding: 0 44px;
   }
 }
 
