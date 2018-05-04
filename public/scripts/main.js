@@ -320,8 +320,8 @@ function updateParallaxDisplay(scrollPos) {
 /**
 * Triggers the intro svg animation after a certain position
 */
-const INTRO_ANIMATION_START_POS = 1400
-  , INTRO_ANIMATION_END_POS = 2000
+const INTRO_ANIMATION_START_POS = 750
+  , INTRO_ANIMATION_END_POS = 1550
 ;
 var introAnimationTriggered = false;
 function triggerIntroAnimation(scrollPos) {
@@ -331,7 +331,9 @@ function triggerIntroAnimation(scrollPos) {
     // Animate text if we haven't yet
     if (!introAnimationTriggered) {
       introAnimationTriggered = true;
-      new Vivus('intro-animation', {duration: 3000});
+      new Vivus('intro-animation', {duration: 250}, function() {
+        $('#intro-animation').addClass('light');
+      });
     }
 
     $('#intro-animation').toggleClass('fixed', (scrollPos <= INTRO_ANIMATION_END_POS));

@@ -573,6 +573,12 @@ mdl-layout {
 }
 #intro-animation path {
   stroke: #ffe5bb;
+  transition: fill-opacity 0.4s ease, stroke-opacity 0.4s ease;
+}
+#intro-animation.light path.fill {
+  fill: #ffe5bb;
+  fill-opacity: 1;
+  stroke-opacity: 0;
 }
 #intro.animate #intro-animation {
   display: block;
@@ -584,6 +590,12 @@ mdl-layout {
   left: 50%;
   top: 50%;
   transform: translateX(-50%);
+  width: 512px;
+}
+@media screen and (min-width: 688px) {
+  #intro.animate #intro-animation.fixed {
+    width: 100%;
+  }
 }
 
 #our-story {
