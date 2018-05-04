@@ -333,7 +333,9 @@ function triggerIntroAnimation(scrollPos) {
     // Animate text if we haven't yet
     if (!introAnimationTriggered) {
       introAnimationTriggered = true;
-      new Vivus('intro-animation', {duration: 200}, function() {
+      new Vivus('intro-animation', {
+        type: 'scenario'
+      }, function() {
         $('#intro-animation').addClass('light');
       });
     }
