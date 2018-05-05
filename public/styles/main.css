@@ -292,10 +292,10 @@ mdl-layout {
   display: none;
 }
 
-.logged-in .loginInfo {
+#login-page.logged-in .loginInfo {
   display: none;
 }
-.logged-in .welcomeInfo {
+#login-page.logged-in .welcomeInfo {
   display: initial;
 }
 .loginInfo.mdl-card__actions {
