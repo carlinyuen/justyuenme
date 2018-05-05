@@ -553,7 +553,7 @@ window.clearRequestTimeout = function(handle) {
           $.each(value.split('\n'), function(i, text) {
             container.append($(document.createElement('p'))
               .addClass('main-page__data')
-              .text(text)
+              .html(text)
             );
           });
         });
