@@ -772,7 +772,7 @@ window.clearRequestTimeout = function(handle) {
     // console.log('sorted data:', data);
 
     // Populate current user's rsvp info first
-    var you = data[0], pid, guests, gid;
+    var you = data[0], pid, guests, gid, numAddlGuestRows;
     $('#your-name').val(you.firstname + ' ' + you.lastname);
     if (you.rsvp.attending === true) {
       $('#your-yes').prop('checked', true);
@@ -784,6 +784,7 @@ window.clearRequestTimeout = function(handle) {
       $.each(guests, function(j, guest) {
         gid = you.uid + '/additional-guests/' + j;
         addRSVPRow(gid, guest.fullname, guest.attending, guest.givenname, you.firstname);
+        numAddlGuestRows++;
       });
     }
 
@@ -797,17 +798,19 @@ window.clearRequestTimeout = function(handle) {
       addRSVPRow(pid
         , (person.firstname + ' ' + person.lastname)
         , person.rsvp.attending);
+      numAddlGuestRows++;
       guests = person.rsvp['additional-guests'];
       if (guests && guests.length) {
         $.each(guests, function(j, guest) {
           gid = pid + '/additional-guests/' + j;
           addRSVPRow(gid, guest.fullname, guest.attending, guest.givenname, person.firstname);
+          numAddlGuestRows++;
         });
       }
     });
 
-    // Show the rsvp modal
-    if ($('#rsvp-form-extension .form-row').length == 0) {
+    // Show the rsvp modal, tweak styling
+    if (numAddlGuestRows > 0) {
       $('#rsvp-form .form-row').last().addClass('no-border');
     }
     $('#rsvp-modal').modal();
