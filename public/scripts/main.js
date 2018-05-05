@@ -653,10 +653,10 @@ window.clearRequestTimeout = function(handle) {
     var user = checkAuthOrSignin();
     if (user) {
       getRSVPCandidates(user.uid, function(candidates) {
-        console.log('candidates:', candidates);
+        // console.log('candidates:', candidates);
         if (candidates && candidates.length) {
           getAdditionalGuests(candidates, function(additionalGuests) {
-            console.log('addlGuests:', additionalGuests);
+            // console.log('addlGuests:', additionalGuests);
             // Add guest info into the candidate user profile info
             if (additionalGuests && additionalGuests.length) {
               for (var i = 0, l = candidates.length; i < l; i++) {
@@ -762,7 +762,7 @@ window.clearRequestTimeout = function(handle) {
   * Populate RSVP form
   */
   function populateRSVPForm(user, data) {
-    console.log('populateRSVPForm:', data);
+    // console.log('populateRSVPForm:', data);
 
     data.sort(function(a, b) {
       if (a.uid === user.uid) { return -1; }
@@ -812,7 +812,7 @@ window.clearRequestTimeout = function(handle) {
     });
 
     // Show the rsvp modal, tweak styling
-    console.log('numAddlGuestRows:', numAddlGuestRows);
+    // console.log('numAddlGuestRows:', numAddlGuestRows);
     if (numAddlGuestRows > 0) {
       $('#rsvp-form-extension .form-row').last().addClass('no-border');
     } else {
@@ -1049,6 +1049,7 @@ window.clearRequestTimeout = function(handle) {
   */
   var $flickity;
   function setupFlickityCarousel() {
+    console.log('setupFlickityCarousel');
     $flickity = $('#carousel').flickity({
       wrapAround: true,
       freeScroll: true,
