@@ -1,6 +1,7 @@
 'use strict';
 
 const TIME_DURATION_XL = 2500
+  , TIME_DURATION_VLONG = 2000
   , TIME_DURATION_LONG = 1500
   , TIME_DURATION_MEDIUM = 1000
   , TIME_DURATION_FAST = 400
@@ -1230,5 +1231,5 @@ window.onload = function() {
     }
     gravityAnimation.start();
     $('#content').fadeIn();
-  }, TIME_DURATION_MEDIUM);
+  }, TIME_DURATION_VLONG);
 };

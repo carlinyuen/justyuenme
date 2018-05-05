@@ -135,18 +135,6 @@ html, body {
   min-height: 100%;
 }
 
-body::after {
-  content: "Best viewed in Google Chrome";
-  display: inline-block;
-  position: fixed;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  color: darkgray;
-  text-align: center;
-  font-size: 24px;}
-
 mdl-layout {
   min-height: 100%;
 }
