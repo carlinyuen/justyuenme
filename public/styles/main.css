@@ -755,11 +755,9 @@ mdl-layout {
   margin: 0 auto;
 }
 
-#wedding-rsvp {
-  padding: 64px 0 0;
-}
 #rsvp-button {
   font-family: 'Pacifico', cursive;
+  margin: 64px 0 12px;
   padding: 10px 40px;
 	border-radius: 10px;
 	font-size: 25px;
@@ -832,7 +830,7 @@ mdl-layout {
 #accommodations address {
   font-size: 14px;
 }
-#accommodations p {
+#accommodations p, #wedding-rsvp p {
   font-weight: bold;
   color: palevioletred;
 }
