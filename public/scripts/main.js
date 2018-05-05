@@ -39,7 +39,7 @@ function getURLParam(sParam) {
       return sParameterName[1] === undefined ? true : sParameterName[1];
     }
   }
-};
+}
 
 /**
 * Check for mobile browser, from https://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
@@ -70,9 +70,15 @@ function signOut(event) {
     gravityAnimation.start();           // Restart firefly simulation
     if (rellax) {                       // Remove parallax
       rellax.destroy();
+      rellax = null;
     }
-    if ($flickity) {
+    if (vivus) {                        // Remove SVG animation
+      vivus.destroy();
+      vivus = null;
+    }
+    if ($flickity) {                    // Remove gallery
       $flickity.flickity('destroy');
+      $flickity = null;
     }
     $('#parallax').css('visibility', 'hidden');
     $('body').addClass('gravity');
@@ -259,6 +265,7 @@ function updateContentColor(scrollPos) {
   var startColor = [255, 229, 187]
     , endColor = [5, 11, 33]
     , textColor = [0, 0, 0]
+  ;
   switch (true) {
     case scrollPos <= BACKGROUND_GRADIENT_START_POS:
       textColor = startColor;
@@ -325,17 +332,16 @@ function updateParallaxDisplay(scrollPos) {
 * Triggers the intro svg animation after a certain position
 */
 var INTRO_ANIMATION_START_POS = 600;
-var introAnimationTriggered = false
-  , introElementUnstickingPoint       // We need to unstick the element later
+var introElementUnstickingPoint       // We need to unstick the element later
+  , vivus                             // Reference to Vivus object
 ;
 function triggerIntroAnimation(scrollPos) {
   $('#intro').toggleClass('animate', (scrollPos >= INTRO_ANIMATION_START_POS));
 
   if (scrollPos >= INTRO_ANIMATION_START_POS) {
     // Animate text if we haven't yet
-    if (!introAnimationTriggered) {
-      introAnimationTriggered = true;
-      new Vivus('intro-animation', {
+    if (!vivus) {
+      vivus = new Vivus('intro-animation', {
         type: 'scenario'
       }, function() {
         $('#intro-animation').addClass('light');
