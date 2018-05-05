@@ -233,6 +233,12 @@ window.clearRequestTimeout = function(handle) {
   */
   var scrollListenerID;     // Track the requestAnimationFrame ID
   function loadMainPage() {
+		ga('send', {
+			hitType: 'event',
+			eventCategory: 'load',
+			eventAction: 'main',
+		});
+
     $('#entersite-button').prop('disabled', true);
     if (checkAuthOrSignin()) {
       // Go fullscreen if on mobile to avoid browser header jank
@@ -1340,6 +1346,13 @@ window.clearRequestTimeout = function(handle) {
 
   window.onload = function() {
     initApp();
+
+		ga('send', {
+			hitType: 'event',
+			eventCategory: 'load',
+			eventAction: 'site',
+		});
+
     requestTimeout(function() {
       var email = getURLParam('email');
       if (email) {
