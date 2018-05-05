@@ -159,9 +159,9 @@ function loadMainPage() {
     if (window.mobilecheck() && screenfull.enabled) {
       screenfull.request();
     }
-    if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent) && !window.MSStream) {
-      window.scrollTo(0,1);   // TODO: detects iOS, but doesn't seem to work
-    }
+    // if (/(iPad|iPhone|iPod)/g.test(navigator.userAgent) && !window.MSStream) {
+    //   window.scrollTo(0,1);   // TODO: detects iOS, but doesn't seem to work
+    // }
 
     // Fade out login page, load in data, and fade in main page
     gravityAnimation.stop();              // Stop firefly animation
@@ -1229,8 +1229,8 @@ window.onload = function() {
       $('#email-input').val(email);
       $('#email-container')[0].MaterialTextfield.checkDirty();
     }
-    $('body').addClass('loaded');
     gravityAnimation.start();
+    $('body').addClass('loaded');
     $('#content').fadeIn();
-  }, TIME_DURATION_VLONG);
+  }, TIME_DURATION_LONG);
 };
