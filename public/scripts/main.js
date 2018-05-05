@@ -247,7 +247,9 @@ window.clearRequestTimeout = function(handle) {
             setupFlickityCarousel();
             setupPhotoSwipe();
             requestTimeout(function() {
-              $('#title').toggleClass('expanded', false);
+              if (window.mobilecheck()) {   // Only autohide nav on phone
+                $('#title').toggleClass('expanded', false);
+              }
               $flickity.flickity('resize');
             }, TIME_DURATION_XL);
           });
