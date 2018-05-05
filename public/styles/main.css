@@ -1,4 +1,8 @@
 
+input, button {
+  display: block;
+}
+
 .textcolor-gold {
   color: #ffe5bb;
 }
