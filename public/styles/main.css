@@ -6,8 +6,15 @@ input, button {
   display: initial;
 }
 
+.bold {
+  font-weight: bold;
+}
 .textcolor-gold {
   color: #ffe5bb;
+}
+.textColor-accent {
+  font-weight: bold;
+  color: palevioletred !important;
 }
 .backgroundcolor-gold {
   background-color: rgb(255, 229, 187);
@@ -573,6 +580,9 @@ mdl-layout {
   font-size: 16px;
   color: darkslategray;
 }
+#content a {
+  color: rgb(38, 166, 154);
+}
 
 #intro {
   position: relative;
@@ -677,6 +687,10 @@ mdl-layout {
 
 #event-details .mdl-cell {
   margin: 0 auto;
+  font-size: 16px;
+}
+#event-details p {
+  margin-bottom: 4px;
 }
 
 #rsvp-button {
@@ -758,13 +772,6 @@ mdl-layout {
 
 #accommodations address {
   font-size: 14px;
-}
-#accommodations p, #wedding-rsvp p {
-  font-weight: bold;
-  color: palevioletred;
-}
-#accommodations a {
-  color: rgb(38, 166, 154);
 }
 
 #gift-registry p {

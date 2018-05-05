@@ -488,23 +488,38 @@ window.clearRequestTimeout = function(handle) {
     data = pageData['event-details'];
     if (data) {
       container = $('#location');
+      temp = data.location;
       container.append($(document.createElement('h3'))
         .addClass('main-page__data')
-        .text(data.location.title)
+        .text(temp.title)
+      ).append($(document.createElement('p'))
+        .addClass('main-page__data bold')
+        .text(temp['venue-name'])
       ).append($(document.createElement('p'))
         .addClass('main-page__data')
-        .text(data.location['venue-name'])
-      ).append($(document.createElement('p'))
-        .addClass('main-page__data')
-        .text(data.location.address)
+        .text(temp.address)
       );
+      if (temp.mapURL) {
+        container.append($(document.createElement('a'))
+          .addClass('main-page__data')
+          .text('Venue')
+          .attr('href', temp.venueURL)
+          .attr('target', '_blank')
+        ).append(' | '
+        ).append($(document.createElement('a'))
+          .addClass('main-page__data')
+          .text('Map')
+          .attr('href', temp.mapURL)
+          .attr('target', '_blank')
+        );
+      }
 
       container = $('#schedule');
       container.append($(document.createElement('h3'))
         .addClass('main-page__data')
         .text(data.schedule.title)
       ).append($(document.createElement('p'))
-        .addClass('main-page__data')
+        .addClass('main-page__data bold')
         .text(data.schedule.date)
       ).append($(document.createElement('p'))
         .addClass('main-page__data')
@@ -536,7 +551,7 @@ window.clearRequestTimeout = function(handle) {
         .prop('disabled', temp)
         .click(loadRSVPForm)
       ).append($(document.createElement('p'))
-        .addClass('main-page__data' + (temp ? ' errorText' : ''))
+        .addClass('main-page__data textColor-accent' + (temp ? ' errorText' : ''))
         .text((temp ? data.errorText : data.text))
       );
     }
@@ -570,7 +585,7 @@ window.clearRequestTimeout = function(handle) {
         );
         if (hotel.description && hotel.description.length) {
           container.append($(document.createElement('p'))
-            .addClass('main-page__data')
+            .addClass('main-page__data textColor-accent')
             .html(hotel.description.split('\n').join('<br>'))
           );
         }
@@ -583,7 +598,7 @@ window.clearRequestTimeout = function(handle) {
           ).append(' | '
           ).append($(document.createElement('a'))
             .addClass('main-page__data')
-            .text('Maps')
+            .text('Map')
             .attr('href', hotel.mapURL)
             .attr('target', '_blank')
           );
