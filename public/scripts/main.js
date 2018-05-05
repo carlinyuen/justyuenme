@@ -237,8 +237,6 @@ window.clearRequestTimeout = function(handle) {
         $('body').removeClass('gravity');
       });
       $('#login-page').fadeOut(TIME_DURATION_FAST, function() {
-        db.ref('content').once('value')
-          .then(populateMainPage, contentErrorHandler); // TODO: consider moving this to before the button click for optimization
         setupParallaxIntro();
         $('#title').toggleClass('expanded', true);
         $('#header').fadeIn(TIME_DURATION_FAST);
@@ -1250,6 +1248,10 @@ window.clearRequestTimeout = function(handle) {
               }
             }
           });
+
+        // Start preloading and populating the page
+        db.ref('content').once('value')
+          .then(populateMainPage, contentErrorHandler);
       } else {
         // console.log('user signed out')
         $('#login-page').removeClass('logged-in');

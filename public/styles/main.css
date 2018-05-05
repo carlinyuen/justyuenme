@@ -815,6 +815,11 @@ mdl-layout {
   font-style: italic;
   color: lightcoral;
 }
+@media screen and (max-width: 688px) {
+  #rsvp-form .form-group label[for=yourRSVP] {
+    display: none;
+  }
+}
 #rsvp-form input.form-control-plaintext {
   padding-top: 0;
   padding-bottom: 0;
