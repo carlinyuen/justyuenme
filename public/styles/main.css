@@ -762,9 +762,9 @@ mdl-layout {
 	border-radius: 10px;
 	font-size: 25px;
 	text-decoration: none;
-  color: #eed190;
-  /* text-shadow: 0px -2px #D1B358; */
-  background: transparent;
+  color: #fff;
+  text-shadow: 0px -2px #90d8cc;
+  background: rgb(38, 166, 154);
   cursor: pointer;
 }
 
