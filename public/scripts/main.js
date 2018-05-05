@@ -111,6 +111,12 @@ window.clearRequestTimeout = function(handle) {
   * Handles the sign out button press.
   */
   function signOut(event) {
+		ga('send', {
+			hitType: 'event',
+			eventCategory: 'auth',
+			eventAction: 'signout',
+		});
+
     // Disable buttons for now to prevent multiple calls
     $('.signout-button, #signin-button').prop('disabled', true);
     firebase.auth().signOut();
@@ -165,6 +171,12 @@ window.clearRequestTimeout = function(handle) {
   */
   function signIn(event) {
     // console.log('signIn');
+		ga('send', {
+			hitType: 'event',
+			eventCategory: 'auth',
+			eventAction: 'signin',
+		});
+
     event.preventDefault();   // Prevent default form submit
     // Disable buttons for now to prevent multiple calls
     $('.signout-button, #signin-button').prop('disabled', true);
@@ -661,6 +673,11 @@ window.clearRequestTimeout = function(handle) {
   */
   function loadRSVPForm() {
     // console.log('loadRSVPForm');
+		ga('send', {
+			hitType: 'event',
+			eventCategory: 'RSVP',
+			eventAction: 'click',
+		});
     $('#rsvp-button').prop('disabled', true);
     var user = checkAuthOrSignin();
     if (user) {
@@ -928,6 +945,12 @@ window.clearRequestTimeout = function(handle) {
   var MIN_NAME_LENGTH = 3;
   function submitRSVP(event) {
     console.log('submitRSVP!');
+		ga('send', {
+			hitType: 'event',
+			eventCategory: 'RSVP',
+			eventAction: 'submit',
+		});
+
     event.preventDefault();   // Prevent default form submit
     $('#rsvp-form').removeClass('error');
     $('#submitRSVP-button').prop('disabled', true);
@@ -1061,7 +1084,7 @@ window.clearRequestTimeout = function(handle) {
   */
   var $flickity;
   function setupFlickityCarousel() {
-    console.log('setupFlickityCarousel');
+    // console.log('setupFlickityCarousel');
     $flickity = $('#carousel').flickity({
       wrapAround: true,
       freeScroll: true,
