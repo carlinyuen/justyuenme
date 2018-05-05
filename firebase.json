@@ -9,17 +9,6 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "headers": [
-      {
-        "source":"**/*.@(css|js|png|jpg)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache"
-          }
-        ]
-      }
-    ],
     "rewrites": [
       {
         "source": "**",
