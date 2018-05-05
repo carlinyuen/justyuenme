@@ -1,6 +1,6 @@
 'use strict';
 
-const TIME_DURATION_XL = 2500
+var TIME_DURATION_XL = 2500
   , TIME_DURATION_VLONG = 2000
   , TIME_DURATION_LONG = 1500
   , TIME_DURATION_MEDIUM = 1000
@@ -11,7 +11,7 @@ var db = firebase.database();
 /**
 * Throttle event handlers that may be called many times, from http://sampsonblog.com/simple-throttle-function/
 */
-const THROTTLE_60FPS = 1000 / 60;
+var THROTTLE_60FPS = 1000 / 60;
 function throttle(callback, limit) {
   var wait = false;                 // Initially, we're not waiting
   return function () {              // We return a throttled function
@@ -233,7 +233,7 @@ function scrollHandler(event) {
 /**
 * Hide scroll indicator after scrolling down
 */
-const SCROLL_INDICATOR_HIDE_POS = 256;
+var SCROLL_INDICATOR_HIDE_POS = 256;
 var scrollIndicatorHidden = false;
 function hideScrollIndicator(scrollPos) {
   if (!scrollIndicatorHidden && scrollPos >= SCROLL_INDICATOR_HIDE_POS) {
@@ -246,7 +246,7 @@ function hideScrollIndicator(scrollPos) {
 * Update the text color of the navigation links based on
 * scroll position to account for gradient background
 */
-const BACKGROUND_GRADIENT_START_POS = 1420
+var BACKGROUND_GRADIENT_START_POS = 1420
   , BACKGROUND_GRADIENT_END_POS = 1980
   , SCROLL_STATE_PRE_GRADIENT = 0
   , SCROLL_STATE_DURING_GRADIENT = 1
@@ -313,7 +313,7 @@ function checkScrollState(state) {
 * Update which parallax images to display, in an effort
 * to conserve CPU and reduce performance lag
 */
-const PARALLAX_CLOUDS_SHOW_POS = 350
+var PARALLAX_CLOUDS_SHOW_POS = 350
   , PARALLAX_BUILDINGS_HIDE_POS = 1000
 ;
 function updateParallaxDisplay(scrollPos) {
@@ -324,7 +324,7 @@ function updateParallaxDisplay(scrollPos) {
 /**
 * Triggers the intro svg animation after a certain position
 */
-const INTRO_ANIMATION_START_POS = 600;
+var INTRO_ANIMATION_START_POS = 600;
 var introAnimationTriggered = false
   , introElementUnstickingPoint       // We need to unstick the element later
 ;
@@ -351,7 +351,7 @@ function triggerIntroAnimation(scrollPos) {
 /**
 * Populate main page data
 */
-const DEFAULT_PHOTO_EXTENSION = '.jpg'
+var DEFAULT_PHOTO_EXTENSION = '.jpg'
   , DEFAULT_THUMBNAIL_EXTENSION = '.thumbnail.jpg'
   , GALLERY_FIREBASE_PATH = 'gallery/'
   , GALLERY_THUMBNAIL_PATH = '/images/gallery/'
@@ -626,7 +626,7 @@ function getRSVPCandidates(uid, callback) {
 /**
 * Get member UIDs of a group
 */
-const groupRef = db.ref('groups');
+var groupRef = db.ref('groups');
 function getGroupMembers(gid, callback) {
   // console.log('getGroupMembers:', gid);
   return groupRef.child(gid).once('value').then(function(members) {
@@ -642,7 +642,7 @@ function getGroupMembers(gid, callback) {
 /**
 * Get user profile info of a uid
 */
-const userRef = db.ref('users');
+var userRef = db.ref('users');
 function getUserProfile(uid, callback) {
   // console.log('getUserProfile:', uid);
   return userRef.child(uid).once('value').then(function(user) {
@@ -673,7 +673,7 @@ function getAdditionalGuests(candidates, callback) {
 /**
 * Check if a person is an allowed guest
 */
-const rsvpRef = db.ref('rsvps');
+var rsvpRef = db.ref('rsvps');
 function getRSVPInfo(uid, callback) {
   // console.log('getRSVPInfo:', uid);
   return rsvpRef.child(uid).once('value').then(function(rsvp) {
@@ -836,7 +836,7 @@ function addRSVPRow(uid, name, attending, givenname, hostname) {
 /**
 * Submit RSVP form
 */
-const MIN_NAME_LENGTH = 3;
+var MIN_NAME_LENGTH = 3;
 function submitRSVP(event) {
   console.log('submitRSVP!');
   event.preventDefault();   // Prevent default form submit
@@ -991,7 +991,7 @@ function setupFlickityCarousel() {
 *  3) Update photo DOM properties, and initialize photoswipe library
 * http://photoswipe.com/documentation/getting-started.html#creating-slide-objects-array
 */
-const DEFAULT_PHOTO_SIZE = { w: 1600, h: 1200 };
+var DEFAULT_PHOTO_SIZE = { w: 1600, h: 1200 };
 function setupPhotoSwipe(callback) {
   // console.log('preloadPhotos');
 
@@ -1009,7 +1009,7 @@ function setupPhotoSwipe(callback) {
     return Promise.all(urls.map(function(url, i) {
       items[i].src = url;
       return new Promise(function(resolve, reject) {
-        const img = new Image();
+        var img = new Image();
         img.onload = function() {
           resolve({index:i, w: this.naturalWidth, h: this.naturalHeight });
         };
