@@ -1,3 +1,5 @@
+'use strict';
+
 const TIME_DURATION_XL = 2500
   , TIME_DURATION_LONG = 1500
   , TIME_DURATION_MEDIUM = 1000
