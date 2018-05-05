@@ -1229,6 +1229,7 @@ window.onload = function() {
       $('#email-input').val(email);
       $('#email-container')[0].MaterialTextfield.checkDirty();
     }
+    $('body').addClass('loaded');
     gravityAnimation.start();
     $('#content').fadeIn();
   }, TIME_DURATION_VLONG);
