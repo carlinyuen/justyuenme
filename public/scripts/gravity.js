@@ -277,6 +277,7 @@ function Particle(x, y, radius) {
   this.radius = radius;
   this._latest = new Vector();
   this._speed  = new Vector();
+  this.randomizerTimeout;
 }
 
 Particle.PARTICLE_SPEED_LIMIT = 4;
@@ -291,6 +292,12 @@ Particle.prototype = (function(o) {
   },
 
   update: function() {
+    if (!this.randomizerTimeout) {
+      this.randomizerTimeout = setTimeout(() => {
+        this._speed = Vector.random();
+        this.randomizerTimeout = null;
+      }, Math.random() * Particle.PARTICLE_DIRECTION_RANDOMIZER_DELAY);
+    }
     if (this._speed.length() > Particle.PARTICLE_SPEED_LIMIT) {
       this._speed.normalize().scale(Particle.PARTICLE_SPEED_LIMIT);
     }
