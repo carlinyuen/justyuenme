@@ -81,6 +81,10 @@
         $flickity.flickity('destroy');
         $flickity = null;
       }
+      if (scrollListenerID) {             // Stop scroll listener
+        cancelAnimationFrame(scrollListenerID);
+        scrollListenerID = null;
+      }
       $('#parallax').css('visibility', 'hidden');
       $('body').addClass('gravity');
       $('#firefly-field').fadeIn(TIME_DURATION_FAST);
@@ -159,6 +163,7 @@
   /**
   * Load the main page if user is auth'd
   */
+  var scrollListenerID;     // Track the requestAnimationFrame ID
   function loadMainPage() {
     $('#entersite-button').prop('disabled', true);
     if (checkAuthOrSignin()) {
@@ -184,7 +189,7 @@
         $('#main-page').removeClass('no-access')
           .fadeIn(TIME_DURATION_FAST, function() {
             // console.log('main page fade in');
-            $(window).scroll(scrollHandler);  // Add scroll position listener
+            scrollListenerID = requestAnimationFrame(scrollHandler);  // Add scroll position listener
             setupFlickityCarousel();
             setupPhotoSwipe();
             setTimeout(function() {
@@ -227,14 +232,17 @@
   /**
   * Scroll handler for parallax, etc.
   */
-  function scrollHandler(event) {
-    var scrollPos = $(window).scrollTop();
+  var scrollPos;
+  function scrollHandler() {
+    scrollPos = $(window).scrollTop();
     // console.log('scrollHandler:', scrollPos);
 
     hideScrollIndicator(scrollPos);   // Hide scroll indicator
     updateContentColor(scrollPos);    // Update content colors based on bg
     updateParallaxDisplay(scrollPos); // Update which parallax images to display
     triggerIntroAnimation(scrollPos); // Trigger intro svg animation
+
+    scrollListenerID = requestAnimationFrame(scrollHandler);
   }
 
   /**
