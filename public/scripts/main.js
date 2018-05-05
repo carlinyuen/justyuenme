@@ -549,13 +549,10 @@ window.clearRequestTimeout = function(handle) {
           container.append($(document.createElement('h3'))
             .addClass('main-page__data')
             .text(key)
+          ).append($(document.createElement('p'))
+            .addClass('main-page__data')
+            .html(value.split('\n').join('<br>'))
           );
-          $.each(value.split('\n'), function(i, text) {
-            container.append($(document.createElement('p'))
-              .addClass('main-page__data')
-              .html(text)
-            );
-          });
         });
       });
     }
